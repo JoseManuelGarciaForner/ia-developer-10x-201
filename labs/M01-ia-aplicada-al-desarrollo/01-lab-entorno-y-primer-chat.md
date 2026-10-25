@@ -61,7 +61,7 @@ make up-m01
 
 **Por qué:** `make up-m01` arranca los seis procesos de la plataforma (API, pasarela, notifier, tienda, backoffice y editor) con los cambios que tengas. La primera vez, la API crea el esquema de la base de datos y carga los datos de ejemplo.
 
-**Resultado esperado:** líneas con prefijos de colores: `[api] … Server listening at http://0.0.0.0:3000`, `[pagos] … :3001`, `[correo] notifier escuchando la cola «emails»` y tres `VITE … ready` (`[tienda]`, `[backoffice]`, `[editor]`). Deja esta terminal abierta y abre otra para lo demás.
+**Resultado esperado:** líneas con prefijos de colores: `[api] … Server listening at http://…:3000`, `[pagos] … :3001`, `[correo] notifier escuchando la cola «emails»` y tres `VITE … ready` (`[tienda]`, `[backoffice]`, `[editor]`). Deja esta terminal abierta y abre otra para lo demás.
 
 ### 4 — Abre la tienda de la Sala Faro
 
@@ -121,34 +121,59 @@ Desde **Ver y descargar mis entradas** llegas a «Mis entradas», con un QR por 
 
 ### 8 — Abre el asistente en modo agente
 
-**Acción:** abre un chat nuevo en modo agente:
+**Acción:** abre una conversación nueva en modo agente, según tu asistente:
 
-| Asistente | Cómo |
-|-----------|------|
-| Cursor | Panel de chat (<kbd>Ctrl</kbd>+<kbd>L</kbd>), modo **Agent** |
-| VS Code + Copilot | Vista **Chat** (<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd>), modo **Agent** |
-| Claude Code | En una terminal nueva, dentro de `telon/`: `claude` |
+| Asistente | Dónde está | Cómo dejarlo listo |
+|-----------|------------|--------------------|
+| VS Code o Codespaces + Copilot | Icono de chat de la barra superior, o <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd>. Se abre a la derecha | Pulsa **+** (conversación nueva). Bajo la caja de texto, pon el selector de modo en **Agent** y deja el modelo que venga por defecto |
+| Cursor | Panel de chat, <kbd>Ctrl</kbd>+<kbd>L</kbd>. Se abre a la derecha | Pulsa **+** (conversación nueva). Bajo la caja de texto, elige **Agent** |
+| Claude Code | En una terminal nueva (**+** del panel de terminal) | Escribe `claude` y pulsa <kbd>Enter</kbd>. La primera vez te pide iniciar sesión: sigue el enlace que muestra |
 
-**Por qué:** en el curso usas el modo agente, que lee ficheros y ejecuta comandos. Es el que más ayuda y el que más hay que vigilar.
+**Por qué:** en el curso usas el modo agente, que lee ficheros, busca en el repositorio y ejecuta comandos. Es el que más ayuda y el que más hay que vigilar.
 
-**Resultado esperado:** un chat vacío asociado a la carpeta `telon/`.
+**Resultado esperado:** una caja de texto vacía, lista para escribir. En Copilot y Cursor se ve el modo **Agent** bajo la caja; en Claude Code, un recuadro con el cursor y la carpeta `telon` en la cabecera.
 
-### 9 — Haz la primera pregunta y comprueba la respuesta
+> [!NOTE]
+> En este punto el proyecto no tiene ningún fichero de contexto para la IA (`AGENTS.md`, reglas, instrucciones). El asistente solo cuenta con el código y con lo que su herramienta trae de serie. Lo que responda es su comportamiento por defecto.
 
-**Acción:** escribe:
+### 9 — Haz la primera pregunta
+
+**Acción:** ve al chat, escribe esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Lista las apps y servicios de este monorepo, qué hace cada uno y en qué puerto escucha.
 Para cada puerto, dime en qué fichero lo has visto.
 ```
 
-Después, comprueba en el código el puerto que dé para la API: abre `services/api/src/config.ts`.
+Si te pide permiso para leer ficheros o ejecutar comandos de búsqueda, acéptalo (**Continue**, **Run** o «Yes»).
 
-**Por qué:** el asistente mezcla lo que lee en el código con lo que lee en la documentación. El `README.md` del proyecto dice que la API está en el puerto 8080; el código dice otra cosa. Esta es la costumbre del curso: cada afirmación se comprueba en el código.
+**Por qué:** es una pregunta que se responde leyendo el repositorio. Pedir el fichero de cada dato obliga al asistente a decir de dónde lo saca, y te deja comprobarlo.
 
-**Resultado esperado:** una lista con `storefront`, `backoffice`, `editor-mfe`, `api`, `payments` y `notifier`. Si el asistente da 8080 para la API citando el README, has encontrado tu primera afirmación falsa: `config.ts` dice `3000`. Si da 3000 citando `config.ts`, ha leído el sitio correcto.
+**Resultado esperado:** mientras trabaja, el asistente enseña qué lee: `package.json`, `README.md` y los ficheros de configuración de cada app y servicio. Después responde con una tabla de seis piezas:
 
-### 10 — Ejecuta los tests
+| Pieza | Qué hace | Puerto |
+|-------|----------|--------|
+| `apps/storefront` | Tienda del comprador | 5173 |
+| `apps/backoffice` | Panel del promotor | 5174 |
+| `apps/editor-mfe` | Editor Monaco embebido en el backoffice | 5175 |
+| `services/api` | API | 3000 u 8080 (ver paso 10) |
+| `services/payments` | Pasarela de pago emulada | 3001 |
+| `services/notifier` | Envío de correos desde la cola | sin puerto |
+
+Lo que cambia según el modelo es el puerto de la API. Si el asistente leyó primero el `README.md`, dirá **8080** y citará el README. Si fue al código, dirá **3000** y citará `services/api/src/config.ts`. Las dos respuestas suenan igual de seguras.
+
+### 10 — Comprueba el puerto de la API en el código
+
+**Acción:**
+1. Pulsa <kbd>Ctrl</kbd>+<kbd>P</kbd>, escribe `api/src/config.ts` y pulsa <kbd>Enter</kbd>.
+2. Busca `port` con <kbd>Ctrl</kbd>+<kbd>F</kbd>.
+3. En la terminal, escribe `curl -s localhost:3000/api/health`.
+
+**Por qué:** el asistente mezcla lo que lee en el código con lo que lee en la documentación, y no avisa cuando se contradicen. El `README.md` dice 8080; el código, otra cosa. Esta es la costumbre del curso: cada afirmación se comprueba en el código o ejecutando.
+
+**Resultado esperado:** en `config.ts`, el puerto por defecto de la API es `3000`, y `curl` responde `{"ok":true}`. Si el asistente dijo 8080, has encontrado tu primera afirmación falsa. Díselo en el mismo chat («El README dice 8080, pero config.ts dice 3000. ¿Cuál es el correcto y por qué?»): reconocerá el error y explicará que el README está desactualizado.
+
+### 11 — Ejecuta los tests
 
 **Acción:** en una terminal dentro de `telon/`: `npm test`
 
@@ -172,16 +197,27 @@ Compra otra entrada con la tarjeta `4000 0000 0000 0002`.
 
 ## Reto
 
-### 1 — Un promotor nuevo con su dominio
+### 1 — Que el asistente te enseñe a dar de alta un promotor
 
-Crea en el backoffice una cuenta para un promotor inventado, añádele un dominio `*.localhost` y abre su tienda.
+Quieres dar de alta un promotor nuevo con su propio dominio y no sabes cómo se hace en el proyecto. Sin abrir tú el código, escribe un prompt para que el asistente te dé los pasos exactos, con dónde está cada cosa en la interfaz, y después síguelos tal cual. El reto es el prompt: que las instrucciones que te devuelva funcionen a la primera.
 
 <details>
 <summary>Ver solución</summary>
 
-En `http://localhost:5174`, pulsa **Salir** si estás dentro. En **Crear cuenta de promotor**, rellena por ejemplo `Club Marea`, `club-marea` y `taquilla@clubmarea.test`, y pulsa **Crear cuenta**. Pulsa **Entrar** (el token ya está puesto). En **Dominios**, añade `entradas.clubmarea.localhost` y abre `http://entradas.clubmarea.localhost:5173`. Ves «Club Marea» sin eventos: la tienda resuelve el promotor por el dominio. En Codespaces usa `/t/club-marea`.
+Un prompt que funciona pide pasos ejecutables, el origen de cada dato y que no se cambie nada:
+
+```text
+Quiero dar de alta un promotor nuevo con su propio dominio y ver su tienda. Busca en el
+código cómo se hace desde el backoffice. Dame los pasos numerados con el texto exacto de
+cada botón y campo, las URLs que tengo que abrir y, para cada paso, el fichero donde lo has
+visto. No cambies nada.
+```
+
+Lo habitual es que el asistente encuentre `apps/backoffice/src/Login.tsx` y `apps/backoffice/src/sections.tsx` y devuelva algo así: en `http://localhost:5174`, **Salir** si estás dentro; en **Crear cuenta de promotor**, nombre, slug y email (por ejemplo `Club Marea`, `club-marea`, `taquilla@clubmarea.test`) y **Crear cuenta**; **Entrar**; en **Dominios**, añadir `entradas.clubmarea.localhost`; abrir `http://entradas.clubmarea.localhost:5173`. Ves «Club Marea» sin eventos. En Codespaces, la tienda del promotor está en `/t/club-marea`.
 
 ![Sección Dominios del backoffice](../img/M01-01-backoffice-dominios.png)
+
+Si algún paso no coincide con la pantalla (un botón con otro nombre, una URL que no carga), la instrucción vino de suponer y no de leer: pídele que te diga en qué línea lo ha visto. Un prompt sin «el texto exacto de cada botón» y sin «dónde lo has visto» suele devolver pasos genéricos de cualquier SaaS.
 
 </details>
 
