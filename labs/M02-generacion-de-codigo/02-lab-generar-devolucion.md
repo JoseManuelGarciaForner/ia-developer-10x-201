@@ -10,16 +10,29 @@ La devolución funcionando de punta a punta: la compradora de `PED-2026-0107` de
 
 ### Punto de partida
 
-- El proyecto Telón abierto en el Dev Container, carpeta `telon/`.
-- Estado: `make init-m02` y las reglas del proyecto de referencia (si ya tienes las tuyas del lab anterior, usa las tuyas):
+- El repositorio del curso abierto en el Dev Container (local o Codespaces). El explorador muestra la carpeta `telon/`.
+- Dos terminales en `telon/` (**Terminal → New Terminal**, y el **+** del panel para la segunda).
+- Terminal 1: el estado de partida y las reglas del proyecto de referencia. Si ya tienes tu `AGENTS.md` del lab anterior, sáltate esto y usa el tuyo.
 
 ```bash
+CONFIRM=1 make init-m02
 cp ../.labs/m03-inicio/AGENTS.md ../.labs/m03-inicio/CLAUDE.md .
 cp -r ../.labs/m03-inicio/.cursor ../.labs/m03-inicio/.github .
 ```
 
-- `make up-m02` arrancado en otra terminal, y Mailpit abierto.
+- Terminal 2: `make up-m02`, y déjala abierta.
+- Mailpit abierto en el navegador (local: `http://localhost:8025`; Codespaces: pestaña **Ports** → **Mailpit (8025)** → icono del globo).
 - El pedido de referencia: `PED-2026-0107` de `ana.compradora@ejemplo.test`, con las butacas F-12 y F-13 y un pase VIP.
+- Un asistente en modo agente:
+
+| Asistente | Cómo abrir una conversación nueva |
+|-----------|-----------------------------------|
+| VS Code o Codespaces + Copilot | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> → **+** → modo **Agent** bajo la caja de texto |
+| Cursor | <kbd>Ctrl</kbd>+<kbd>L</kbd> → **+** → modo **Agent** |
+| Claude Code | En una terminal nueva, dentro de `telon/`: `claude` |
+
+> [!NOTE]
+> En este lab el asistente tiene el código y las reglas de `AGENTS.md`, que su herramienta carga al abrir cada conversación. No tiene nada más: ni tests de la devolución, ni ejemplos de cómo se hizo en otro sitio. Lo que no esté en esos dos sitios lo decidirá él.
 
 ### En qué consiste
 
@@ -27,7 +40,7 @@ Cuatro entregas pequeñas en lugar de una grande: plan, API, correo y componente
 
 ### 1 — Crea una rama
 
-**Acción:** `git switch -c feat/dev-412-devoluciones`
+**Acción:** en la terminal 1, `git switch -c feat/dev-412-devoluciones`
 
 **Por qué:** el cambio llegará a `main` por pull request en el M05. Trabajar en una rama te deja descartar un intento del asistente sin perder nada.
 
@@ -35,7 +48,7 @@ Cuatro entregas pequeñas en lugar de una grande: plan, API, correo y componente
 
 ### 2 — Pide el plan con las cuatro piezas
 
-**Acción:** en un chat nuevo:
+**Acción:** ve al chat, abre una conversación nueva, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 DEV-412. Intención: que el comprador devuelva una o varias entradas de un pedido pagado
@@ -50,7 +63,7 @@ Dame solo el plan: ficheros que crearías o cambiarías y por qué. Espera mi co
 
 **Por qué:** intención, restricciones, ejemplo y criterio de hecho son las cuatro piezas que cambian el diff. Pedir el plan antes que el código te deja corregir el rumbo cuando es barato.
 
-**Resultado esperado:** un plan con, más o menos, una migración `002_refunds.sql` (tablas `refunds` y `refund_tickets`), un módulo `services/api/src/refunds/`, una ruta `POST /api/public/orders/:id/refunds`, `refund()` en `payments-client.ts`, un trabajo `refund-confirmed` en la cola y el notifier, y un componente en `packages/ui` usado en «Mis entradas».
+**Resultado esperado:** el agente lee `AGENTS.md` y los ficheros de pedidos, pasarela y notifier, y responde con un plan sin escribir código. Más o menos: una migración `002_refunds.sql` (tablas `refunds` y `refund_tickets`), un módulo `services/api/src/refunds/`, una ruta `POST /api/public/orders/:id/refunds`, `refund()` en `payments-client.ts`, un trabajo `refund-confirmed` en la cola y el notifier, y un componente en `packages/ui` usado en «Mis entradas».
 
 ### 3 — Corrige el plan antes de que escriba código
 
@@ -63,11 +76,11 @@ Dame solo el plan: ficheros que crearías o cambiarías y por qué. Espera mi co
 
 **Por qué:** corregir un plan cuesta una frase. Corregir el mismo error en cinco ficheros cuesta una tarde.
 
-**Resultado esperado:** un plan que respeta las cinco condiciones y tu «adelante, empieza por la API».
+**Resultado esperado:** con `AGENTS.md` cargado, lo habitual es que el plan ya cumpla tres o cuatro de las cinco. Escribe en el chat las correcciones de las que falten, una por línea (por ejemplo: «No cambies orders.status: la devolución va en tablas nuevas»). El agente devuelve el plan corregido. Cuando cumpla las cinco, contesta «Adelante, empieza por la API».
 
 ### 4 — Genera la parte de la API
 
-**Acción:**
+**Acción:** en el mismo chat, pega esto y pulsa <kbd>Enter</kbd>. Acepta los permisos para crear y modificar ficheros y para ejecutar los tests.
 
 ```text
 Implementa solo la parte de la API: migración, módulo refunds, ruta y refund() en
@@ -77,11 +90,11 @@ importes y del plazo de 48 h.
 
 **Por qué:** un diff acotado se puede revisar entero. Si mezcla API, worker y React, acabarás aprobando partes que no has leído.
 
-**Resultado esperado:** cambios solo en `services/api/` y tests nuevos en `services/api/test/`.
+**Resultado esperado:** el agente crea y modifica ficheros, y al final ejecuta los tests. En la terminal 1, `git status --short` muestra cambios solo en `services/api/` (más los ficheros de reglas que copiaste): `migrations/002_…sql`, `src/refunds/`, una ruta y `payments-client.ts`, y tests nuevos en `services/api/test/`. Si aparece algo fuera de `services/api/`, recházalo o pídele que lo quite.
 
 ### 5 — Revisa el diff de la API
 
-**Acción:** abre el diff (`git diff` o la vista de cambios del editor) y repasa:
+**Acción:** abre la vista de cambios del editor (icono de **Source Control** en la barra izquierda, o <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>G</kbd>) y pulsa cada fichero para ver su diff. Repasa:
 
 | Mira | Señal de alarma |
 |------|-----------------|
@@ -95,11 +108,11 @@ importes y del plazo de 48 h.
 
 **Por qué:** son los fallos típicos de un diff generado. El último es el que más se cuela, porque el resultado parece correcto con una sola entrada.
 
-**Resultado esperado:** cada punto revisado y corregido. Si la comisión se calcula sobre el total, apúntalo: en el M03 verás cómo lo detecta un test.
+**Resultado esperado:** cada punto revisado. Pide en el chat la corrección de lo que encuentres, una cosa por mensaje. Si la comisión se calcula sobre el total, déjalo así de momento: en el M03 verás cómo lo detecta un test. Es muy habitual que salga así aunque `AGENTS.md` diga lo contrario, porque «suma los precios y aplica el porcentaje» es la forma más corta y más frecuente de escribirlo.
 
 ### 6 — Pasa las comprobaciones
 
-**Acción:** `npm test && npm run lint && npm run typecheck`
+**Acción:** en la terminal 1, `npm test && npm run lint && npm run typecheck`
 
 **Por qué:** es el criterio de hecho que diste. Si algo falla, pégale al asistente la salida completa y pide la causa antes que el arreglo.
 
@@ -107,7 +120,7 @@ importes y del plazo de 48 h.
 
 ### 7 — Genera el correo de confirmación
 
-**Acción:**
+**Acción:** en el mismo chat, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Ahora el notifier: trabajo refund-confirmed con la devolución, las entradas devueltas y el
@@ -119,11 +132,11 @@ Revisa el diff con la regla «lo que sale por la cola tiene que poder reintentar
 
 **Por qué:** el worker reintenta hasta 3 veces cuando algo falla. Si el correo se envía antes de algo que puede fallar, la compradora recibe el correo varias veces.
 
-**Resultado esperado:** `sendRefundConfirmed` en `services/notifier/src/jobs.ts`, una plantilla en `templates.ts` y el caso nuevo en `handle`.
+**Resultado esperado:** `sendRefundConfirmed` en `services/notifier/src/jobs.ts`, una plantilla en `templates.ts` y el caso nuevo en `handle`. En `sendRefundConfirmed`, mira el orden de las dos últimas líneas: si primero envía (`provider.send`) y después registra (`logEmail`), un fallo al registrar hace que la cola reintente y el correo salga otra vez. Es lo que suele generar el asistente, porque es el mismo orden que ya tiene `order-confirmed`: copia el patrón que ve.
 
 ### 8 — Genera el componente del comprador
 
-**Acción:**
+**Acción:** en el mismo chat, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Ahora packages/ui: componente RefundRequest que lista las entradas válidas del pedido con
@@ -133,7 +146,7 @@ estilo de los componentes existentes (styles.ts, sin dependencias nuevas).
 
 **Por qué:** «Mis entradas» es la pantalla donde el comprador ya ve sus QR. El componente usa el mismo cliente de la API y los mismos estilos que los demás, así que heredará el tema de cada promotor.
 
-**Resultado esperado:** `packages/ui/src/RefundRequest.tsx`, exportado en `index.ts`, y usado en `apps/storefront/src/pages.tsx`.
+**Resultado esperado:** `packages/ui/src/RefundRequest.tsx`, exportado en `index.ts`, y usado en `apps/storefront/src/pages.tsx`. La terminal 2 recarga la tienda sola; si la API no se reinicia, pulsa <kbd>Ctrl</kbd>+<kbd>C</kbd> en la terminal 2 y vuelve a escribir `make up-m02` (la API aplica la migración nueva al arrancar).
 
 ### 9 — Prueba el ejemplo en la tienda
 
@@ -152,7 +165,7 @@ estilo de los componentes existentes (styles.ts, sin dependencias nuevas).
 
 ### 10 — Comprueba que el QR ya no entra
 
-**Acción:**
+**Acción:** en la terminal 1:
 
 ```bash
 TOKEN=$(npm run -s qr -- PED-2026-0107-2)
@@ -167,7 +180,7 @@ curl -s localhost:3000/api/tickets/validate -H 'content-type: application/json' 
 
 ### 11 — Haz commit
 
-**Acción:** `git add -A && git commit -m "DEV-412: devolución de entradas"`
+**Acción:** en la terminal 1, `git add -A && git commit -m "DEV-412: devolución de entradas"`
 
 **Por qué:** el cambio queda guardado en tu rama para revisarlo en el M05.
 
@@ -188,14 +201,24 @@ Devuelve F-12 y F-13 juntas por `curl` (`POST /api/public/orders/PED-2026-0107/r
 
 ## Reto
 
-### 1 — El promotor también quiere verlo
+### 1 — El diff más pequeño posible
 
-Pide al asistente que las devoluciones aparezcan en **Pedidos y correos** del backoffice, con el menor diff posible.
+El promotor también quiere ver las devoluciones en **Pedidos y correos** del backoffice. Escribe un prompt que consiga ese cambio con el menor diff posible, y mídelo: `git diff --stat` al terminar. Si pasa de tres ficheros, rehaz el prompt (`git checkout .` y conversación nueva) y vuelve a intentarlo.
 
 <details>
 <summary>Ver solución</summary>
 
-Basta con un endpoint de solo lectura en `services/api/src/routes/admin.ts` (`GET /api/admin/refunds`, filtrando por `tenant_id`, igual que `GET /api/admin/orders`) y una tabla más en `Orders()` de `apps/backoffice/src/sections.tsx` con `useAdmin('/refunds')`. Si el asistente propone tocar el modelo o la tienda, el diff es más grande de lo que hace falta.
+Un prompt que acota el diff dice qué ficheros puede tocar, qué patrón copiar y qué no hacer:
+
+```text
+Las devoluciones tienen que verse en "Pedidos y correos" del backoffice. Cambio mínimo:
+- un endpoint de solo lectura GET /api/admin/refunds en services/api/src/routes/admin.ts,
+  filtrando por tenant_id igual que GET /api/admin/orders;
+- una tabla más en Orders() de apps/backoffice/src/sections.tsx con useAdmin('/refunds').
+No toques nada más: ni migraciones, ni la tienda, ni packages/ui. Sin dependencias nuevas.
+```
+
+Con esto, `git diff --stat` muestra dos ficheros. Con un prompt abierto («Que el promotor vea las devoluciones en el backoffice»), lo habitual es que el agente añada un componente nuevo, toque `packages/ui` o proponga una vista nueva: decide él dónde va, porque nadie se lo ha dicho. La habilidad que se entrena es nombrar los ficheros, el patrón existente que hay que copiar y lo que queda fuera.
 
 </details>
 
