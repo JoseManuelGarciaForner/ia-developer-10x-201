@@ -82,10 +82,19 @@ make up-m01
 2. En **De pie**, pulsa **+** una vez.
 3. En **Email**, escribe `tu.nombre@ejemplo.test`.
 4. Deja la tarjeta `4242 4242 4242 4242` y pulsa **Pagar 55,30 €**.
+5. Pulsa **Ver y descargar mis entradas**.
+
+![Selección y pago antes de pagar](../img/M01-01-carrito.png)
 
 **Por qué:** es el recorrido completo de la plataforma. Pasa por el pedido en la API, el cobro en la pasarela emulada, la cola de correo y el notifier. Es el flujo que vas a tener que entender antes de tocar nada.
 
 **Resultado esperado:** el bloque de pago cambia a «¡Listo! Pedido PED-2026-0108» (o el número siguiente) y la butaca H-7 pasa a gris. El total es 35,50 + 18,00 + 2 × 0,90 de gastos de gestión.
+
+![Pedido pagado](../img/M01-01-compra-lista.png)
+
+Desde **Ver y descargar mis entradas** llegas a «Mis entradas», con un QR por entrada y su botón **Descargar**.
+
+![Mis entradas con los dos QR](../img/M01-01-mis-entradas.png)
 
 ### 6 — Mira el correo en Mailpit
 
@@ -153,9 +162,13 @@ Después, comprueba en el código el puerto que dé para la API: abre `services/
 Abre `http://localhost:5173/t/teatro-lumen` (o la URL de la tienda en Codespaces con `/t/teatro-lumen`).
 → Ves la tienda del Teatro Lumen con «Impro a la carta». Es el mismo código que la Sala Faro con otro tenant.
 
+![Tienda del Teatro Lumen](../img/M01-01-tienda-teatro-lumen.png)
+
 **La pasarela rechaza**
 Compra otra entrada con la tarjeta `4000 0000 0000 0002`.
 → Aparece «pago rechazado: fondos insuficientes», la butaca sigue libre y no llega ningún correo a Mailpit.
+
+![Pago rechazado por la pasarela](../img/M01-01-pago-rechazado.png)
 
 ## Reto
 
@@ -167,6 +180,8 @@ Crea en el backoffice una cuenta para un promotor inventado, añádele un domini
 <summary>Ver solución</summary>
 
 En `http://localhost:5174`, pulsa **Salir** si estás dentro. En **Crear cuenta de promotor**, rellena por ejemplo `Club Marea`, `club-marea` y `taquilla@clubmarea.test`, y pulsa **Crear cuenta**. Pulsa **Entrar** (el token ya está puesto). En **Dominios**, añade `entradas.clubmarea.localhost` y abre `http://entradas.clubmarea.localhost:5173`. Ves «Club Marea» sin eventos: la tienda resuelve el promotor por el dominio. En Codespaces usa `/t/club-marea`.
+
+![Sección Dominios del backoffice](../img/M01-01-backoffice-dominios.png)
 
 </details>
 

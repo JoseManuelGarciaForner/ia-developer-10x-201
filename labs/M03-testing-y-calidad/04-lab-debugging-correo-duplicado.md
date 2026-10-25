@@ -153,6 +153,8 @@ No toques los tests.
 
 **Resultado esperado:** un único correo en Mailpit, y en la traza `✓ refund-confirmed` al primer intento.
 
+![Un solo correo de la devolución en Mailpit](../img/M03-04-mailpit-un-correo.png)
+
 ### 9 — Haz commit
 
 **Acción:** `git add services && git commit -m "Correos idempotentes: una devolución, un correo"`

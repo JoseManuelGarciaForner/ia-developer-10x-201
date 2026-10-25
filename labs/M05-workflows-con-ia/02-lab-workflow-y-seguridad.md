@@ -102,6 +102,8 @@ No cambies nada.
 
 **Resultado esperado:** `"config":{"apiKey":"SG.ejemplo-no-real.0000000000"}`. En el backoffice del Lumen, **Email** la muestra en el campo, también en claro.
 
+![API key de SendGrid del Teatro Lumen en el backoffice](../img/M05-02-email-lumen-en-claro.png)
+
 > [!WARNING]
 > En este entorno la key es inventada. Con una real, no la pegues en el chat para «que el asistente la vea»: descríbela (`SG.…`) o usa la de ejemplo.
 

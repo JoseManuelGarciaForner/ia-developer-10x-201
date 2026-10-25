@@ -61,6 +61,8 @@ npm run escenario
 
 **Resultado esperado:** las dos terminan con un mensaje del tipo «escenario cargado: 4 pedidos PRU-* y el evento EV-FARO-0099». En el backoffice, **Pedidos y correos** muestra `PRU-0001` a `PRU-0004` una sola vez.
 
+![Pedidos del escenario en el backoffice](../img/M04-02-pedidos-escenario.png)
+
 ### 4 — Prueba una devolución sobre el escenario
 
 **Acción:**

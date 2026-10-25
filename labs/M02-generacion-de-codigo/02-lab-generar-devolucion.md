@@ -148,6 +148,8 @@ estilo de los componentes existentes (styles.ts, sin dependencias nuevas).
 
 ![Devolución desde Mis entradas](../img/M02-02-devolucion-mis-entradas.png)
 
+![Correo de confirmación de la devolución en Mailpit](../img/M02-02-correo-devolucion.png)
+
 ### 10 — Comprueba que el QR ya no entra
 
 **Acción:**
