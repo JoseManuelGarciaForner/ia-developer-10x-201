@@ -6,14 +6,8 @@ Cuando un asistente genera código malo, la reacción habitual es reescribir el 
 
 ## Punto de partida
 
-- El proyecto Telón en el estado `make init-m02`: el código heredado, sin `AGENTS.md` ni reglas del proyecto.
-- Asistente en modo agente, con un chat nuevo para cada intento.
-- Para el segundo intento, las reglas del proyecto de referencia del curso, copiadas desde `telon/`:
-
-```bash
-cp ../.labs/m03-inicio/AGENTS.md ../.labs/m03-inicio/CLAUDE.md .
-cp -r ../.labs/m03-inicio/.cursor ../.labs/m03-inicio/.github .
-```
+- Repositorio del curso abierto en el Dev Container (local o Codespaces), con una terminal en `telon/`.
+- Un asistente en modo agente: Copilot o Cursor en modo **Agent**, o Claude Code (`claude` en la terminal, desde `telon/`).
 
 El prompt, idéntico en los dos intentos:
 
@@ -22,7 +16,7 @@ Implementa DEV-412: el comprador puede devolver una o varias entradas de su pedi
 desde "Mis entradas". Primero dame el plan y espera mi confirmación.
 ```
 
-Las reglas de negocio que debe cumplir la devolución. Están en la cabeza del equipo, no en el código:
+Las reglas de negocio que debe cumplir la devolución. Las conoce el equipo, pero no están en el código. Conviene tenerlas a la vista durante toda la demostración, porque cada plan se compara con ellas:
 
 1. Un pedido pagado no se modifica: la devolución es un registro nuevo que lo referencia.
 2. Los gastos de gestión no se reembolsan.
@@ -31,6 +25,11 @@ Las reglas de negocio que debe cumplir la devolución. Están en la cabeza del e
 5. El QR devuelto deja de valer y la butaca vuelve a la venta.
 6. El correo sale por la cola y con el proveedor del promotor, una sola vez.
 
+### Preparación
+
+1. En la terminal: `CONFIRM=1 make init-m02`. Es el código heredado, sin reglas para la IA.
+2. `ls AGENTS.md` responde `No such file or directory`. Así se comprueba que el asistente no tiene contexto escrito.
+
 > [!NOTE]
 > Lo que propone el asistente cambia con el modelo. Lo que se mantiene es qué reglas respeta cada intento y por qué.
 
@@ -38,7 +37,11 @@ Las reglas de negocio que debe cumplir la devolución. Están en la cabeza del e
 
 ### 1. Sin contexto, el asistente aplica lo habitual
 
-El plan es razonable para cualquier tienda de entradas, pero no para esta. Comparado con las reglas:
+1. Se abre una conversación nueva en modo agente y se pega el prompt.
+2. El asistente explora el repositorio (`orders/`, `001_init.sql`, `payments`, `notifier`) y devuelve un plan. El prompt le pide esperar; si empieza a escribir código, se para (botón de detener en Copilot y Cursor, <kbd>Esc</kbd> en Claude Code) y se descartan los cambios.
+3. Se lee el plan en voz alta, punto por punto, contrastándolo con las seis reglas.
+
+**Qué se ve:** un plan razonable para cualquier tienda de entradas. Lo habitual es esto:
 
 | Lo que propone | Regla que rompe | Consecuencia en el proyecto |
 |----------------|-----------------|-----------------------------|
@@ -48,11 +51,26 @@ El plan es razonable para cualquier tienda de entradas, pero no para esta. Compa
 | Ningún límite de fecha | 4 | Se puede devolver una entrada con la función empezada |
 | `transporter.sendMail` directo desde la API | 6 | El correo deja de usar el proveedor del promotor y la cola |
 
-El asistente no se ha equivocado programando: ha rellenado con lo más común las reglas que nadie le dio. El prompt no las menciona y el código no las contiene.
+**Qué muestra:** el asistente no se ha equivocado programando. Ha rellenado con lo más común las reglas que nadie le dio, porque no están ni en el prompt ni en el código.
 
-### 2. Con las reglas en el repositorio, el plan cambia sin cambiar el prompt
+4. Se cierra la conversación. La siguiente tiene que empezar de cero.
 
-Con `AGENTS.md` en el repositorio (y `CLAUDE.md`, `.cursor/rules/` y `.github/copilot-instructions.md` apuntando a él), el plan del chat nuevo es otro:
+### 2. Con las reglas en el repositorio, el plan cambia sin tocar el prompt
+
+1. En la terminal se copian las reglas del proyecto de referencia del curso:
+
+```bash
+cp ../.labs/m03-inicio/AGENTS.md ../.labs/m03-inicio/CLAUDE.md .
+cp -r ../.labs/m03-inicio/.cursor ../.labs/m03-inicio/.github .
+git status --short
+```
+
+`git status` muestra cuatro entradas nuevas: `AGENTS.md`, `CLAUDE.md`, `.cursor/` y `.github/`.
+
+2. Se abre `AGENTS.md` y se enseña la sección **Reglas de negocio**: son las seis reglas de arriba, escritas para el asistente. `CLAUDE.md`, `.cursor/rules/telon.mdc` y `.github/copilot-instructions.md` solo apuntan a `AGENTS.md`, para que cada herramienta lo lea.
+3. Se abre una conversación **nueva** en modo agente y se pega exactamente el mismo prompt.
+
+**Qué se ve:** otro plan, que cita `AGENTS.md` al justificar cada decisión:
 
 - tablas nuevas `refunds` y `refund_tickets` en una migración `002_…`, sin tocar la `001` (regla 1);
 - importe = suma de los precios de las entradas, sin gastos (regla 2);
@@ -60,16 +78,34 @@ Con `AGENTS.md` en el repositorio (y `CLAUDE.md`, `.cursor/rules/` y `.github/co
 - un estado nuevo de entrada, `refunded`, que libera la butaca porque el índice único solo mira `pending` y `valid` (regla 5);
 - devolución en la pasarela con `POST /refunds` y un trabajo `refund-confirmed` en la cola `emails` (regla 6).
 
-Al justificar cada decisión, el asistente cita `AGENTS.md`. No ha hecho falta repetir ninguna regla en el prompt: están en el repositorio, así que las aplica cualquier chat y cualquier persona del equipo.
+**Qué muestra:** el prompt no ha cambiado ni una palabra. Lo que ha cambiado es el repositorio, y por eso cualquier chat y cualquier persona del equipo obtiene el mismo punto de partida.
+
+4. Se para ahí: no hace falta que implemente nada para ver la diferencia.
 
 ### 3. El contexto mejora el plan, pero no lo verifica
 
-El diff generado con contexto sigue teniendo dos fallos:
+Con estas mismas reglas, la devolución del curso se generó entera. Ese resultado es el punto de partida del M03 y está en `../.labs/m03-inicio/`. Se abren dos ficheros:
 
-- calcula la comisión revertida sobre el total de las entradas devueltas, y no por entrada como dice la regla 3;
-- en el notifier, registra el envío después de mandar el correo, así que un reintento lo manda otra vez (regla 6).
+1. `../.labs/m03-inicio/services/api/src/refunds/amounts.ts`, línea 20:
 
-Los dos pasan desapercibidos al leer el plan y los tests generados siguen en verde. Escribir las reglas reduce los errores de partida, pero no sustituye la revisión ni los tests: estos dos fallos son el punto de partida del M03.
+```ts
+commission_reversed_cents: Math.round((amount * ev.commission_bps) / 10_000),
+```
+
+Calcula la comisión sobre el total de las entradas devueltas, no por entrada (regla 3). Con F-12 y F-13 revierte 533 céntimos en lugar de 532.
+
+2. `../.labs/m03-inicio/services/notifier/src/jobs.ts`, líneas 95–96:
+
+```ts
+await provider.send({ from: tenant.email_from, to: refund.buyer_email, ...email });
+await logEmail(tenant.id, provider.name, refund.buyer_email, email.subject, jobId);
+```
+
+Primero envía el correo y después lo registra. Si el registro falla, la cola reintenta y el correo sale otra vez (regla 6).
+
+**Qué muestra:** los dos fallos pasan desapercibidos al leer el plan, y los tests generados con ese código están en verde. Las reglas escritas reducen los errores de partida, pero no sustituyen la revisión ni los tests: encontrar estos dos fallos es el trabajo del M03.
+
+3. Para dejarlo como estaba: `CONFIRM=1 make init-m02` (borra también los ficheros de reglas copiados).
 
 ## Qué queda visto
 

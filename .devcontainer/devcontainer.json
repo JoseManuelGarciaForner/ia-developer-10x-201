@@ -21,7 +21,7 @@
   "postCreateCommand": "sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client && make setup",
   "customizations": {
     "vscode": {
-      "extensions": ["dbaeumer.vscode-eslint", "vitest.explorer"]
+      "extensions": ["GitHub.copilot", "GitHub.copilot-chat", "dbaeumer.vscode-eslint", "vitest.explorer"]
     }
   }
 }
