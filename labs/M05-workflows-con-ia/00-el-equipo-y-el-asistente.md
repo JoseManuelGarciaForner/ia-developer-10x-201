@@ -2,7 +2,7 @@
 
 [← Página anterior](README.md) · [Siguiente página →](01-lab-pull-request-revisado.md)
 
-La devolución de entradas funciona en el puesto de quien la hizo. Para que llegue a `main` tiene que pasar por el equipo: revisión, validación automática y las mismas reglas para todos. Esta demostración recorre dónde encaja el asistente en ese camino y dónde no debe estar solo.
+Hasta aquí, el asistente ha trabajado para una sola persona. En un equipo, el trabajo llega a `main` por un camino compartido: rama, pull request, revisión y CI. Esta demostración recorre ese camino con la devolución de entradas del proyecto Telón y muestra dos cosas en cada parada. El asistente puede acelerar casi todos los pasos, pero hay decisiones que no puede tomar él: qué se publica, qué se fusiona y qué se comparte. Esas decisiones son de las personas y del repositorio.
 
 ## Punto de partida
 
@@ -12,52 +12,72 @@ La devolución de entradas funciona en el puesto de quien la hizo. Para que lleg
 
 ## Recorrido
 
-### 1. Lo que es del equipo y lo que es tuyo
+### 1. Qué es del equipo y qué es de cada uno
 
-En `telon/` conviven ficheros de los dos tipos:
+En `telon/` hay ficheros que comparte todo el equipo y cosas que solo existen en el puesto de cada uno:
 
-| En el repositorio (se revisa por PR) | En tu máquina (no se sube) |
-|--------------------------------------|----------------------------|
+| En el repositorio (entra por PR) | En tu máquina (no se sube) |
+|----------------------------------|----------------------------|
 | `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/`, `.github/copilot-instructions.md` | Historial de chats y «memorias» del asistente |
 | Prompts reutilizables (`.github/prompts/`, `.cursor/commands/`, `.claude/commands/`) | Preferencias personales del editor y del asistente |
 | Dev Container, `Makefile`, scripts | `.env`, tokens, la API key de tu cuenta del asistente |
 | Workflow de CI | Cachés e índices del asistente |
 
-Cuando el asistente descubre algo que vale para todos (por ejemplo, «la pasarela olvida los cargos si no se hace `db:reset` con ella arrancada»), eso no se queda en el chat: se propone como cambio a `AGENTS.md` y entra por pull request, como el código.
+Cuando el asistente descubre algo que vale para todos, no se deja en el chat. Por ejemplo: «la pasarela olvida los cargos si no se hace `db:reset` con ella arrancada». Se propone como cambio a `AGENTS.md` y entra por pull request, igual que el código.
 
-### 2. El resumen del pull request
+Lo que está solo en un chat lo aprovecha una persona una vez. Lo que está en el repositorio lo aplican todos los asistentes del equipo a partir del siguiente `git pull`.
 
-Con la rama de la devolución lista, se pide al asistente:
+### 2. La descripción del pull request: la escribe el asistente, la firma una persona
+
+Con la rama de la devolución lista, se pide:
 
 ```text
 Escribe la descripción del PR a partir de git diff main...HEAD: qué cambia, por qué, cómo
 probarlo (comandos exactos) y riesgos. Nada que no esté en el diff.
 ```
 
-Sale un resumen correcto en lo grande (migraciones 002 y 003, `refunds/`, `sendOnce`, `RefundRequest`, OpenAPI). Tiene un detalle típico: dice «se añaden tests de integración», y no los hay; los tests son unitarios con mocks. Quien abre el PR firma la descripción, así que la corrige antes de publicarla.
+El resumen acierta en lo importante: migraciones 002 y 003, `refunds/`, `sendOnce`, `RefundRequest`, OpenAPI. Pero dice «se añaden tests de integración», y no los hay: los tests son unitarios con mocks. Quien abre el PR lo corrige antes de publicarlo.
 
-### 3. La revisión con el asistente
+El asistente ahorra el trabajo de redactar, pero la descripción va firmada por quien abre el PR: si dice algo falso, el error es suyo, no del asistente.
 
-Se le pide una revisión con el `AGENTS.md` como lista de comprobación. Encuentra cosas útiles: un `DELETE` del script de escenario que convendría envolver en la transacción y un mensaje de error en inglés. También propone renombrar variables por gusto. La persona que revisa decide cuáles de esos comentarios publica, y responde los que no comparte.
+### 3. La revisión: el asistente propone y quien revisa decide
 
-### 4. MCP y agentes especializados
+Se pide una revisión con `AGENTS.md` como lista de comprobación. Salen comentarios útiles, como un `DELETE` del script de escenario que convendría meter en una transacción o un mensaje de error en inglés. También salen otros de puro gusto, como renombrar variables. La persona que revisa elige qué comentarios publica y contesta los que no comparte.
 
-**MCP** (Model Context Protocol) es la forma estándar de dar al asistente herramientas externas. Para el proyecto tendrían sentido, por ejemplo:
-- el servidor MCP de GitHub, para leer issues y PR sin copiarlos;
-- un servidor MCP de PostgreSQL **de solo lectura** contra la base de datos de desarrollo, para que el agente consulte `tickets` en lugar de suponer su esquema.
+Una revisión asistida encuentra más cosas en menos tiempo, pero también genera ruido. El criterio para filtrarlo sigue siendo de quien revisa.
 
-Cada servidor MCP es código que se ejecuta con tus permisos. Un MCP con escritura sobre la base de datos de producción está fuera de lugar en el día a día de este equipo.
+### 4. Más herramientas, con permisos acotados
 
-Los **agentes especializados** (subagentes de Claude Code, modos personalizados de Cursor o agentes de Copilot) son el mismo asistente con instrucciones y herramientas acotadas: un «revisor» que solo lee y comenta, o un «escritor de tests» que solo toca `test/`. Acotar lo que puede hacer cada uno es la forma práctica de darles autonomía.
+**MCP** (Model Context Protocol) es la forma estándar de conectar el asistente a herramientas externas. En este proyecto tendrían sentido, por ejemplo:
 
-### 5. Cómo medir
+- el servidor MCP de GitHub, para leer issues y PR sin copiarlos al chat;
+- un servidor MCP de PostgreSQL **de solo lectura** contra la base de datos de desarrollo, para que el agente consulte la tabla `tickets` en lugar de suponer su esquema.
 
-Las líneas generadas por el asistente no miden nada útil. En este equipo se miden dos cosas:
-- tiempo desde que llega la petición (DEV-412) hasta que el PR se fusiona;
-- número de idas y vueltas en la revisión.
+Cada servidor MCP es código que se ejecuta con tus permisos. Un MCP con escritura sobre la base de datos de producción no tiene sitio en el día a día del equipo.
 
-El objetivo es que bajen sin que suban los fallos en producción.
+Los **agentes especializados** (subagentes de Claude Code, modos personalizados de Cursor o agentes de Copilot) son el mismo asistente con instrucciones y herramientas limitadas. Un «revisor» solo lee y comenta; un «escritor de tests» solo toca `test/`.
+
+Cuanto más puede hacer el asistente por su cuenta, más importa limitar qué puede hacer. Con los permisos acotados se le puede dar autonomía sin perder el control.
+
+### 5. Qué medir para saber si funciona
+
+Las líneas que genera el asistente no dicen nada útil. En este equipo se miden dos cosas:
+
+- el tiempo desde que llega la petición (DEV-412) hasta que se fusiona el PR;
+- el número de idas y vueltas en la revisión.
+
+El objetivo es que bajen las dos sin que suban los fallos en producción. Así se mide el trabajo que llega a `main`, no cuánto escribe el asistente.
 
 ## Qué queda visto
 
-El asistente redacta y revisa, pero la persona firma la descripción y decide qué comentarios publica. Las reglas, los prompts y la CI son del repositorio, y lo de cada uno se queda en su máquina. En [01 — Pull request revisado](01-lab-pull-request-revisado.md) llevas la devolución a `main`. Se puede hacer sin haber seguido esta demostración.
+| Paso hacia `main` | Qué hace el asistente | Qué decide una persona o el repositorio |
+|-------------------|-----------------------|-----------------------------------------|
+| Reglas y prompts | Propone cambios a `AGENTS.md` | El PR que los acepta |
+| Descripción del PR | La redacta desde el diff | Quien la firma la corrige |
+| Revisión | Comenta con `AGENTS.md` como lista | Quien revisa filtra y publica |
+| Herramientas y agentes | Consulta y actúa | Los permisos que tiene |
+| Resultado | — | Tiempo hasta el merge e idas y vueltas |
+
+El asistente acelera cada paso, pero no decide ninguno: las reglas, los prompts y la CI son del repositorio, y la firma y la revisión, de las personas.
+
+En [01 — Pull request revisado](01-lab-pull-request-revisado.md) llevas la devolución a `main`. Se puede hacer sin haber seguido esta demostración.
