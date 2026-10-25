@@ -10,9 +10,20 @@ El correo de devolución sale una sola vez aunque la cola reintente el trabajo, 
 
 ### Punto de partida
 
-- El proyecto Telón abierto en el Dev Container, carpeta `telon/`.
-- Estado: `make init-m03` y `make up-m03` arrancado en otra terminal (la necesitas para ver la traza del notifier).
-- Mailpit abierto (local: `http://localhost:8025`; Codespaces: pestaña **Ports** → **Mailpit (8025)**).
+- El repositorio del curso abierto en el Dev Container (local o Codespaces), con dos terminales en `telon/`.
+- Terminal 1: `CONFIRM=1 make init-m03`; responde `telon/ está en el punto de partida de m03.`
+- Terminal 2: `make up-m03`, y déjala abierta: ahí sale la traza del notifier.
+- Mailpit abierto en el navegador (local: `http://localhost:8025`; Codespaces: pestaña **Ports** → **Mailpit (8025)** → icono del globo).
+- Un asistente en modo agente:
+
+| Asistente | Cómo abrir una conversación nueva |
+|-----------|-----------------------------------|
+| VS Code o Codespaces + Copilot | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> → **+** → modo **Agent** bajo la caja de texto |
+| Cursor | <kbd>Ctrl</kbd>+<kbd>L</kbd> → **+** → modo **Agent** |
+| Claude Code | En una terminal nueva, dentro de `telon/`: `claude` |
+
+> [!NOTE]
+> El asistente tiene el código y `AGENTS.md`, que su herramienta carga al abrir cada conversación. No ve la terminal de `make up-m03` ni Mailpit: lo que pase ahí solo lo sabe si se lo pegas.
 
 ### En qué consiste
 
@@ -21,9 +32,9 @@ Reproducir, leer la traza, diagnosticar con el asistente, decidir el arreglo, pr
 ### 1 — Reproduce el fallo
 
 **Acción:**
-1. `npm run db:reset`
+1. En la terminal 1, `npm run db:reset`.
 2. En Mailpit, pulsa **Delete all** para empezar con la bandeja vacía.
-3. Devuelve F-12 y F-13 del pedido de Ana:
+3. En la terminal 1, devuelve F-12 y F-13 del pedido de Ana:
 
 ```bash
 curl -s localhost:3000/api/public/orders/PED-2026-0107/refunds \
@@ -41,7 +52,7 @@ curl -s localhost:3000/api/public/orders/PED-2026-0107/refunds \
 
 ### 2 — Lee la traza del notifier
 
-**Acción:** en la terminal de `make up-m03`, busca las líneas `[correo]` de `refund-confirmed`.
+**Acción:** en la terminal 2 (la de `make up-m03`), busca las líneas `[correo]` de `refund-confirmed`. Si hay mucho texto, haz clic en la terminal y pulsa <kbd>Ctrl</kbd>+<kbd>F</kbd> para buscar `refund-confirmed`. Selecciona las seis líneas y cópialas: las necesitas en el paso 3.
 
 **Por qué:** la traza dice qué falló y cuántas veces. Es lo primero que le vas a dar al asistente, entera y sin resumir.
 
@@ -60,11 +71,11 @@ El número del trabajo (`#3`) puede ser otro. El trabajo falla las tres veces y 
 
 ### 3 — Pide la causa, no el arreglo
 
-**Acción:** en un chat nuevo:
+**Acción:** ve al chat, abre una conversación nueva, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Fallo: al devolver entradas, la compradora recibe 3 correos de confirmación. Traza del notifier:
-[pega las seis líneas]
+[aquí, las seis líneas copiadas en el paso 2]
 Ficheros: services/notifier/src/jobs.ts (sendRefundConfirmed, logEmail),
 services/api/src/queue.ts (enqueueEmail), services/api/migrations/001_init.sql (email_log).
 Explícame la causa paso a paso. No propongas arreglo todavía.
@@ -72,15 +83,17 @@ Explícame la causa paso a paso. No propongas arreglo todavía.
 
 **Por qué:** con la traza, los ficheros y la orden de no arreglar, el asistente razona sobre el código real. Sin la orden, suele saltar al primer arreglo que hace desaparecer el error.
 
-**Resultado esperado:** la cadena completa:
+**Resultado esperado:** el agente abre los tres ficheros y explica la cadena completa:
 1. `sendRefundConfirmed` envía el correo y **después** llama a `logEmail`.
 2. El asunto mide 82 caracteres y `email_log.subject` es `varchar(80)`: el `INSERT` falla.
 3. El trabajo lanza una excepción y BullMQ lo reintenta (`attempts: 3`).
 4. Cada reintento vuelve a enviar antes de volver a fallar.
 
+Si la explicación se queda en el punto 2 («el asunto es demasiado largo») sin mencionar el orden de envío y registro, pregúntale: «¿Por qué llegan tres correos si el registro falla?». Sin la traza, lo habitual es que el modelo culpe a la cola («BullMQ entrega el trabajo varias veces») o al proveedor, porque es lo más común.
+
 ### 4 — Compara dos arreglos
 
-**Acción:**
+**Acción:** en el mismo chat, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Dame dos arreglos posibles con su diff aproximado:
@@ -100,7 +113,7 @@ B evita los duplicados por cualquier fallo posterior al envío, y también si al
 
 ### 5 — Escribe el test antes del arreglo
 
-**Acción:**
+**Acción:** en el mismo chat, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Crea services/notifier/test/once.test.ts para una función sendOnce(key, tenantId, provider,
@@ -113,11 +126,11 @@ simulando la restricción única de dedupe_key. Casos:
 
 **Por qué:** el test fija qué significa «una sola vez», incluido el caso del fallo de envío, que es el que un arreglo con prisa olvida: si reservas la clave y el envío falla, el correo no saldría nunca.
 
-**Resultado esperado:** el test falla porque `once.ts` no existe.
+**Resultado esperado:** el agente crea el test y lo ejecuta. Falla porque `once.ts` no existe (`Failed to load url ../src/once.js` o parecido). Es lo esperado. Si el agente crea también `once.ts` sin que se lo pidas, rechaza ese fichero: el test va primero.
 
 ### 6 — Implementa el arreglo B
 
-**Acción:**
+**Acción:** en el mismo chat, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Implementa:
@@ -137,7 +150,7 @@ No toques los tests.
 
 ### 7 — Pasa los tests
 
-**Acción:** `npm test && npm run typecheck && npm run lint`
+**Acción:** en la terminal 1, `npm test && npm run typecheck && npm run lint`
 
 **Por qué:** el test del paso 5 pasa a verde y el resto sigue igual.
 
@@ -147,7 +160,7 @@ No toques los tests.
 
 **Acción:**
 1. Comprueba que `[api]` y `[correo]` se han reiniciado solos al cambiar los ficheros (si no, reinicia `make up-m03`). La API aplica la migración 003 al arrancar.
-2. `npm run db:reset`, **Delete all** en Mailpit y repite el `curl` del paso 1.
+2. En la terminal 1, `npm run db:reset`; en Mailpit, **Delete all**; y en la terminal 1, repite el `curl` del paso 1.
 
 **Por qué:** el test prueba `sendOnce` con una base de datos simulada; esto prueba el sistema real, con PostgreSQL, Redis y Mailpit.
 
@@ -157,7 +170,7 @@ No toques los tests.
 
 ### 9 — Haz commit
 
-**Acción:** `git add services && git commit -m "Correos idempotentes: una devolución, un correo"`
+**Acción:** en la terminal 1, `git add services && git commit -m "Correos idempotentes: una devolución, un correo"`
 
 **Por qué:** el arreglo, su migración y su test van juntos.
 
@@ -175,14 +188,26 @@ En el backoffice (`faro-dev-token`), cambia el proveedor de la Sala Faro a **Mai
 
 ## Reto
 
-### 1 — ¿Y si falla después de enviar y antes de nada más?
+### 1 — Las ventanas de fallo, con el asistente
 
-Con `sendOnce`, imagina que el proceso del notifier muere justo después de que el proveedor acepte el correo y antes de que `sendOnce` devuelva. ¿Llega el correo una vez, dos o ninguna?
+`sendOnce` reserva la clave, envía y, si el envío falla, la libera. Pero el proceso del notifier puede morir en cualquier punto. Escribe un prompt para que el asistente haga una tabla de los puntos en los que puede morir el proceso dentro de `sendOnce` y, para cada uno, cuántos correos llegan (cero, uno o dos) cuando BullMQ reintenta. Que escriba un test con mocks para uno de los casos.
 
 <details>
 <summary>Ver solución</summary>
 
-Una. La clave se reservó antes de enviar y no se libera porque el proceso murió sin pasar por el `catch`. Cuando BullMQ reintente el trabajo (lo marcará como bloqueado y lo reprocesará), `sendOnce` encontrará la clave y no reenviará. El caso contrario, que el proceso muera tras reservar y antes de enviar, deja la clave sin correo: no llegaría ninguno. Ningún diseño da «exactamente una vez» con un proveedor externo. Este elige «como mucho una vez» para correos de confirmación, y para detectar el caso raro bastaría con guardar el `messageId` del proveedor tras enviar y revisar las claves que no lo tengan.
+Un prompt que funciona:
+
+```text
+Analiza services/notifier/src/once.ts. Haz una tabla: punto en el que muere el proceso
+(antes de reservar, tras reservar y antes de enviar, tras enviar y antes de devolver),
+qué queda en email_log y cuántos correos llegan cuando BullMQ reintenta el trabajo.
+Después escribe en services/notifier/test/once.test.ts un test que simule el caso
+"tras reservar y antes de enviar" con los mocks que ya hay. No cambies once.ts.
+```
+
+Lo que tiene que salir: si muere antes de reservar, el reintento envía uno. Si muere tras enviar y antes de devolver, la clave queda reservada y el reintento no reenvía: llega uno. Si muere tras reservar y antes de enviar, la clave queda sin correo y no llega ninguno. Ningún diseño da «exactamente una vez» con un proveedor externo: este elige «como mucho una vez» para correos de confirmación.
+
+La habilidad es pedirle al asistente un análisis exhaustivo con un formato que obligue a cubrir todos los casos (la tabla) y una prueba ejecutable de uno de ellos, en lugar de una explicación que puede saltarse el caso incómodo.
 
 </details>
 

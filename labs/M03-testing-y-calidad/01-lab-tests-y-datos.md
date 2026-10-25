@@ -10,9 +10,18 @@ Una batería de tests de la devolución basada en las reglas de `AGENTS.md`, con
 
 ### Punto de partida
 
-- El proyecto abierto en el Dev Container, carpeta `telon/`.
-- Estado: `make init-m03`. La devolución está en `services/api/src/refunds/` y `services/api/test/refunds.test.ts` tiene 5 tests en verde.
-- `AGENTS.md` con las reglas de negocio (viene en este estado).
+- El repositorio del curso abierto en el Dev Container (local o Codespaces). El explorador muestra la carpeta `telon/`.
+- Una terminal en `telon/`. Escribe `CONFIRM=1 make init-m03`; responde `telon/ está en el punto de partida de m03.` La devolución está en `services/api/src/refunds/` y `services/api/test/refunds.test.ts` tiene 5 tests en verde.
+- Un asistente en modo agente:
+
+| Asistente | Cómo abrir una conversación nueva |
+|-----------|-----------------------------------|
+| VS Code o Codespaces + Copilot | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> → **+** → modo **Agent** bajo la caja de texto |
+| Cursor | <kbd>Ctrl</kbd>+<kbd>L</kbd> → **+** → modo **Agent** |
+| Claude Code | En una terminal nueva, dentro de `telon/`: `claude` |
+
+> [!NOTE]
+> En este estado el proyecto tiene `AGENTS.md` con las reglas de negocio, y cada herramienta lo carga al abrir una conversación. El asistente tiene el código, esas reglas y nada más.
 
 ### En qué consiste
 
@@ -20,7 +29,7 @@ Generas datos de prueba, generas tests desde las reglas, los ejecutas y analizas
 
 ### 1 — Ejecuta los tests de partida
 
-**Acción:** `npm test -w @telon/api`
+**Acción:** en la terminal, `npm test -w @telon/api`
 
 **Por qué:** es la foto de partida: todo en verde. Al final del lab sabrás cuánto valía ese verde.
 
@@ -28,7 +37,7 @@ Generas datos de prueba, generas tests desde las reglas, los ejecutas y analizas
 
 ### 2 — Lee los tests que hay
 
-**Acción:** abre `services/api/test/refunds.test.ts` y responde para cada test: ¿de dónde sale el valor esperado?
+**Acción:** abre `services/api/test/refunds.test.ts` (<kbd>Ctrl</kbd>+<kbd>P</kbd> → `refunds.test.ts`) y responde para cada test: ¿de dónde sale el valor esperado?
 
 **Por qué:** un test cuyo valor esperado sale de ejecutar el código no prueba la regla, prueba que el código hace lo que hace.
 
@@ -36,7 +45,7 @@ Generas datos de prueba, generas tests desde las reglas, los ejecutas y analizas
 
 ### 3 — Genera los datos de prueba
 
-**Acción:**
+**Acción:** ve al chat, abre una conversación nueva, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Crea services/api/test/fixtures.ts con entradas de prueba del evento EV-FARO-0042
@@ -51,11 +60,11 @@ Exporta cada una con un nombre claro. No inventes precios: usa los del seed
 
 **Por qué:** los datos vienen del seed y los importes de la misma función que usa la compra. Así el test de la devolución parte de entradas iguales a las que existen, no de números inventados.
 
-**Resultado esperado:** `fixtures.ts` con unas ocho entradas. Comprueba dos: la butaca de platea lleva `commission_cents: 266` y la invitación `fee_cents: 0`.
+**Resultado esperado:** el agente abre `seed.ts` y `pricing.ts` y crea `services/api/test/fixtures.ts` con unas ocho entradas. Ábrelo y comprueba dos: la butaca de platea lleva `commission_cents: 266` y la invitación `fee_cents: 0`.
 
 ### 4 — Genera tests desde las reglas
 
-**Acción:**
+**Acción:** en el mismo chat, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Genera tests de calcRefundAmounts y canRefundAt a partir de las reglas de AGENTS.md, NO del
@@ -71,9 +80,11 @@ comentario. Usa test/fixtures.ts. Incluye:
 
 **Resultado esperado:** un `describe` nuevo con cinco tests o más. En el de F-12 + F-13 aparece algo como `// 266 + 266 = 532 (redondeo por entrada)`.
 
+Es frecuente que el agente ejecute los tests nada más escribirlos, vea dos en rojo y proponga «corregirlos». No le dejes: páralo y rechaza ese cambio. El paso 6 explica por qué están en rojo.
+
 ### 5 — Revisa los valores esperados
 
-**Acción:** recalcula a mano dos tests:
+**Acción:** abre el fichero de tests y busca los dos casos. Recalcula a mano:
 - F-12 + F-13: importe 3550 + 3550 = **7100**; comisión 266 + 266 = **532**.
 - Pedido completo: importe 3550 + 3550 + 6000 = **13 100** (sin los 270 de gastos); comisión 266 + 266 + 450 = **982**.
 
@@ -83,7 +94,7 @@ comentario. Usa test/fixtures.ts. Incluye:
 
 ### 6 — Ejecuta la batería
 
-**Acción:** `npm test -w @telon/api`
+**Acción:** en la terminal, `npm test -w @telon/api`
 
 **Por qué:** ahora el verde o el rojo dicen algo sobre la regla.
 
@@ -101,10 +112,10 @@ El código calcula la comisión sobre el importe total devuelto (7100 × 7,5 % =
 
 ### 7 — Pide el diagnóstico, no el arreglo
 
-**Acción:**
+**Acción:** en la terminal, selecciona las líneas del test que falla (desde `FAIL` hasta el `AssertionError`) y cópialas. En el chat, escribe esto, pega la salida donde dice `[salida]` y pulsa <kbd>Enter</kbd>:
 
 ```text
-Este test falla: [pega la salida]. ¿Cuál es la causa en el código? No lo arregles todavía.
+Este test falla: [salida]. ¿Cuál es la causa en el código? No lo arregles todavía.
 ```
 
 **Por qué:** la causa antes que el arreglo. Si el asistente arregla sin explicar, no sabes si ha entendido la regla o ha ajustado números.
@@ -113,7 +124,7 @@ Este test falla: [pega la salida]. ¿Cuál es la causa en el código? No lo arre
 
 ### 8 — Haz commit de los tests
 
-**Acción:** `git add services/api/test && git commit -m "Tests de devolución a partir de las reglas"`
+**Acción:** en la terminal, `git add services/api/test && git commit -m "Tests de devolución a partir de las reglas"`
 
 **Por qué:** los tests en rojo documentan el fallo. El arreglo irá en otro commit, y el historial contará la historia en orden.
 
@@ -134,14 +145,24 @@ curl -s localhost:3000/api/public/orders/PED-2026-0107/refunds \
 
 ## Reto
 
-### 1 — Un caso más que la regla pide
+### 1 — La matriz de reglas y tests
 
-Hay una regla de `AGENTS.md` sobre devoluciones que ninguna de tus pruebas de `amounts.ts` puede cubrir. ¿Cuál es y dónde habría que probarla?
+Escribe un prompt para que el asistente cruce cada regla de devolución de `AGENTS.md` con los tests que la cubren y te diga qué regla no tiene ningún test, y por qué no se puede probar en `amounts.ts`.
 
 <details>
 <summary>Ver solución</summary>
 
-«Solo entradas válidas»: no se puede devolver dos veces la misma entrada ni una de un pedido no pagado. Esa comprobación está en `requestRefund` (`services/api/src/refunds/service.ts`), que consulta la base de datos y llama a la pasarela. Para probarla sin base de datos ni pasarela hacen falta mocks: es el lab [02 — Mocks](02-lab-mocks.md).
+Un prompt que funciona:
+
+```text
+Haz una tabla con cada regla de devolución de AGENTS.md y, para cada una, los tests de
+services/api/test/ que la comprueban (fichero y nombre del test). Marca las reglas sin test
+y dime en qué función habría que probarlas y qué haría falta simular. No escribas tests.
+```
+
+Lo que suele salir: la regla «solo entradas válidas» (no se puede devolver dos veces la misma entrada ni una de un pedido sin pagar) no tiene test. Está en `requestRefund` (`services/api/src/refunds/service.ts`), que consulta la base de datos y llama a la pasarela, así que para probarla sin levantarlas hacen falta mocks: es el lab [02 — Mocks](02-lab-mocks.md).
+
+Pedir la tabla en lugar de «¿faltan tests?» obliga a recorrer todas las reglas, no solo las que el modelo recuerde primero.
 
 </details>
 
