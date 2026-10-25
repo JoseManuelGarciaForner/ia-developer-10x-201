@@ -2,11 +2,11 @@
 
 [← Página anterior](README.md) · [Siguiente página →](01-lab-tests-y-datos.md)
 
-La devolución de entradas ya está en Telón, generada con contexto y con sus tests en verde. Esta demostración pide al asistente más tests de dos formas: a partir del código y a partir de la regla. Las dos baterías pasan por sitios distintos, y solo una encuentra el fallo.
+La devolución de entradas ya está en el proyecto Telón, generada con contexto y con sus tests en verde. Esta demostración pide al asistente más tests de dos formas: a partir del código y a partir de la regla. Las dos baterías pasan por sitios distintos, y solo una encuentra el fallo.
 
 ## Punto de partida
 
-- Telón en el estado `make init-m03`: devolución implementada (`services/api/src/refunds/`), `AGENTS.md` con las reglas y `npm test` en verde (26 tests).
+- El proyecto en el estado `make init-m03`: devolución implementada (`services/api/src/refunds/`), `AGENTS.md` con las reglas y `npm test` en verde (26 tests).
 - Asistente en modo agente, chat nuevo.
 
 ## Recorrido

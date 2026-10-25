@@ -2,11 +2,11 @@
 
 [← Página anterior](README.md) · [Siguiente página →](01-lab-readme-y-openapi.md)
 
-El `README.md` de Telón se escribió cuando la plataforma tenía la mitad de piezas, y ya no cuadra con el código. Esta demostración pide al asistente que lo «actualice» de dos formas: leyéndolo y ejecutándolo.
+El `README.md` del proyecto Telón se escribió cuando la plataforma tenía la mitad de piezas, y ya no cuadra con el código. Esta demostración pide al asistente que lo «actualice» de dos formas: leyéndolo y ejecutándolo.
 
 ## Punto de partida
 
-- Telón en el estado `make init-m04`: la devolución hecha y probada, y el README heredado.
+- El proyecto en el estado `make init-m04`: la devolución hecha y probada, y el README heredado.
 - `make up-m04` arrancado.
 - Asistente en modo agente.
 

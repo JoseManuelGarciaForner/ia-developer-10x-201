@@ -2,7 +2,7 @@
 
 [← Página anterior](00-la-red-de-tests.md) · [Siguiente página →](02-lab-mocks.md)
 
-La devolución de Telón tiene tests y pasan. Pero los escribió el mismo asistente que escribió el código, mirando el código. En este lab pides tests que salen de las reglas de negocio, con datos que cubren los tipos de entrada de verdad (butaca, pase de pie, VIP, invitación), y encuentras el que falla.
+La devolución del proyecto Telón tiene tests y pasan. Pero los escribió el mismo asistente que escribió el código, mirando el código. En este lab pides tests que salen de las reglas de negocio, con datos que cubren los tipos de entrada de verdad (butaca, pase de pie, VIP, invitación), y encuentras el que falla.
 
 ### Objetivo
 
@@ -10,7 +10,7 @@ Una batería de tests de la devolución basada en las reglas de `AGENTS.md`, con
 
 ### Punto de partida
 
-- Telón abierto en el Dev Container, carpeta `telon/`.
+- El proyecto abierto en el Dev Container, carpeta `telon/`.
 - Estado: `make init-m03`. La devolución está en `services/api/src/refunds/` y `services/api/test/refunds.test.ts` tiene 5 tests en verde.
 - `AGENTS.md` con las reglas de negocio (viene en este estado).
 
@@ -122,7 +122,7 @@ Este test falla: [pega la salida]. ¿Cuál es la causa en el código? No lo arre
 ## Comprueba tu entendimiento
 
 **El mismo fallo en la API**
-Con Telón arrancado (`make up-m03`) y `npm run db:reset`, devuelve F-12 y F-13:
+Con el proyecto arrancado (`make up-m03`) y `npm run db:reset`, devuelve F-12 y F-13:
 
 ```bash
 curl -s localhost:3000/api/public/orders/PED-2026-0107/refunds \

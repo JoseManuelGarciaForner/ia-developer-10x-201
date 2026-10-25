@@ -2,7 +2,7 @@
 
 [← Página anterior](../M02-generacion-de-codigo/03-lab-explicar-y-refactorizar.md) · [Siguiente página →](00-la-red-de-tests.md)
 
-El asistente genera tests rápido. Muchos comprueban lo que el código ya hace, no lo que debería hacer. En Telón, la batería generada pasa en verde y no detecta que, cuando la cola reintenta el trabajo, la compradora de `PED-2026-0107` recibe dos correos de confirmación de la devolución.
+El asistente genera tests rápido. Muchos comprueban lo que el código ya hace, no lo que debería hacer. En el proyecto Telón, la batería generada pasa en verde y no detecta que, cuando la cola reintenta el trabajo, la compradora de `PED-2026-0107` recibe dos correos de confirmación de la devolución.
 
 ## Qué aprenderás
 

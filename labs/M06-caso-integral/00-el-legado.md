@@ -2,7 +2,7 @@
 
 [← Página anterior](README.md) · [Siguiente página →](01-remotos-y-dos-desarrolladores.md)
 
-Telón no termina en el monorepo. Alrededor hay cuatro repositorios que escribieron otras personas, en otros años y con otras costumbres. Ninguno tiene contexto para la IA, y algunos tienen documentación que miente. Este módulo trabaja sobre ellos en equipo, con dos desarrolladores que no comparten conversación.
+El proyecto Telón no termina en el monorepo. Alrededor hay cuatro repositorios que escribieron otras personas, en otros años y con otras costumbres. Ninguno tiene contexto para la IA, y algunos tienen documentación que miente. Este módulo trabaja sobre ellos en equipo, con dos desarrolladores que no comparten conversación.
 
 ## Los repositorios
 
@@ -18,7 +18,7 @@ Lo que se sabe de ellos antes de abrirlos:
 - cada uno sigue sus propias convenciones (JavaScript sin tipos con callbacks, Python con nombres en español, un formato de texto propio);
 - los README no siempre dicen la verdad;
 - no hay tests;
-- algunos dependen de otros, o de Telón, de formas que no aparecen en ningún `package.json`;
+- algunos dependen de otros, o del proyecto Telón, de formas que no aparecen en ningún `package.json`;
 - el formato de las tarifas no lo conoce ningún modelo: no está en internet.
 
 ## La petición
@@ -41,7 +41,7 @@ Cada uno tiene su clon de los repositorios, y se comunican por los remotos, como
 ## Qué se pide al final
 
 1. Contexto de cada repositorio, validado contra el código.
-2. Un contexto general con los contratos entre repositorios y con Telón.
+2. Un contexto general con los contratos entre repositorios y con el proyecto Telón.
 3. Una dinámica de equipo escrita: qué va al repositorio, qué no y cómo entra un cambio de contexto.
 4. DEV-430 resuelto por `dev2`, comparado con el mismo intento sin contexto.
 5. Tres pasos de adopción que llevarías a tu equipo.

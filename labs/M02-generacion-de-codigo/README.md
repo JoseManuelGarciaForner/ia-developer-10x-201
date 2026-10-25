@@ -17,7 +17,7 @@ La devolución de `PED-2026-0107` sale distinta según lo que sepa el asistente.
 
 Las piezas que cambian el diff:
 
-| Pieza | En Telón |
+| Pieza | En el proyecto Telón |
 |-------|-----------------------|
 | Intención | Devolver una o varias entradas de un pedido pagado |
 | Restricción | El pedido no se modifica; los gastos de gestión no se reembolsan; hasta 48 h antes del evento |

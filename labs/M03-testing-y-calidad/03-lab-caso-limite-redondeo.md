@@ -2,7 +2,7 @@
 
 [← Página anterior](02-lab-mocks.md) · [Siguiente página →](04-lab-debugging-correo-duplicado.md)
 
-Cuando un comprador de Telón devuelve dos butacas de 35,50 €, la plataforma revierte 5,33 € de comisión. Al comprarlas se cobraron 5,32. Ese céntimo, multiplicado por miles de devoluciones, es el que liquidaciones no consigue cuadrar. En este lab escribes el test que lo demuestra, buscas más precios que lo provocan y corriges la regla en un solo sitio.
+Cuando un comprador del proyecto Telón devuelve dos butacas de 35,50 €, la plataforma revierte 5,33 € de comisión. Al comprarlas se cobraron 5,32. Ese céntimo, multiplicado por miles de devoluciones, es el que liquidaciones no consigue cuadrar. En este lab escribes el test que lo demuestra, buscas más precios que lo provocan y corriges la regla en un solo sitio.
 
 ### Objetivo
 
@@ -10,7 +10,7 @@ Cuando un comprador de Telón devuelve dos butacas de 35,50 €, la plataforma r
 
 ### Punto de partida
 
-- Telón abierto en el Dev Container, carpeta `telon/`.
+- El proyecto abierto en el Dev Container, carpeta `telon/`.
 - Estado: `make init-m03`. `services/api/src/refunds/amounts.ts` calcula la comisión sobre el total y sus tests (`test/refunds.test.ts`) están en verde.
 - La regla, en `AGENTS.md`: «Comisión de plataforma: `commission_bps` sobre el precio, redondeada por entrada. La de un pedido o una devolución es la suma de las de sus entradas.»
 
@@ -125,7 +125,7 @@ La Sala Faro negocia bajar la comisión al 6 % desde mañana. Alguien cambia `co
 <details>
 <summary>Ver solución</summary>
 
-Con la versión arreglada se revierte lo que se cobró al comprar (266, al 7,5 %), porque suma `tickets.commission_cents`. Con la original se recalcularía con el porcentaje actual del evento (3550 × 6 % = 213), y Telón devolvería al promotor menos comisión de la que le cobró. Por eso «sumar lo guardado» es mejor regla que «recalcular»: no depende de la configuración de hoy.
+Con la versión arreglada se revierte lo que se cobró al comprar (266, al 7,5 %), porque suma `tickets.commission_cents`. Con la original se recalcularía con el porcentaje actual del evento (3550 × 6 % = 213), y el proyecto devolvería al promotor menos comisión de la que le cobró. Por eso «sumar lo guardado» es mejor regla que «recalcular»: no depende de la configuración de hoy.
 
 </details>
 

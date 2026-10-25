@@ -2,7 +2,7 @@
 
 [← Página anterior](02-lab-generar-devolucion.md) · [Siguiente página →](../M03-testing-y-calidad/README.md)
 
-`calcOrderAmounts`, en `services/api/src/orders/pricing.ts`, calcula precio, gastos y comisión de cada pedido de Telón. Lo escribió el primer equipo y nadie lo ha tocado desde entonces. La devolución va a reutilizar parte de esa lógica, así que antes hay que entenderla y dejarla legible, sin cambiar ni un céntimo de lo que calcula.
+`calcOrderAmounts`, en `services/api/src/orders/pricing.ts`, calcula precio, gastos y comisión de cada pedido del proyecto Telón. Lo escribió el primer equipo y nadie lo ha tocado desde entonces. La devolución va a reutilizar parte de esa lógica, así que antes hay que entenderla y dejarla legible, sin cambiar ni un céntimo de lo que calcula.
 
 ### Objetivo
 
@@ -10,7 +10,7 @@
 
 ### Punto de partida
 
-- Telón abierto en el Dev Container, carpeta `telon/`.
+- El proyecto abierto en el Dev Container, carpeta `telon/`.
 - Estado: `make init-m02`. `pricing.ts` es la versión heredada y `services/api/test/pricing.test.ts` tiene 5 tests.
 - Asistente en modo agente. Si tienes `AGENTS.md`, mejor; este lab funciona igual sin él.
 
@@ -119,7 +119,7 @@ Refactoriza services/api/src/orders/pricing.ts:
 ## Comprueba tu entendimiento
 
 **El refactor no ha cambiado ni un céntimo**
-Con Telón arrancado, compra en la tienda la butaca **A-1** y un pase **VIP** con la tarjeta `4242 4242 4242 4242`.
+Con el proyecto arrancado, compra en la tienda la butaca **A-1** y un pase **VIP** con la tarjeta `4242 4242 4242 4242`.
 → Pagas 97,30 € (35,50 + 60,00 + 1,80 de gastos), lo mismo que habrías pagado antes del refactor.
 
 **La regla en un solo sitio**

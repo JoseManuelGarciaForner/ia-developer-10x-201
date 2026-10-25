@@ -2,7 +2,7 @@
 
 [← Página anterior](00-documentar-lo-que-hay.md) · [Siguiente página →](02-lab-script-y-snippets.md)
 
-El README de Telón engaña al primero que llega, y el endpoint de devolución no tiene documentación. En este lab reescribes el README con el asistente, comprobando cada afirmación, y generas el contrato OpenAPI del endpoint nuevo. Después lo validas con un linter y con una petición real.
+El README del proyecto Telón engaña al primero que llega, y el endpoint de devolución no tiene documentación. En este lab reescribes el README con el asistente, comprobando cada afirmación, y generas el contrato OpenAPI del endpoint nuevo. Después lo validas con un linter y con una petición real.
 
 ### Objetivo
 
@@ -10,7 +10,7 @@ Un `README.md` en el que todo comando funciona y toda URL responde, y un `openap
 
 ### Punto de partida
 
-- Telón abierto en el Dev Container, carpeta `telon/`.
+- El proyecto abierto en el Dev Container, carpeta `telon/`.
 - Estado: `make init-m04` (devolución implementada y probada, README heredado) y `make up-m04` en otra terminal.
 - Asistente en modo agente.
 
@@ -57,7 +57,7 @@ curl -s localhost:3000/api/health
 **Acción:**
 
 ```text
-Reescribe README.md solo con lo comprobado. Incluye: qué es Telón, cómo se arranca (make
+Reescribe README.md solo con lo comprobado. Incluye: qué es el proyecto, cómo se arranca (make
 up-mXX o npm run dev), tabla de URLs (tienda, backoffice, API, pasarela, Mailpit), estructura
 de carpetas, proveedores de correo (SMTP real a Mailpit; el resto emulados), tarjetas de
 prueba de services/payments/src/gateway.ts y cómo se prueba. Sin instrucciones que no hayas
@@ -158,6 +158,6 @@ La respuesta real incluye `event_id`, `event_title`, `venue`, `starts_at`, `paid
 | Síntoma | Causa probable | Cómo arreglarlo |
 |---------|----------------|-----------------|
 | El asistente «comprueba» sin ejecutar nada | Modo chat en lugar de agente, o sin permiso para la terminal | Cambia a modo agente y acepta la ejecución de comandos de solo lectura |
-| `curl: (7) Failed to connect to localhost port 3000` | Telón no está arrancado | `make up-m04` en otra terminal |
+| `curl: (7) Failed to connect to localhost port 3000` | El proyecto no está arrancado | `make up-m04` en otra terminal |
 | La devolución da `409 … no se puede devolver (refunded)` a la primera | Ya la devolviste antes | `npm run db:reset` |
 | `npx` tarda mucho o falla | Sin salida a npmjs.org (proxy) | Configura el proxy de tu red en npm (`npm config set proxy …`) o valida con una extensión de OpenAPI del editor |

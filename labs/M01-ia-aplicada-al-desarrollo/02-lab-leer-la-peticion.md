@@ -2,7 +2,7 @@
 
 [← Página anterior](01-lab-entorno-y-primer-chat.md) · [Siguiente página →](../M02-generacion-de-codigo/README.md)
 
-Llega la primera petición para el equipo: que los compradores puedan devolver entradas. Antes de pedir código, usas el asistente para entender por dónde pasa un pedido en Telón. Después le preguntas cómo haría el cambio y localizas lo que da por supuesto sin saberlo. Esa lista es lo que le falta saber, y es lo que se escribe en el M02.
+Llega la primera petición para el equipo: que los compradores puedan devolver entradas. Antes de pedir código, usas el asistente para entender por dónde pasa un pedido en el proyecto Telón. Después le preguntas cómo haría el cambio y localizas lo que da por supuesto sin saberlo. Esa lista es lo que le falta saber, y es lo que se escribe en el M02.
 
 ### Objetivo
 
@@ -10,8 +10,8 @@ Un fichero `docs/devolucion-contexto.md` con el recorrido de un pedido comprobad
 
 ### Punto de partida
 
-- Telón abierto en el Dev Container (local o Codespaces), carpeta `telon/`.
-- Estado: `make init-m01` y después `make up-m01`. Es Telón tal como se hereda, sin ficheros de contexto para la IA.
+- El proyecto abierto en el Dev Container (local o Codespaces), carpeta `telon/`.
+- Estado: `make init-m01` y después `make up-m01`. Es el proyecto tal como se hereda, sin ficheros de contexto para la IA.
 - Asistente en modo agente (Cursor **Agent**, Copilot **Agent** o `claude` en la terminal).
 
 La petición, tal como llega:
@@ -22,14 +22,14 @@ La petición, tal como llega:
 
 ### En qué consiste
 
-Tres preguntas al asistente: cómo funciona, qué cambiaría y qué da por hecho. Cada respuesta se contrasta con el código. No cambias código de Telón; solo creas un documento.
+Tres preguntas al asistente: cómo funciona, qué cambiaría y qué da por hecho. Cada respuesta se contrasta con el código. No cambias código del proyecto; solo creas un documento.
 
 ### 1 — Pide el recorrido de un pedido
 
 **Acción:** en un chat nuevo, escribe:
 
 ```text
-Explícame el recorrido completo de una compra en Telón: desde que el comprador pulsa una butaca
+Explícame el recorrido completo de una compra en el proyecto: desde que el comprador pulsa una butaca
 en SeatPicker hasta que recibe el correo con el QR. Para cada paso, dime fichero y función.
 No cambies nada.
 ```
@@ -73,7 +73,7 @@ y servicios afectados. No escribas código.
 |----------|----------------------|
 | ¿Se toca el pedido original? | No. Un pedido pagado no se modifica; la devolución es un registro nuevo que lo referencia |
 | ¿Cuánto se devuelve? | El precio de las entradas. Los gastos de gestión no se devuelven nunca |
-| ¿Y la comisión de Telón? | Se revierte la que se cobró por cada entrada (redondeada por entrada, como al comprar) |
+| ¿Y la comisión del proyecto? | Se revierte la que se cobró por cada entrada (redondeada por entrada, como al comprar) |
 | ¿Hasta cuándo? | Hasta 48 h antes del evento |
 | ¿Qué pasa con el QR? | Deja de validar en puerta, y la butaca vuelve a la venta |
 | ¿Y el correo? | Uno de confirmación, una sola vez |
@@ -114,7 +114,7 @@ y comprueba cada punto que te dé.
 ## Comprueba tu entendimiento
 
 **El chat no recuerda**
-Abre un chat nuevo y pregunta: «¿Se pueden devolver los gastos de gestión en Telón?».
+Abre un chat nuevo y pregunta: «¿Se pueden devolver los gastos de gestión en el proyecto?».
 → El asistente no sabe la respuesta (o se la inventa). Lo que hablasteis en el otro chat no ha llegado a este.
 
 **La regla que sí está en el código**

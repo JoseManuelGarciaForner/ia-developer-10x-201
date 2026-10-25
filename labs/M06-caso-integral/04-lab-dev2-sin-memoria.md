@@ -6,7 +6,7 @@ Eres `dev2`. No estuviste en las sesiones de `dev1` y tu chat empieza vacío. Te
 
 ### Objetivo
 
-DEV-430 resuelto por `dev2` en `control-acceso` y `liquidaciones`, comprobado contra la base de datos de Telón, y una comparación escrita entre el intento sin contexto y el intento con contexto.
+DEV-430 resuelto por `dev2` en `control-acceso` y `liquidaciones`, comprobado contra la base de datos del proyecto Telón, y una comparación escrita entre el intento sin contexto y el intento con contexto.
 
 ### Punto de partida
 
@@ -15,14 +15,14 @@ DEV-430 resuelto por `dev2` en `control-acceso` y `liquidaciones`, comprobado co
 ```bash
 make init-m06                 # repos heredados; dev1 y dev2 sin contexto
 make contexto-m06             # dev1 sube su contexto (si ya hiciste los labs 02 y 03, sáltalo)
-CONFIRM=1 make init-m05 && make up-m05     # Telón con devoluciones (déjalo en otra terminal)
+CONFIRM=1 make init-m05 && make up-m05     # El proyecto Telón con devoluciones (déjalo en otra terminal)
 npm run db:reset
 curl -s localhost:3000/api/public/orders/PED-2026-0107/refunds \
   -H 'x-telon-tenant-slug: sala-faro' -H 'content-type: application/json' \
   -d '{"email":"ana.compradora@ejemplo.test","ticket_ids":["PED-2026-0107-1"]}'
 ```
 
-- Resultado: la entrada `PED-2026-0107-1` (butaca F-12) está devuelta en Telón, y los clones de `dev2` todavía no tienen el contexto de `dev1`.
+- Resultado: la entrada `PED-2026-0107-1` (butaca F-12) está devuelta en el proyecto Telón, y los clones de `dev2` todavía no tienen el contexto de `dev1`.
 - Las memorias del asistente desactivadas o borradas (ver [Remotos y dos desarrolladores](01-remotos-y-dos-desarrolladores.md)).
 
 La petición:
@@ -31,7 +31,7 @@ La petición:
 
 ### En qué consiste
 
-Dos intentos de la misma tarea en los clones de `dev2`: el primero sin contexto (lo descartas), el segundo con contexto (lo subes). Comparas los dos diffs y compruebas el segundo contra Telón.
+Dos intentos de la misma tarea en los clones de `dev2`: el primero sin contexto (lo descartas), el segundo con contexto (lo subes). Comparas los dos diffs y compruebas el segundo contra el proyecto Telón.
 
 ### 1 — Abre el chat de dev2 sin contexto
 
@@ -46,16 +46,16 @@ Dos intentos de la misma tarea en los clones de `dev2`: el primero sin contexto 
 **Acción:**
 
 ```text
-DEV-430: una entrada devuelta en Telón no debe entrar en la sala (control-acceso) ni
+DEV-430: una entrada devuelta en el proyecto Telón no debe entrar en la sala (control-acceso) ni
 liquidarse (liquidaciones). Implementa el cambio mínimo en los dos repositorios.
 ```
 
 Deja que termine y guarda en un fichero aparte (por ejemplo, `/tmp/sin-contexto.md`):
 - qué estado de entrada usa para «devuelta»;
 - qué ficheros de `liquidaciones` toca;
-- si ha comprobado algo contra Telón.
+- si ha comprobado algo contra el proyecto Telón.
 
-**Por qué:** sin contexto, el asistente tiene que adivinar cómo marca Telón una entrada devuelta. Ese dato no está en ninguno de estos repositorios.
+**Por qué:** sin contexto, el asistente tiene que adivinar cómo marca el proyecto Telón una entrada devuelta. Ese dato no está en ninguno de estos repositorios.
 
 **Resultado esperado:** algún supuesto equivocado o sin comprobar. Lo habitual: inventa el estado (`'devuelta'`, `'REFUNDED'`, `'cancelled'`), se fía del README (cambia la «llamada a la API» que `control-acceso` no hace) o solo toca `liquidar.py`, que no recibe el estado de la entrada porque `exportar.sh` no lo exporta.
 
@@ -86,7 +86,7 @@ Deja que termine y guarda en un fichero aparte (por ejemplo, `/tmp/sin-contexto.
 ### 6 — Revisa el diff
 
 **Acción:** en cada repositorio, `git diff`, y repasa:
-- `control-acceso/lib/validar.js`: ¿rechaza todo lo que no sea `valid`, o solo `refunded`? Lo primero aguanta el próximo estado que añada Telón.
+- `control-acceso/lib/validar.js`: ¿rechaza todo lo que no sea `valid`, o solo `refunded`? Lo primero aguanta el próximo estado que añada el proyecto Telón.
 - `liquidaciones/exportar.sh`: ¿la consulta tiene en cuenta `t.status`?
 - ¿Ha respetado las convenciones de cada repositorio (callbacks y `var` en uno, Python en español en el otro)?
 - ¿Ha tocado algo que `AGENTS.md` dice que no se toque (el formato de `salida/`, las tarifas)?
@@ -119,7 +119,7 @@ python3 liquidar.py 2026-10-02
 git checkout datos/
 ```
 
-**Por qué:** `exportar.sh` saca de Telón los pedidos pagados el 2 de octubre: solo `PED-2026-0107`, con F-12 devuelta. Es el caso de DEV-430 con datos de verdad. El `git checkout` final deja los datos de ejemplo como estaban.
+**Por qué:** `exportar.sh` saca del proyecto Telón los pedidos pagados el 2 de octubre: solo `PED-2026-0107`, con F-12 devuelta. Es el caso de DEV-430 con datos de verdad. El `git checkout` final deja los datos de ejemplo como estaban.
 
 **Resultado esperado:**
 
@@ -151,7 +151,7 @@ Si el cambio ha revelado algo que el contexto no decía, añádelo a su `AGENTS.
 |---|---|---|
 | Estado que usó para «devuelta» | | |
 | Ficheros que tocó | | |
-| ¿Comprobó contra Telón? | | |
+| ¿Comprobó contra el proyecto Telón? | | |
 | ¿Respetó las convenciones? | | |
 | ¿Qué habría pasado en producción? | | |
 
@@ -161,8 +161,8 @@ Si el cambio ha revelado algo que el contexto no decía, añádelo a su `AGENTS.
 
 ## Comprueba tu entendimiento
 
-**El próximo estado de Telón**
-Pregunta en el chat de `dev2`: «Si Telón añade mañana el estado `transferred` (entrada cedida a otra persona), ¿qué pasa en la puerta con tu cambio?».
+**El próximo estado del proyecto Telón**
+Pregunta en el chat de `dev2`: «Si el proyecto Telón añade mañana el estado `transferred` (entrada cedida a otra persona), ¿qué pasa en la puerta con tu cambio?».
 → Si aceptas solo `valid`, la entrada cedida no entra hasta que alguien lo decida, y el fallo es visible. Si rechazabas solo `refunded`, entraría. El asistente lo razona con `contexto-equipo/AGENTS.md`.
 
 ## Reto

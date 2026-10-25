@@ -21,7 +21,7 @@ La documentación generada se lee bien y puede ser falsa. Si el asistente descri
 | Componente troncal | El ejemplo de TSX de la documentación funciona pegado en el editor del backoffice |
 | Comentario de función | Coincide con lo que prueban los tests |
 
-En Telón, la tarea repetitiva es cargar datos de prueba (el tenant Sala Faro, su dominio, el evento con sus butacas y un pedido pagado) cada vez que se reinicia el entorno. El asistente escribe el script y tú decides qué valida y qué falla en voz alta.
+En el proyecto Telón, la tarea repetitiva es cargar datos de prueba (el tenant Sala Faro, su dominio, el evento con sus butacas y un pedido pagado) cada vez que se reinicia el entorno. El asistente escribe el script y tú decides qué valida y qué falla en voz alta.
 
 ## Qué dejas hecho
 

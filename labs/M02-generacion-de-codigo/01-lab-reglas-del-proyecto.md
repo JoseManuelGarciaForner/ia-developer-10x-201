@@ -2,7 +2,7 @@
 
 [← Página anterior](00-contexto-cambia-el-diff.md) · [Siguiente página →](02-lab-generar-devolucion.md)
 
-Cada vez que abres un chat nuevo, el asistente vuelve a no saber nada de Telón. En este lab escribes con él el contexto del proyecto en `AGENTS.md`: cómo se arranca y se prueba, el mapa, las convenciones y las reglas de negocio de la devolución. Después compruebas que un chat nuevo las aplica sin que se las repitas.
+Cada vez que abres un chat nuevo, el asistente vuelve a no saber nada del proyecto Telón. En este lab escribes con él el contexto del proyecto en `AGENTS.md`: cómo se arranca y se prueba, el mapa, las convenciones y las reglas de negocio de la devolución. Después compruebas que un chat nuevo las aplica sin que se las repitas.
 
 ### Objetivo
 
@@ -10,7 +10,7 @@ Cada vez que abres un chat nuevo, el asistente vuelve a no saber nada de Telón.
 
 ### Punto de partida
 
-- Telón abierto en el Dev Container, carpeta `telon/`.
+- El proyecto abierto en el Dev Container, carpeta `telon/`.
 - Estado: `make init-m02` (código heredado, sin ficheros de contexto para la IA).
 - Asistente en modo agente.
 - Las reglas de negocio de la devolución, tal como las da negocio:
@@ -19,7 +19,7 @@ Cada vez que abres un chat nuevo, el asistente vuelve a no saber nada de Telón.
 |----------|----------------------|
 | ¿Se toca el pedido original? | No. Un pedido pagado no se modifica; la devolución es un registro nuevo que lo referencia |
 | ¿Cuánto se devuelve? | El precio de las entradas. Los gastos de gestión no se devuelven nunca |
-| ¿Y la comisión de Telón? | Se revierte la que se cobró por cada entrada (redondeada por entrada, como al comprar) |
+| ¿Y la comisión del proyecto? | Se revierte la que se cobró por cada entrada (redondeada por entrada, como al comprar) |
 | ¿Hasta cuándo? | Hasta 48 h antes del evento |
 | ¿Qué pasa con el QR? | Deja de validar en puerta, y la butaca vuelve a la venta |
 | ¿Y el correo? | Uno de confirmación, una sola vez, por la cola |
@@ -114,7 +114,7 @@ Borra lo que no encuentres.
 `.github/copilot-instructions.md` (GitHub Copilot):
 
 ```markdown
-Lee y aplica `AGENTS.md` en la raíz del proyecto: stack, cómo se prueba, convenciones y reglas de negocio de Telón.
+Lee y aplica `AGENTS.md` en la raíz del proyecto: stack, cómo se prueba, convenciones y reglas de negocio.
 ```
 
 `.cursor/rules/telon.mdc` (Cursor):
@@ -162,7 +162,7 @@ y qué pasa con la comisión? ¿Puede hacerlo el 13 de noviembre?
 ## Comprueba tu entendimiento
 
 **La regla que no está**
-En un chat nuevo, pregunta: «¿Cuál es la comisión mínima por entrada en Telón?».
+En un chat nuevo, pregunta: «¿Cuál es la comisión mínima por entrada en el proyecto?».
 → El asistente responde que no hay comisión mínima en el código ni en `AGENTS.md`, en lugar de inventarse una cifra.
 
 **Un comando del contexto**

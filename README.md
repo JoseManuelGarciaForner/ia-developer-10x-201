@@ -8,7 +8,7 @@ Al finalizar el curso, el alumno lleva un evolutivo de la petición al pull requ
 
 ## Enfoque
 
-Tu equipo hereda **Telón**, un SaaS de venta de entradas para espectáculos que ya está en producción. Cada promotor crea su cuenta, configura sus dominios y diseña en TSX las páginas de sus eventos, con el editor de VS Code integrado en el backoffice. Para montarlas usa los componentes de la plataforma: selector de pases, selector de butacas, carrito, pago y QR. Detrás hay una API, colas, una pasarela de pago y el envío de correo por el proveedor que elija cada promotor.
+Tu equipo hereda el proyecto **Telón**, un SaaS de venta de entradas para espectáculos que ya está en producción. Cada promotor crea su cuenta, configura sus dominios y diseña en TSX las páginas de sus eventos, con el editor de VS Code integrado en el backoffice. Para montarlas usa los componentes de la plataforma: selector de pases, selector de butacas, carrito, pago y QR. Detrás hay una API, colas, una pasarela de pago y el envío de correo por el proveedor que elija cada promotor.
 
 Llega una petición: que los compradores puedan devolver entradas. No vas a escribir ese evolutivo a mano, ni tampoco vas a aceptar lo primero que proponga el asistente. Cada módulo es una fase del mismo trabajo: entender la plataforma, generar y refactorizar, probar y depurar, documentar y automatizar, y llevarlo a un pull request revisado. El pedido `PED-2026-0107` de la Sala Faro recorre todo el curso, así que puedes comparar lo que devuelve el asistente con y sin contexto. El curso se cierra con repositorios heredados sin contexto y dos desarrolladores que tienen que trabajar sin depender de la memoria de nadie.
 
@@ -22,7 +22,7 @@ Desarrolladores que mantienen y evolucionan producto y quieren usar un asistente
 
 - Se da por sabido programar con soltura básica y trabajar con Git (ramas, commits, pull requests). El curso no los enseña.
 - Basta con haber usado alguna vez un asistente de IA, aunque sea solo el chat.
-- El stack de Telón (TypeScript, React, colas) se lee con el asistente durante el curso; no hace falta conocerlo.
+- El stack del proyecto (TypeScript, React, colas) se lee con el asistente durante el curso; no hace falta conocerlo.
 - No hace falta instalar nada si usas GitHub Codespaces: basta el navegador y una cuenta de GitHub.
 
 ## Objetivos específicos

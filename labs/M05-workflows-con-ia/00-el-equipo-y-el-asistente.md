@@ -6,7 +6,7 @@ La devolución de entradas funciona en el puesto de quien la hizo. Para que lleg
 
 ## Punto de partida
 
-- Telón en el estado `make init-m05`: devolución, tests, README, OpenAPI y `AGENTS.md`, todo en el fork y todavía sin pull request.
+- El proyecto Telón en el estado `make init-m05`: devolución, tests, README, OpenAPI y `AGENTS.md`, todo en el fork y todavía sin pull request.
 - Repositorio del curso en GitHub (fork del alumno).
 - Asistente en modo agente.
 
@@ -42,7 +42,7 @@ Se le pide una revisión con el `AGENTS.md` como lista de comprobación. Encuent
 
 ### 4. MCP y agentes especializados
 
-**MCP** (Model Context Protocol) es la forma estándar de dar al asistente herramientas externas. Para Telón tendrían sentido, por ejemplo:
+**MCP** (Model Context Protocol) es la forma estándar de dar al asistente herramientas externas. Para el proyecto tendrían sentido, por ejemplo:
 - el servidor MCP de GitHub, para leer issues y PR sin copiarlos;
 - un servidor MCP de PostgreSQL **de solo lectura** contra la base de datos de desarrollo, para que el agente consulte `tickets` en lugar de suponer su esquema.
 

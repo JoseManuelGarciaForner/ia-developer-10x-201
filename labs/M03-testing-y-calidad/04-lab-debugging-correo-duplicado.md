@@ -10,7 +10,7 @@ El correo de devolución sale una sola vez aunque la cola reintente el trabajo, 
 
 ### Punto de partida
 
-- Telón abierto en el Dev Container, carpeta `telon/`.
+- El proyecto Telón abierto en el Dev Container, carpeta `telon/`.
 - Estado: `make init-m03` y `make up-m03` arrancado en otra terminal (la necesitas para ver la traza del notifier).
 - Mailpit abierto (local: `http://localhost:8025`; Codespaces: pestaña **Ports** → **Mailpit (8025)**).
 

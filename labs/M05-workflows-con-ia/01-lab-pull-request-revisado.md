@@ -2,7 +2,7 @@
 
 [← Página anterior](00-el-equipo-y-el-asistente.md) · [Siguiente página →](02-lab-workflow-y-seguridad.md)
 
-La devolución de entradas de Telón está terminada en tu puesto. En este lab la llevas a un pull request en tu fork: descripción redactada con el asistente y corregida por ti, revisión asistida con `AGENTS.md` como lista de comprobación y un comentario respondido con un commit.
+La devolución de entradas del proyecto Telón está terminada en tu puesto. En este lab la llevas a un pull request en tu fork: descripción redactada con el asistente y corregida por ti, revisión asistida con `AGENTS.md` como lista de comprobación y un comentario respondido con un commit.
 
 ### Objetivo
 
@@ -16,7 +16,7 @@ Un pull request abierto en tu fork, de `feat/dev-412-devoluciones` a `main`, con
 
 ### En qué consiste
 
-Rama, commit, push, descripción del PR, revisión y respuesta. No cambias la lógica de Telón salvo lo que salga de la revisión.
+Rama, commit, push, descripción del PR, revisión y respuesta. No cambias la lógica del proyecto salvo lo que salga de la revisión.
 
 ### 1 — Crea la rama con el trabajo
 
@@ -28,7 +28,7 @@ git add -A
 git commit -m "DEV-412: devolución de entradas"
 ```
 
-**Por qué:** `make init-m05` ha dejado en `telon/` todo el trabajo de la devolución. En tu `main` sigue Telón como lo heredaste, así que el PR va a mostrar la devolución entera.
+**Por qué:** `make init-m05` ha dejado en `telon/` todo el trabajo de la devolución. En tu `main` sigue el proyecto como lo heredaste, así que el PR va a mostrar la devolución entera.
 
 **Resultado esperado:** un commit nuevo en la rama. `git status` limpio.
 

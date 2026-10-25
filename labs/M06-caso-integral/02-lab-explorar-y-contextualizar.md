@@ -14,11 +14,11 @@ Un `AGENTS.md` comprobado en `control-acceso`, `liquidaciones`, `tarifas` y `wid
 
 ```bash
 make init-m06                 # repos heredados y clones de dev1 y dev2
-make init-m05                 # Telón con devoluciones (CONFIRM=1 para no preguntar)
+make init-m05                 # El proyecto Telón con devoluciones (CONFIRM=1 para no preguntar)
 make up-m05                   # en otra terminal; déjala abierta
 ```
 
-- Una entrada devuelta en Telón, para probar la puerta. Desde `telon/`:
+- Una entrada devuelta en el proyecto Telón, para probar la puerta. Desde `telon/`:
 
 ```bash
 npm run db:reset
@@ -31,7 +31,7 @@ curl -s localhost:3000/api/public/orders/PED-2026-0107/refunds \
 
 ### En qué consiste
 
-Un repositorio cada vez. Primero el asistente cuenta qué hace; después lo compruebas ejecutando o buscando en el código; al final escribes el contexto. El orden importa: `control-acceso` y `liquidaciones` dependen de Telón y de `tarifas`.
+Un repositorio cada vez. Primero el asistente cuenta qué hace; después lo compruebas ejecutando o buscando en el código; al final escribes el contexto. El orden importa: `control-acceso` y `liquidaciones` dependen del proyecto Telón y de `tarifas`.
 
 ### 1 — Pregunta por `control-acceso`
 
@@ -45,7 +45,7 @@ fichero y línea. No cambies nada.
 
 **Por qué:** un repositorio sin tests ni contexto se entiende antes preguntando, pero solo si cada respuesta viene con la línea que la respalda.
 
-**Resultado esperado:** el asistente encuentra que no usa la API sino la base de datos de Telón (`lib/db.js`), que no comprueba la firma del QR y que solo rechaza entradas `void`.
+**Resultado esperado:** el asistente encuentra que no usa la API sino la base de datos del proyecto Telón (`lib/db.js`), que no comprueba la firma del QR y que solo rechaza entradas `void`.
 
 ### 2 — Compruébalo en la puerta
 
@@ -71,7 +71,7 @@ TELON_DB="$DATABASE_URL" node bin/validar.js "PED-2026-0107-3.firma-inventada"
 1. Pregunta lo mismo del paso 1 para `liquidaciones`.
 2. Ejecuta, desde `dev1/liquidaciones`: `python3 liquidar.py 2026-10-02`
 
-**Por qué:** el README dice que usa la comisión de Telón. Si es verdad, la comisión de la Sala Faro debería ser la de los pedidos (7,5 % de todo).
+**Por qué:** el README dice que usa la comisión del proyecto Telón. Si es verdad, la comisión de la Sala Faro debería ser la de los pedidos (7,5 % de todo).
 
 **Resultado esperado:**
 
@@ -168,7 +168,7 @@ Las dos consultas concatenan el id en el SQL (`"… WHERE id = '" + id + "'"`): 
 
 | Síntoma | Causa probable | Cómo arreglarlo |
 |---------|----------------|-----------------|
-| `{"ok":false,"motivo":"NO_EXISTE"}` con F-12 | Hiciste `db:reset` después del `curl` de la devolución, o Telón no está en el estado `m05` | Repite el punto de partida |
+| `{"ok":false,"motivo":"NO_EXISTE"}` con F-12 | Hiciste `db:reset` después del `curl` de la devolución, o el proyecto Telón no está en el estado `m05` | Repite el punto de partida |
 | `{"ok":false,"motivo":"YA_DENTRO"}` | Ya validaste esa entrada | `npm run db:reset` en `telon/` y repite la devolución |
 | `FileNotFoundError: …/tarifas/promotores` | Ejecutas `liquidar.py` desde otra carpeta | Ejecútalo desde `dev1/liquidaciones` (busca `../tarifas`) |
 | El asistente lee los repos de `dev2` | El chat se abrió en `workspace/m06` | Ábrelo en `workspace/m06/dev1` |

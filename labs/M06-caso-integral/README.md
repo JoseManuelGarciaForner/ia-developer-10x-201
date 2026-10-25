@@ -2,7 +2,7 @@
 
 [← Página anterior](../M05-workflows-con-ia/02-lab-workflow-y-seguridad.md) · [Siguiente página →](00-el-legado.md)
 
-Hasta aquí has trabajado sobre un proyecto ordenado. El código que vas a encontrar en un equipo real no lo está. Telón tiene también su parte heredada: la app de control de acceso en puerta, el batch que liquida a los promotores, el motor de tarifas y el widget antiguo para webs de terceros. Los escribieron equipos distintos, con convenciones que no cuadran, README que no coinciden con el código, sin tests, con dependencias que no se ven (el batch lee la base de datos de la plataforma directamente) y un lenguaje de tarifas propio que ningún modelo conoce. Ninguno tiene contexto para la IA.
+Hasta aquí has trabajado sobre un proyecto ordenado. El código que vas a encontrar en un equipo real no lo está. El proyecto Telón tiene también su parte heredada: la app de control de acceso en puerta, el batch que liquida a los promotores, el motor de tarifas y el widget antiguo para webs de terceros. Los escribieron equipos distintos, con convenciones que no cuadran, README que no coinciden con el código, sin tests, con dependencias que no se ven (el batch lee la base de datos de la plataforma directamente) y un lenguaje de tarifas propio que ningún modelo conoce. Ninguno tiene contexto para la IA.
 
 Haces de dos desarrolladores del mismo equipo, `dev1` y `dev2`, con dos clones en carpetas distintas. `dev1` explora el legado con la IA, valida lo que le cuenta y deja el contexto en los repositorios. `dev2` abre un chat nuevo, sin nada de lo que habló `dev1`, y hace que una devolución llegue a las liquidaciones y al control de acceso usando solo lo que quedó versionado.
 
@@ -51,7 +51,7 @@ El modo se elige en el `.env` de tu fork (copia de `.env.example`). `make init-m
 | 00 | [El legado](00-el-legado.md) | Enunciado: los cuatro repositorios heredados, qué se sabe de ellos y DEV-430 |
 | 01 | [Remotos y dos desarrolladores](01-remotos-y-dos-desarrolladores.md) | Metodología: remotos locales o en GitHub, `dev1`/`dev2`, `.env`, `init` y `up` |
 | 02 | [Laboratorio: explorar y contextualizar](02-lab-explorar-y-contextualizar.md) | `dev1` descubre con el asistente, lo comprueba ejecutando y deja un `AGENTS.md` por repo |
-| 03 | [Laboratorio: macrocontexto y dinámica](03-lab-macrocontexto-y-dinamica.md) | Contratos entre repos y con Telón, la dinámica del equipo y un conflicto de contexto al fusionar |
+| 03 | [Laboratorio: macrocontexto y dinámica](03-lab-macrocontexto-y-dinamica.md) | Contratos entre repos y con el proyecto Telón, la dinámica del equipo y un conflicto de contexto al fusionar |
 | 04 | [Laboratorio: dev2, sin memoria](04-lab-dev2-sin-memoria.md) | DEV-430 sin contexto y con contexto, comprobado en la puerta y en la liquidación |
 | 05 | [Antipatrones y adopción](05-antipatrones-y-adopcion.md) | Lo que salió mal en el curso y tres pasos de adopción para tu equipo |
 

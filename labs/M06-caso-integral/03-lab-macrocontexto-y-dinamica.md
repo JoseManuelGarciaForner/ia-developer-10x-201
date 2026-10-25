@@ -2,7 +2,7 @@
 
 [← Página anterior](02-lab-explorar-y-contextualizar.md) · [Siguiente página →](04-lab-dev2-sin-memoria.md)
 
-Cada repositorio heredado ya tiene su `AGENTS.md`, pero el fallo de DEV-430 no está en ninguno: está entre ellos. Telón añadió un estado de entrada (`refunded`) y dos repositorios que leen su base de datos no se enteraron. En este lab escribes el contexto que los une, la forma de trabajar del equipo, y practicas un cambio de contexto en una rama con su conflicto al fusionar.
+Cada repositorio heredado ya tiene su `AGENTS.md`, pero el fallo de DEV-430 no está en ninguno: está entre ellos. El proyecto Telón añadió un estado de entrada (`refunded`) y dos repositorios que leen su base de datos no se enteraron. En este lab escribes el contexto que los une, la forma de trabajar del equipo, y practicas un cambio de contexto en una rama con su conflicto al fusionar.
 
 ### Objetivo
 
@@ -24,11 +24,11 @@ Contratos, mapa, punteros, dinámica escrita y un ejercicio de ramas. Solo tocas
 
 ```text
 Lee los AGENTS.md y el código de control-acceso, liquidaciones, tarifas y widget-embebido.
-Haz una tabla de contratos: qué usa cada repo de otro repo o de Telón (tablas y columnas de la
+Haz una tabla de contratos: qué usa cada repo de otro repo o del proyecto Telón (tablas y columnas de la
 base de datos, rutas de ficheros, endpoints), qué asume y qué se rompe si cambia. Cita fichero.
 ```
 
-**Por qué:** un contrato que nadie ha escrito se rompe sin que nadie lo vea. DEV-430 es justo eso: Telón amplió `tickets.status` y nadie avisó a la puerta ni a liquidaciones.
+**Por qué:** un contrato que nadie ha escrito se rompe sin que nadie lo vea. DEV-430 es justo eso: el proyecto Telón amplió `tickets.status` y nadie avisó a la puerta ni a liquidaciones.
 
 **Resultado esperado:** al menos cuatro filas:
 - `control-acceso` lee y escribe `tickets` y asume que solo `void` es inválido;
@@ -36,11 +36,11 @@ base de datos, rutas de ficheros, endpoints), qué asume y qué se rompe si camb
 - `liquidaciones` lee `../tarifas` por ruta relativa;
 - `widget-embebido` usa `GET /api/public/events/:id`.
 
-### 2 — Comprueba el estado nuevo en Telón
+### 2 — Comprueba el estado nuevo en el proyecto Telón
 
 **Acción:** en `telon/`, busca los estados de entrada: `grep -rn "refunded" services/api/src services/api/migrations`
 
-**Por qué:** el contrato con Telón tiene que decir qué estados existen hoy, no los que había cuando se escribió el repositorio heredado. El dato sale del código de Telón, no del asistente.
+**Por qué:** el contrato con el proyecto Telón tiene que decir qué estados existen hoy, no los que había cuando se escribió el repositorio heredado. El dato sale del código del proyecto Telón, no del asistente.
 
 **Resultado esperado:** `refunded` aparece en `refunds/service.ts` (`SET status = 'refunded'`), en `routes/tickets.ts` y en un comentario de `002_refunds.sql`. Los estados son `pending`, `valid`, `void` y `refunded`.
 
@@ -61,7 +61,7 @@ base de datos, rutas de ficheros, endpoints), qué asume y qué se rompe si camb
 **Acción:** añade al principio de cada `AGENTS.md` de repositorio:
 
 ```markdown
-Antes de cambiar nada, lee también `../contexto-equipo/AGENTS.md` (contratos con Telón y entre repos).
+Antes de cambiar nada, lee también `../contexto-equipo/AGENTS.md` (contratos con el proyecto Telón y entre repos).
 ```
 
 **Por qué:** el agente de `dev2` se abrirá en un repositorio concreto. Si el `AGENTS.md` no le manda al contexto común, no lo leerá.
@@ -117,19 +117,19 @@ Revisa el resultado y termina: `git add AGENTS.md && git commit --no-edit && git
 ## Comprueba tu entendimiento
 
 **El contexto común llega a cada repo**
-Abre un chat nuevo en `dev1/control-acceso` y pregunta: «¿Qué estados puede tener una entrada en Telón?».
+Abre un chat nuevo en `dev1/control-acceso` y pregunta: «¿Qué estados puede tener una entrada en el proyecto Telón?».
 → Responde con los cuatro estados, citando `../contexto-equipo/AGENTS.md`.
 
 ## Reto
 
 ### 1 — ¿Quién debería haber avisado?
 
-Con la sección «Cuando cambies…», ¿en qué momento de DEV-412 (la devolución, M02–M05) se habría evitado DEV-430? ¿Qué cambiarías en el `AGENTS.md` de Telón?
+Con la sección «Cuando cambies…», ¿en qué momento de DEV-412 (la devolución, M02–M05) se habría evitado DEV-430? ¿Qué cambiarías en el `AGENTS.md` del proyecto Telón?
 
 <details>
 <summary>Ver solución</summary>
 
-Al añadir el estado `refunded` en la migración 002 de Telón. Si el `AGENTS.md` de Telón tuviera una regla del tipo «la tabla `tickets` la leen directamente control-acceso y liquidaciones: un estado o columna nuevos se comunican a esos repos (ver contexto-equipo)», el asistente lo habría señalado al generar la devolución, y la revisión del PR lo habría pedido. El contexto común sirve en las dos direcciones.
+Al añadir el estado `refunded` en la migración 002 del proyecto Telón. Si el `AGENTS.md` del proyecto Telón tuviera una regla del tipo «la tabla `tickets` la leen directamente control-acceso y liquidaciones: un estado o columna nuevos se comunican a esos repos (ver contexto-equipo)», el asistente lo habría señalado al generar la devolución, y la revisión del PR lo habría pedido. El contexto común sirve en las dos direcciones.
 
 </details>
 

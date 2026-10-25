@@ -2,7 +2,7 @@
 
 [← Página anterior](../M04-documentacion-y-automatizacion/02-lab-script-y-snippets.md) · [Siguiente página →](00-el-equipo-y-el-asistente.md)
 
-Si cada desarrollador tiene sus propias instrucciones en su chat, el equipo no comparte nada. En Telón las reglas viven en el repositorio, entran por pull request y las aplica cualquiera que abra el proyecto, con el asistente que use. La devolución llega a `main` revisada y con un workflow que la valida.
+Si cada desarrollador tiene sus propias instrucciones en su chat, el equipo no comparte nada. En el proyecto Telón las reglas viven en el repositorio, entran por pull request y las aplica cualquiera que abra el proyecto, con el asistente que use. La devolución llega a `main` revisada y con un workflow que la valida.
 
 ## Qué aprenderás
 

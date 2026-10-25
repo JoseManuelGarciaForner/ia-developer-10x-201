@@ -2,7 +2,7 @@
 
 [← Página anterior](01-lab-tests-y-datos.md) · [Siguiente página →](03-lab-caso-limite-redondeo.md)
 
-La devolución de Telón habla con tres cosas que no quieres levantar en un test unitario: la pasarela de pago, PostgreSQL y el proveedor de email del promotor. En este lab pides al asistente tests con mocks en esas fronteras, revisas que simulan lo justo y terminas con un test que reproduce el reintento de la cola.
+La devolución del proyecto Telón habla con tres cosas que no quieres levantar en un test unitario: la pasarela de pago, PostgreSQL y el proveedor de email del promotor. En este lab pides al asistente tests con mocks en esas fronteras, revisas que simulan lo justo y terminas con un test que reproduce el reintento de la cola.
 
 ### Objetivo
 
@@ -10,7 +10,7 @@ Tests con mocks del cliente de la pasarela, de la regla «no se devuelve dos vec
 
 ### Punto de partida
 
-- Telón abierto en el Dev Container, carpeta `telon/`.
+- El proyecto abierto en el Dev Container, carpeta `telon/`.
 - Estado: `make init-m03`. No hace falta tener la plataforma arrancada: estos tests no usan servicios.
 - Ficheros que vas a probar: `services/api/src/orders/payments-client.ts`, `services/api/src/refunds/service.ts` y `services/notifier/src/jobs.ts`.
 

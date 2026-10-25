@@ -2,7 +2,7 @@
 
 [← Página anterior](01-lab-readme-y-openapi.md) · [Siguiente página →](../M05-workflows-con-ia/README.md)
 
-Cada vez que alguien del equipo prueba devoluciones en Telón, repite lo mismo: crea pedidos en distintos estados, devuelve alguno y busca un evento que esté a menos de 48 h. En este lab conviertes esa tarea en un script con el asistente. Después documentas `SeatPicker` para los promotores, con un ejemplo comprobado en el editor, y guardas el prompt que has usado para que el equipo lo reutilice.
+Cada vez que alguien del equipo prueba devoluciones en el proyecto Telón, repite lo mismo: crea pedidos en distintos estados, devuelve alguno y busca un evento que esté a menos de 48 h. En este lab conviertes esa tarea en un script con el asistente. Después documentas `SeatPicker` para los promotores, con un ejemplo comprobado en el editor, y guardas el prompt que has usado para que el equipo lo reutilice.
 
 ### Objetivo
 
@@ -10,13 +10,13 @@ Cada vez que alguien del equipo prueba devoluciones en Telón, repite lo mismo: 
 
 ### Punto de partida
 
-- Telón abierto en el Dev Container, carpeta `telon/`.
+- El proyecto abierto en el Dev Container, carpeta `telon/`.
 - Estado: `make init-m04` y `make up-m04` en otra terminal. Ejecuta `npm run db:reset` para partir de los datos de ejemplo.
 - Backoffice abierto con el token `faro-dev-token`.
 
 ### En qué consiste
 
-Un script en `services/api/src/scripts/`, una página de documentación y un fichero de prompt. No cambias la lógica de Telón.
+Un script en `services/api/src/scripts/`, una página de documentación y un fichero de prompt. No cambias la lógica del proyecto.
 
 ### 1 — Describe el escenario que necesitas
 

@@ -2,11 +2,11 @@
 
 [← Página anterior](01-lab-pull-request-revisado.md) · [Siguiente página →](../M06-caso-integral/README.md)
 
-El pull request de la devolución necesita algo que lo valide sin depender de que alguien ejecute los tests en su máquina. En este lab el asistente escribe el workflow de GitHub Actions, y hay que llevarlo a donde GitHub lo busca. Después revisas el PR con una lista de seguridad y encuentras una API key que Telón devuelve en claro. Por último limitas lo que el agente puede ejecutar sin preguntarte.
+El pull request de la devolución necesita algo que lo valide sin depender de que alguien ejecute los tests en su máquina. En este lab el asistente escribe el workflow de GitHub Actions, y hay que llevarlo a donde GitHub lo busca. Después revisas el PR con una lista de seguridad y encuentras una API key que el proyecto Telón devuelve en claro. Por último limitas lo que el agente puede ejecutar sin preguntarte.
 
 ### Objetivo
 
-Un workflow que ejecuta lint, typecheck y tests de Telón en cada push, en verde en tu PR. Además, la API key del proveedor de email enmascarada en el backoffice y una configuración del agente con lo que puede ejecutar solo y lo que no.
+Un workflow que ejecuta lint, typecheck y tests del proyecto en cada push, en verde en tu PR. Además, la API key del proveedor de email enmascarada en el backoffice y una configuración del agente con lo que puede ejecutar solo y lo que no.
 
 ### Punto de partida
 
@@ -62,7 +62,7 @@ o en el propio workflow.
 
 ```bash
 git add ../.github/workflows/telon.yml
-git commit -m "CI de Telón: lint, typecheck y tests"
+git commit -m "CI del proyecto: lint, typecheck y tests"
 git push
 ```
 
@@ -73,14 +73,14 @@ Abre el PR en GitHub.
 **Resultado esperado:** en la pestaña **Checks** (o al pie de **Conversation**), el job del workflow en verde, con unos 33 tests pasados en su log.
 
 > [!TIP]
-> Los tests de Telón no necesitan PostgreSQL ni Redis: los que tocan esos servicios usan mocks (M03). Por eso el workflow no necesita `services:`.
+> Los tests del proyecto no necesitan PostgreSQL ni Redis: los que tocan esos servicios usan mocks (M03). Por eso el workflow no necesita `services:`.
 
 ### 5 — Revisa la seguridad del PR
 
 **Acción:** en un chat nuevo:
 
 ```text
-Revisa la seguridad de Telón con esta lista, citando fichero y línea:
+Revisa la seguridad del proyecto con esta lista, citando fichero y línea:
 1. Secretos: ¿algún endpoint devuelve o registra credenciales (API keys, tokens)?
 2. Dependencias: ¿hay alguna en los package.json que no exista en npm o no se use?
 3. Entrada no confiable: ¿dónde se ejecuta código o SQL que viene de fuera?

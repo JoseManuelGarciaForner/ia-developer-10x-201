@@ -2,14 +2,14 @@
 
 [← Página anterior](04-lab-dev2-sin-memoria.md)
 
-A lo largo del curso, la devolución de entradas de Telón ha pasado por todas las fases: petición, código, tests, documentación, pull request, CI y, al final, los repositorios heredados que nadie había contextualizado. Esta página recoge lo que salió mal cada vez que se usó el asistente sin criterio, y cómo llevarlo a tu equipo sin empezar por lo más difícil.
+A lo largo del curso, la devolución de entradas del proyecto Telón ha pasado por todas las fases: petición, código, tests, documentación, pull request, CI y, al final, los repositorios heredados que nadie había contextualizado. Esta página recoge lo que salió mal cada vez que se usó el asistente sin criterio, y cómo llevarlo a tu equipo sin empezar por lo más difícil.
 
-## Lo que salió mal en Telón
+## Lo que salió mal en el proyecto Telón
 
 | Antipatrón | Dónde pasó en el curso | Alternativa |
 |------------|------------------------|-------------|
 | Aceptar en bloque | El primer plan de DEV-412 modificaba el pedido pagado y devolvía los gastos (M02) | Plan primero, entregas pequeñas, cada diff revisado |
-| Creerse el README | Puerto 8080, `npm run seed`, «usa la comisión de Telón», `/api/v0/widget` (M01, M04, M06) | Cada afirmación se comprueba ejecutando o en el código |
+| Creerse el README | Puerto 8080, `npm run seed`, «usa la comisión del proyecto Telón», `/api/v0/widget` (M01, M04, M06) | Cada afirmación se comprueba ejecutando o en el código |
 | Tests que copian el código | La comisión revertida «en verde» con un céntimo de más (M03) | Valores esperados calculados desde la regla |
 | El arreglo más pequeño | Ampliar una columna para que dejaran de llegar tres correos (M03) | Arreglar la familia de fallos (idempotencia) |
 | Contexto en el chat | Lo que descubrió `dev1` no llegaba a `dev2` hasta que se versionó (M06) | `AGENTS.md` por repo y uno común, por pull request |
@@ -31,7 +31,7 @@ Ningún equipo pasa de cero a agentes autónomos en una semana. Un orden que fun
 
 ## Ejercicio de cierre
 
-**Acción:** escribe, para tu equipo real (no para Telón), tres pasos de adopción con este formato y guárdalos en `workspace/m06/dev1/contexto-equipo/ADOPCION.md`:
+**Acción:** escribe, para tu equipo real (no para el proyecto Telón), tres pasos de adopción con este formato y guárdalos en `workspace/m06/dev1/contexto-equipo/ADOPCION.md`:
 
 ```markdown
 ### Paso 1 — [qué]

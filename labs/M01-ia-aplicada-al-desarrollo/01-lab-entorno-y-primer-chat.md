@@ -2,18 +2,18 @@
 
 [← Página anterior](00-del-autocompletado-al-agente.md) · [Siguiente página →](02-lab-leer-la-peticion.md)
 
-Vas a trabajar sobre Telón, el SaaS de entradas que hereda tu equipo. En este lab lo pones en marcha en tu puesto y compras una entrada de principio a fin, viendo llegar el correo con el QR. Después le haces la primera pregunta al asistente y compruebas su respuesta en el código.
+Vas a trabajar sobre el proyecto Telón, el SaaS de entradas que hereda tu equipo. En este lab lo pones en marcha en tu puesto y compras una entrada de principio a fin, viendo llegar el correo con el QR. Después le haces la primera pregunta al asistente y compruebas su respuesta en el código.
 
 ### Objetivo
 
-Telón arrancado en tu fork, una compra completa con su correo en Mailpit y el asistente respondiendo sobre el proyecto con afirmaciones comprobadas.
+El proyecto arrancado en tu fork, una compra completa con su correo en Mailpit y el asistente respondiendo sobre el proyecto con afirmaciones comprobadas.
 
 ### Punto de partida
 
 - Cuenta de GitHub y acceso al repositorio del curso.
 - **Ruta local:** Git, Docker en marcha y Cursor o VS Code con la extensión *Dev Containers*. **Ruta Codespaces:** solo el navegador.
 - Un asistente con licencia: Cursor, GitHub Copilot o Claude Code.
-- Si ya tenías el repositorio de otro módulo, deja Telón en el estado de este lab desde la carpeta `telon/`: `make init-m01` (descarta cambios).
+- Si ya tenías el repositorio de otro módulo, deja el proyecto en el estado de este lab desde la carpeta `telon/`: `make init-m01` (descarta cambios).
 
 ### En qué consiste
 
@@ -51,7 +51,7 @@ Elige una de las dos rutas.
 > [!TIP]
 > En Codespaces, el asistente integrado es GitHub Copilot. Claude Code también viene instalado: ejecuta `claude` en la terminal. Cursor no abre Codespaces directamente; para usarlo, sigue la ruta local.
 
-### 3 — Arranca Telón
+### 3 — Arranca el proyecto
 
 **Acción:** en la terminal, dentro de `telon/`:
 
@@ -69,7 +69,7 @@ make up-m01
 - **Local:** abre `http://entradas.salafaro.localhost:5173` y pulsa **Jazz en el Faro**.
 - **Codespaces:** abre la pestaña **Ports**, pulsa el globo de **Tienda (5173)** y añade `/t/sala-faro` a la URL. Pulsa **Jazz en el Faro**.
 
-**Por qué:** Telón es multi-tenant. Cada promotor entra por su dominio (en local, cualquier `*.localhost` funciona sin tocar DNS) o, donde no hay dominios propios, por la ruta `/t/<slug>`. La página que ves es TSX escrito por el promotor y compilado en tu navegador.
+**Por qué:** El proyecto es multi-tenant. Cada promotor entra por su dominio (en local, cualquier `*.localhost` funciona sin tocar DNS) o, donde no hay dominios propios, por la ruta `/t/<slug>`. La página que ves es TSX escrito por el promotor y compilado en tu navegador.
 
 **Resultado esperado:** la página oscura de «Jazz en el Faro» con el plano de butacas (F-12 y F-13 en gris, ya vendidas), los pases **De pie** y **VIP**, el carrito y el pago.
 
@@ -135,7 +135,7 @@ Para cada puerto, dime en qué fichero lo has visto.
 
 Después, comprueba en el código el puerto que dé para la API: abre `services/api/src/config.ts`.
 
-**Por qué:** el asistente mezcla lo que lee en el código con lo que lee en la documentación. El `README.md` de Telón dice que la API está en el puerto 8080; el código dice otra cosa. Esta es la costumbre del curso: cada afirmación se comprueba en el código.
+**Por qué:** el asistente mezcla lo que lee en el código con lo que lee en la documentación. El `README.md` del proyecto dice que la API está en el puerto 8080; el código dice otra cosa. Esta es la costumbre del curso: cada afirmación se comprueba en el código.
 
 **Resultado esperado:** una lista con `storefront`, `backoffice`, `editor-mfe`, `api`, `payments` y `notifier`. Si el asistente da 8080 para la API citando el README, has encontrado tu primera afirmación falsa: `config.ts` dice `3000`. Si da 3000 citando `config.ts`, ha leído el sitio correcto.
 

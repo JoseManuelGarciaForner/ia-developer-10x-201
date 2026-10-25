@@ -6,7 +6,7 @@ El mismo prompt para la devolución de entradas (DEV-412), en el mismo repositor
 
 ## Punto de partida
 
-- Telón en el estado `make init-m02`: el código heredado, sin `AGENTS.md` ni reglas del proyecto.
+- El proyecto Telón en el estado `make init-m02`: el código heredado, sin `AGENTS.md` ni reglas del proyecto.
 - Asistente en modo agente, chat nuevo cada vez.
 - Para la segunda pasada, las reglas del proyecto de referencia del curso, copiadas desde `telon/`:
 
@@ -29,7 +29,7 @@ desde "Mis entradas". Primero dame el plan y espera mi confirmación.
 
 ### 1. Sin contexto
 
-El plan es razonable para cualquier tienda de entradas, y erróneo para Telón:
+El plan es razonable para cualquier tienda de entradas, y erróneo para el proyecto:
 
 - añade `refunded` a `orders.status` y marca el pedido entero como devuelto, aunque solo se devuelva una entrada;
 - devuelve `total_cents`, gastos de gestión incluidos;

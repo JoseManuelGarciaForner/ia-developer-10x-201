@@ -10,7 +10,7 @@ La devolución funcionando de punta a punta: la compradora de `PED-2026-0107` de
 
 ### Punto de partida
 
-- Telón abierto en el Dev Container, carpeta `telon/`.
+- El proyecto Telón abierto en el Dev Container, carpeta `telon/`.
 - Estado: `make init-m02` y las reglas del proyecto de referencia (si ya tienes las tuyas del lab anterior, usa las tuyas):
 
 ```bash

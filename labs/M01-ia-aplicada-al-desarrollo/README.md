@@ -2,7 +2,7 @@
 
 [← Página anterior](../../README.md) · [Siguiente página →](00-del-autocompletado-al-agente.md)
 
-Antes de pedirle nada al asistente sobre Telón hay que saber qué tipo de herramienta tienes delante. Un autocompletado ve la línea, un chat ve lo que le pegas y un agente lee ficheros y ejecuta comandos. Cada uno se equivoca a su manera.
+Antes de pedirle nada al asistente sobre el proyecto Telón hay que saber qué tipo de herramienta tienes delante. Un autocompletado ve la línea, un chat ve lo que le pegas y un agente lee ficheros y ejecuta comandos. Cada uno se equivoca a su manera.
 
 ## Qué aprenderás
 
@@ -19,7 +19,7 @@ Antes de pedirle nada al asistente sobre Telón hay que saber qué tipo de herra
 | Chat | Lo que citas o pegas, y el historial | Responde con seguridad sobre código que no ha leído |
 | Agente | El repositorio, la terminal y los ficheros que modifica | Hace cambios amplios: hay que acotar y revisar |
 
-En Telón, la petición «que el comprador pueda devolver entradas» parece sencilla. El asistente no sabe que un pedido pagado no se modifica, que los gastos de gestión no se reembolsan, que la comisión se redondea por entrada ni que el QR devuelto tiene que dejar de abrir la puerta. Eso es contexto, y si no está escrito, el asistente se lo inventa.
+En el proyecto, la petición «que el comprador pueda devolver entradas» parece sencilla. El asistente no sabe que un pedido pagado no se modifica, que los gastos de gestión no se reembolsan, que la comisión se redondea por entrada ni que el QR devuelto tiene que dejar de abrir la puerta. Eso es contexto, y si no está escrito, el asistente se lo inventa.
 
 Buenas prácticas de adopción desde el primer día:
 
@@ -38,7 +38,7 @@ Buenas prácticas de adopción desde el primer día:
 <!-- gen:paginas -->
 | # | Página | Qué hay |
 |---|--------|---------|
-| 00 | [Del autocompletado al agente](00-del-autocompletado-al-agente.md) | Demostración: la misma pregunta sobre Telón a las tres formas de asistente |
+| 00 | [Del autocompletado al agente](00-del-autocompletado-al-agente.md) | Demostración: la misma pregunta sobre el proyecto a las tres formas de asistente |
 | 01 | [Laboratorio: entorno y primer chat](01-lab-entorno-y-primer-chat.md) | Fork, Dev Container (local o Codespaces), una compra con su correo y la primera respuesta comprobada |
 | 02 | [Laboratorio: leer la petición](02-lab-leer-la-peticion.md) | El recorrido de un pedido, los supuestos del asistente y lo que le falta saber |
 
