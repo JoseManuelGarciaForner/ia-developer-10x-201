@@ -1,0 +1,139 @@
+openapi: 3.1.0
+info:
+  title: Telón — API pública de devoluciones
+  version: 1.0.0
+  license:
+    name: Material del curso Developer 10x
+    identifier: CC-BY-4.0
+  description: |
+    Endpoints de la tienda que usa el comprador. El promotor se indica con la cabecera
+    `x-telon-tenant-slug` (o `x-telon-host` con el dominio de la tienda).
+servers:
+  - url: http://localhost:3000
+# Endpoints públicos de la tienda: sin autenticación (el comprador se identifica con pedido + email)
+security: []
+paths:
+  /api/public/orders/{orderId}:
+    get:
+      operationId: getBuyerOrder
+      summary: Pedido del comprador con sus entradas y devoluciones
+      parameters:
+        - $ref: '#/components/parameters/TenantSlug'
+        - $ref: '#/components/parameters/OrderId'
+        - name: email
+          in: query
+          required: true
+          schema: { type: string, format: email }
+      responses:
+        '200':
+          description: Pedido
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/BuyerOrder' }
+        '404': { $ref: '#/components/responses/Error' }
+  /api/public/orders/{orderId}/refunds:
+    post:
+      operationId: requestRefund
+      summary: Devolver entradas de un pedido pagado
+      description: |
+        Devuelve el precio de las entradas (no los gastos de gestión). Las entradas quedan `refunded`,
+        su QR deja de validar y la butaca vuelve a la venta. Hasta 48 h antes del evento.
+        El comprador recibe un correo de confirmación.
+      parameters:
+        - $ref: '#/components/parameters/TenantSlug'
+        - $ref: '#/components/parameters/OrderId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, ticket_ids]
+              properties:
+                email: { type: string, format: email, example: ana.compradora@ejemplo.test }
+                ticket_ids:
+                  type: array
+                  minItems: 1
+                  items: { type: string }
+                  example: [PED-2026-0107-2]
+      responses:
+        '201':
+          description: Devolución hecha
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Refund' }
+              example:
+                id: DEV-2026-0001
+                order_id: PED-2026-0107
+                ticket_ids: [PED-2026-0107-2]
+                amount_cents: 3550
+                commission_reversed_cents: 266
+        '400': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+        '409':
+          description: Pedido no pagado, entrada no válida o fuera de plazo
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              example: { error: las devoluciones cierran 48 h antes del evento }
+        '502': { $ref: '#/components/responses/Error' }
+components:
+  parameters:
+    TenantSlug:
+      name: x-telon-tenant-slug
+      in: header
+      required: true
+      schema: { type: string, example: sala-faro }
+    OrderId:
+      name: orderId
+      in: path
+      required: true
+      schema: { type: string, example: PED-2026-0107 }
+  responses:
+    Error:
+      description: Error
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
+    Refund:
+      type: object
+      required: [id, order_id, ticket_ids, amount_cents, commission_reversed_cents]
+      properties:
+        id: { type: string, example: DEV-2026-0001 }
+        order_id: { type: string }
+        ticket_ids: { type: array, items: { type: string } }
+        amount_cents: { type: integer, description: 'Importe devuelto al comprador, en céntimos' }
+        commission_reversed_cents: { type: integer, description: Comisión de plataforma revertida (suma por entrada) }
+    BuyerOrder:
+      type: object
+      properties:
+        id: { type: string }
+        status: { type: string, enum: [pending, paid, failed] }
+        buyer_email: { type: string }
+        total_cents: { type: integer }
+        fee_cents: { type: integer }
+        tickets:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              kind: { type: string, enum: [seat, pass] }
+              seat_id: { type: [string, 'null'] }
+              status: { type: string, enum: [pending, valid, void, refunded] }
+              price_cents: { type: integer }
+              qr_token: { type: [string, 'null'], description: Solo en entradas válidas }
+        refunds:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              amount_cents: { type: integer }
+              created_at: { type: string, format: date-time }

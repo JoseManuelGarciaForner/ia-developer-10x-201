@@ -1,0 +1,32 @@
+{
+  "name": "telon",
+  "private": true,
+  "description": "Telón — SaaS de venta de entradas para espectáculos",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "services/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n api,pagos,correo,tienda,backoffice,editor -c blue,magenta,yellow,green,cyan,gray \"npm:dev -w @telon/api\" \"npm:dev -w @telon/payments\" \"npm:dev -w @telon/notifier\" \"npm:dev -w @telon/storefront\" \"npm:dev -w @telon/backoffice\" \"npm:dev -w @telon/editor-mfe\"",
+    "test": "vitest run",
+    "lint": "eslint .",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "db:reset": "npm run db:reset -w @telon/api",
+    "escenario": "npm run escenario -w @telon/api",
+    "qr": "npm run qr -w @telon/api --"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.20.5",
+    "concurrently": "^10.0.6",
+    "eslint": "^10.13.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.2",
+    "vitest": "^5.0.5"
+  }
+}

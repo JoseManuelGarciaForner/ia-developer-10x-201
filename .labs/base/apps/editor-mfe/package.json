@@ -1,0 +1,17 @@
+{
+  "name": "@telon/editor-mfe",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@telon/ui": "*",
+    "monaco-editor": "^0.57.0"
+  },
+  "devDependencies": {
+    "vite": "^8.3.4"
+  }
+}

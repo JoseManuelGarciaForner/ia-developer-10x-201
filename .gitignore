@@ -1,0 +1,26 @@
+# Arnés del agente y diseño (no subir al remoto público). Solo en la raíz:
+# telon/ sí versiona sus AGENTS.md, CLAUDE.md y .cursor/ (son material del curso)
+/.agent/
+/.cursor/
+/CLAUDE.md
+
+# Legacy: por si existían en versiones anteriores
+/AGENTS.md
+briefing.md
+temario.md
+contexto.md
+propuesta.md
+diseno-pedagogico/
+curso.meta.json
+
+# Entorno local
+infra/.env
+
+# Configuración del alumno y escenarios generados por make init
+.env
+workspace/
+
+# Dependencias y datos locales de Telón
+node_modules/
+.data/
+/*.code-workspace
