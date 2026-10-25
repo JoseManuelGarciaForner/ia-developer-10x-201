@@ -6,8 +6,8 @@ Un asistente escribe documentación que se lee bien en segundos. El riesgo es qu
 
 ## Punto de partida
 
-- Repositorio del curso abierto en el Dev Container (local o Codespaces), con dos terminales en `telon/`.
-- Un asistente en modo agente: Copilot o Cursor en modo **Agent**, o Claude Code (`claude` en la terminal, desde `telon/`).
+- El repositorio del curso abierto en el Dev Container (VS Code local o Codespaces), con **dos** terminales abiertas en `telon/`. Para la segunda, pulsa el **+** del panel de terminal.
+- Un asistente en modo agente. En Copilot o Cursor, la vista de chat con el selector de modo en **Agent**. En Claude Code, `claude` en la terminal, dentro de `telon/`.
 - Lo que es cierto hoy, comprobado en el código y ejecutando:
   - la API escucha en el puerto 3000 (`curl localhost:3000/api/health` responde `{"ok":true}`);
   - no existe `npm run seed`: los datos se cargan al arrancar la API y con `npm run db:reset`;
@@ -16,41 +16,61 @@ Un asistente escribe documentación que se lee bien en segundos. El riesgo es qu
 
 ### Preparación
 
-1. Terminal 1: `CONFIRM=1 make init-m04`. Deja la devolución hecha y probada, y el README heredado.
-2. Terminal 2: `make up-m04`, y se deja abierta.
-3. Se abre `README.md` (el de `telon/`) y se enseñan tres líneas que el paso 1 va a heredar:
-   - línea 9: `npm run seed      # carga los datos de ejemplo`;
-   - línea 13: `- API: http://localhost:8080`;
-   - línea 27: `Los correos de confirmación se envían con SendGrid. Configura la API key en SENDGRID_API_KEY.`
+**Paso A — Deja el proyecto en el estado de partida.**
+En la terminal 1, escribe `CONFIRM=1 make init-m04`.
+**Resultado esperado:** `telon/ está en el punto de partida de m04.` La devolución está hecha y probada, y el README es el heredado.
 
-Las tres son falsas, y de momento no se dice.
+**Paso B — Arranca la plataforma.**
+En la terminal 2, escribe `make up-m04` y déjala abierta.
+**Resultado esperado:** líneas de `[api]`, `[pagos]`, `[correo]`, `[tienda]`, `[backoffice]` y `[editor]`, y ningún error.
+
+**Paso C — Enseña el README heredado.**
+Pulsa <kbd>Ctrl</kbd>+<kbd>P</kbd>, escribe `README.md` y elige el de la raíz de `telon/` (no el de `docs/` ni el de otras carpetas).
+**Resultado esperado:** el README del proyecto. Fíjate en tres líneas:
+
+- línea 9: `npm run seed      # carga los datos de ejemplo`;
+- línea 13: `- API: http://localhost:8080`;
+- línea 27: `Los correos de confirmación se envían con SendGrid. Configura la API key en SENDGRID_API_KEY.`
+
+![El README heredado](../img/M04-00-readme-heredado.png)
+
+Las tres son falsas. De momento no se dice: se trata de ver si el asistente lo descubre. Cierra la pestaña.
 
 > [!NOTE]
 > El texto exacto que genera el asistente cambia con el modelo. Lo que se repite es qué afirmaciones son ciertas con cada método.
 
 ## Recorrido
 
-### 1. Actualizar leyendo: el README nuevo hereda los errores del viejo
+### Paso 1 — Actualizar leyendo: el README nuevo hereda los errores del viejo
 
-1. Se abre una conversación nueva en modo agente y se pide:
+**1.1 Pide la actualización.**
+**Dónde:** conversación nueva en modo agente.
+**Qué haces:** escribe y pulsa <kbd>Enter</kbd>:
 
 ```text
 Actualiza el README.md con la funcionalidad de devoluciones.
 ```
 
-2. Cuando termina, en la terminal 1: `git diff README.md`.
+**Resultado esperado:** el agente lee `README.md`, `AGENTS.md` y algún fichero de `services/api/src/refunds/`, y modifica `README.md`. Si pide permiso para guardar, acéptalo: el cambio se descarta al final.
 
-**Qué se ve:** una sección «Devoluciones» nueva y correcta, porque la ha sacado de `AGENTS.md`. Pero las líneas de `npm run seed`, el puerto 8080 y `SENDGRID_API_KEY` siguen igual. Y a menudo aparece una línea nueva, como `npm run migrate` «para aplicar las migraciones», que tampoco existe.
+**1.2 Mira lo que ha cambiado.**
+**Qué haces:** en la terminal 1, escribe `git diff README.md`.
+**Resultado esperado:** una sección «Devoluciones» nueva y correcta. Pero las líneas de `npm run seed`, el puerto 8080 y `SENDGRID_API_KEY` siguen igual, sin marcar con `+` ni con `-`. A menudo aparece además una línea nueva igual de falsa, como `npm run migrate` «para aplicar las migraciones».
 
-3. Para comprobarlo en directo, en la terminal 1: `npm run seed`. Responde `Missing script: "seed"`.
+**1.3 Compruébalo en directo.**
+**Qué haces:** en la terminal 1, escribe `npm run seed`.
+**Resultado esperado:** `npm error Missing script: "seed"`.
 
-**Qué muestra:** el asistente ha hecho lo que se le pidió, actualizar un texto a partir de otro texto. No tenía ningún motivo para dudar del README, y lo que inventa es tan creíble como lo que copia.
+**Por qué pasa:** se le pidió actualizar un texto, y el asistente lo ha hecho a partir de otro texto. No tenía ningún motivo para dudar del README, porque nada en el prompt le pedía comprobarlo. Lo que inventa, como el `npm run migrate`, es tan creíble como lo que copia: es lo que tienen muchos proyectos parecidos.
 
-4. Se descarta el cambio: `git checkout README.md`. Se cierra la conversación.
+**1.4 Descarta el cambio.**
+**Qué haces:** en la terminal 1, `git checkout README.md`, y cierra la conversación.
 
-### 2. Actualizar ejecutando: cada línea con su comprobación
+### Paso 2 — Actualizar ejecutando: cada línea con su comprobación
 
-1. En una conversación **nueva** se pide, con el mismo objetivo y otro método:
+**2.1 Pide la revisión, con otro método.**
+**Dónde:** conversación **nueva** en modo agente.
+**Qué haces:** escribe y pulsa <kbd>Enter</kbd>:
 
 ```text
 Revisa el README.md afirmación por afirmación. Para cada comando, ejecútalo. Para cada URL,
@@ -59,21 +79,39 @@ Dame una tabla: afirmación, cómo lo has comprobado, ¿es cierta? Después rees
 solo con lo comprobado.
 ```
 
-2. El agente pide permiso para cada comando. Se le permiten los de lectura y los que fallan sin efectos: `npm run seed`, `curl`, búsquedas en el repositorio.
-3. Se lee la tabla antes de mirar el README nuevo.
+**2.2 Acepta solo los comandos de lectura.**
+**Qué haces:** el agente pide permiso antes de cada comando. Acepta los que solo leen o fallan sin efectos: `npm run seed`, `curl`, búsquedas en el repositorio. Si pide algo que cambia datos (por ejemplo, `npm run db:reset`), puedes aceptarlo también: solo afecta al entorno de desarrollo.
+**Resultado esperado:** el agente ejecuta y enseña cada resultado. Son los mismos que salen al hacerlo a mano:
 
-**Qué se ve:** el agente ejecuta `npm run seed` (`Missing script: "seed"`), `curl localhost:8080` (conexión rechazada) y `curl localhost:3000/api/health` (`{"ok":true}`), y busca `SENDGRID_API_KEY` en el repositorio (cero resultados). La tabla marca seis afirmaciones como falsas. Después, `git diff README.md` enseña un README más corto en el que cada línea tiene una comprobación detrás.
+![Las comprobaciones del README en la terminal](../img/M04-00-comprobar-readme.png)
 
-**Qué muestra:** lo que cambia el resultado es pedir pruebas en lugar de redacción. Un agente puede ejecutar comandos, y ejecutándolos encuentra lo que leyendo no ve.
+- `npm run seed` → `Missing script: "seed"`;
+- `curl localhost:8080` → `Failed to connect … port 8080`;
+- `curl localhost:3000/api/health` → `{"ok":true}`;
+- la búsqueda de `SENDGRID_API_KEY` → ningún resultado en el código.
 
-4. Se descarta el cambio: `git checkout README.md`.
+**2.3 Lee la tabla antes que el README.**
+**Resultado esperado:** una tabla con unas seis afirmaciones marcadas como falsas. Después, `git diff README.md` muestra un README más corto, en el que cada línea tiene detrás una comprobación que se puede repetir.
 
-### 3. El mismo método con la documentación de un componente
+**Por qué pasa:** el objetivo es el mismo, pero el método ha cambiado. Un agente puede ejecutar comandos, y ejecutándolos encuentra lo que leyendo no ve. Sin la instrucción explícita de comprobar, no lo hace: por defecto redacta.
+
+**2.4 Descarta el cambio.**
+**Qué haces:** en la terminal 1, `git checkout README.md`.
+
+### Paso 3 — El mismo método con la documentación de un componente
 
 Los promotores montan sus páginas con componentes como `SeatPicker`, y su documentación incluye un ejemplo de uso. La forma de comprobar ese ejemplo es pegarlo en el editor del backoffice.
 
-1. Se abre el backoffice (local: `http://localhost:5174`; Codespaces: **Ports** → **Backoffice (5174)**), se entra con el token `faro-dev-token` y, en **Eventos**, se pulsa **Editar página** en «Jazz en el Faro».
-2. En el editor de la izquierda se selecciona todo (<kbd>Ctrl</kbd>+<kbd>A</kbd>) y se pega este ejemplo:
+**3.1 Abre el editor de la página del evento.**
+**Dónde:** en el navegador, el backoffice (local: `http://localhost:5174`; Codespaces: pestaña **Ports** → **Backoffice (5174)** → icono del globo).
+**Qué haces:**
+1. En **Token**, escribe `faro-dev-token` y pulsa **Entrar**.
+2. En **Eventos**, pulsa **Editar página** en la fila de «Jazz en el Faro».
+
+**Resultado esperado:** el editor de código a la izquierda y la vista previa de la página a la derecha.
+
+**3.2 Pega el ejemplo de la documentación.**
+**Qué haces:** haz clic en el editor de la izquierda, selecciona todo con <kbd>Ctrl</kbd>+<kbd>A</kbd> y pega este código:
 
 ```tsx
 import { Cart, Checkout, SeatPicker, useEvent } from '@telon/ui';
@@ -91,17 +129,20 @@ export default function Pagina() {
 }
 ```
 
-**Qué se ve:** la vista previa de la derecha muestra solo la platea (filas A a J), el carrito y el pago.
+**Resultado esperado:** la vista previa muestra solo la platea (filas A a J), el carrito y el pago. Arriba aparece «Cambios sin guardar».
 
-![Ejemplo de SeatPicker pegado en el editor del backoffice](../img/M04-02-ejemplo-seatpicker-editor.png)
+![El ejemplo correcto en el editor del backoffice](../img/M04-02-ejemplo-seatpicker-editor.png)
 
-3. Se cambia `zone="platea"` por `zona="platea"`, el error típico de una documentación escrita sin probar.
+**3.3 Introduce el error típico.**
+**Qué haces:** en la línea 8, cambia `zone="platea"` por `zona="platea"`.
+**Resultado esperado:** `zona` queda subrayada en rojo y la vista previa vuelve a mostrar todas las zonas, de la A a la O.
 
-**Qué se ve:** Monaco subraya `zona` porque esa prop no existe, y la vista previa vuelve a mostrar todas las zonas, platea y anfiteatro.
+![La prop mal escrita, subrayada, y todas las zonas en la vista previa](../img/M04-00-zona-mal-escrita.png)
 
-**Qué muestra:** el editor del backoffice compila el ejemplo con los mismos tipos que usará el promotor, así que un ejemplo que funciona ahí funciona en su página.
+**Por qué pasa:** el editor del backoffice comprueba el ejemplo con los mismos tipos que usará el promotor. Una prop que no existe se subraya, y el componente la ignora. Un ejemplo que funciona ahí funciona en la página del promotor; uno escrito sin probarlo puede no hacerlo.
 
-4. Para dejarlo como estaba: no se pulsa **Guardar**. Se recarga la página del navegador y se descartan los cambios.
+**3.4 No guardes.**
+**Qué haces:** no pulses **Guardar**. Recarga la página del navegador (<kbd>F5</kbd>) y acepta descartar los cambios si te lo pregunta.
 
 ## Qué queda visto
 
