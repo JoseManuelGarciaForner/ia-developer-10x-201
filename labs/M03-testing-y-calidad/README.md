@@ -32,6 +32,7 @@ Para depurar con el asistente le das la traza completa, el test que falla y el f
 
 ## Páginas
 
+<!-- gen:paginas -->
 | # | Página | Qué hay |
 |---|--------|---------|
 | 00 | [La red de tests](00-la-red-de-tests.md) | Demostración: tests desde el código frente a tests desde la regla |
@@ -41,3 +42,4 @@ Para depurar con el asistente le das la traza completa, el test que falla y el f
 | 04 | [Laboratorio: el correo que llegaba tres veces](04-lab-debugging-correo-duplicado.md) | Traza, causa antes que arreglo, idempotencia y comprobación en Mailpit |
 
 → Empieza por **[00 — La red de tests](00-la-red-de-tests.md)**.
+<!-- /gen:paginas -->

@@ -31,6 +31,7 @@ En Telón, la tarea repetitiva es cargar datos de prueba (el tenant Sala Faro, s
 
 ## Páginas
 
+<!-- gen:paginas -->
 | # | Página | Qué hay |
 |---|--------|---------|
 | 00 | [Documentar lo que hay](00-documentar-lo-que-hay.md) | Demostración: actualizar el README leyendo frente a actualizarlo ejecutando |
@@ -38,3 +39,4 @@ En Telón, la tarea repetitiva es cargar datos de prueba (el tenant Sala Faro, s
 | 02 | [Laboratorio: script, componente y prompts](02-lab-script-y-snippets.md) | `npm run escenario` idempotente, `SeatPicker` documentado y probado en el editor, y un prompt versionado |
 
 → Empieza por **[00 — Documentar lo que hay](00-documentar-lo-que-hay.md)**.
+<!-- /gen:paginas -->

@@ -2,7 +2,7 @@
 
 [← Página anterior](01-lab-entorno-y-primer-chat.md) · [Siguiente página →](../M02-generacion-de-codigo/README.md)
 
-Llega la primera petición para el equipo: que los compradores puedan devolver entradas. Antes de pedir código, usas el asistente para entender por dónde pasa un pedido en Telón. Después le preguntas cómo haría el cambio y anotas lo que da por supuesto sin saberlo. Esa lista es lo que le falta saber, y es lo que se escribe en el M02.
+Llega la primera petición para el equipo: que los compradores puedan devolver entradas. Antes de pedir código, usas el asistente para entender por dónde pasa un pedido en Telón. Después le preguntas cómo haría el cambio y localizas lo que da por supuesto sin saberlo. Esa lista es lo que le falta saber, y es lo que se escribe en el M02.
 
 ### Objetivo
 

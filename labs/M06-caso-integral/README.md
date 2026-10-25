@@ -45,6 +45,7 @@ El modo se elige en el `.env` de tu fork (copia de `.env.example`). `make init-m
 
 ## Páginas
 
+<!-- gen:paginas -->
 | # | Página | Qué hay |
 |---|--------|---------|
 | 00 | [El legado](00-el-legado.md) | Enunciado: los cuatro repositorios heredados, qué se sabe de ellos y DEV-430 |
@@ -55,3 +56,4 @@ El modo se elige en el `.env` de tu fork (copia de `.env.example`). `make init-m
 | 05 | [Antipatrones y adopción](05-antipatrones-y-adopcion.md) | Lo que salió mal en el curso y tres pasos de adopción para tu equipo |
 
 → Empieza por **[00 — El legado](00-el-legado.md)**.
+<!-- /gen:paginas -->

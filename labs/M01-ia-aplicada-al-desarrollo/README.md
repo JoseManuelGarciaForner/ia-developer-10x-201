@@ -35,6 +35,7 @@ Buenas prácticas de adopción desde el primer día:
 
 ## Páginas
 
+<!-- gen:paginas -->
 | # | Página | Qué hay |
 |---|--------|---------|
 | 00 | [Del autocompletado al agente](00-del-autocompletado-al-agente.md) | Demostración: la misma pregunta sobre Telón a las tres formas de asistente |
@@ -42,3 +43,4 @@ Buenas prácticas de adopción desde el primer día:
 | 02 | [Laboratorio: leer la petición](02-lab-leer-la-peticion.md) | El recorrido de un pedido, los supuestos del asistente y lo que le falta saber |
 
 → Empieza por **[00 — Del autocompletado al agente](00-del-autocompletado-al-agente.md)**.
+<!-- /gen:paginas -->

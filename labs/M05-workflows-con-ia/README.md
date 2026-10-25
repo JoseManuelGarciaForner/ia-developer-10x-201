@@ -34,6 +34,7 @@ No se pega en un prompt: la API key del proveedor de email de un promotor, otras
 
 ## Páginas
 
+<!-- gen:paginas -->
 | # | Página | Qué hay |
 |---|--------|---------|
 | 00 | [El equipo y el asistente](00-el-equipo-y-el-asistente.md) | Demostración: qué va al repositorio, resumen y revisión del PR, MCP, agentes especializados y cómo medir |
@@ -41,3 +42,4 @@ No se pega en un prompt: la API key del proveedor de email de un promotor, otras
 | 02 | [Laboratorio: workflow y seguridad](02-lab-workflow-y-seguridad.md) | CI en verde (y en el sitio correcto), la API key que se escapaba y los permisos del agente |
 
 → Empieza por **[00 — El equipo y el asistente](00-el-equipo-y-el-asistente.md)**.
+<!-- /gen:paginas -->

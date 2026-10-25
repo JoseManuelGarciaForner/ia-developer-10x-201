@@ -1,6 +1,6 @@
 # Antipatrones y adopción
 
-[← Página anterior](04-lab-dev2-sin-memoria.md) · [Volver al inicio →](../../README.md)
+[← Página anterior](04-lab-dev2-sin-memoria.md)
 
 A lo largo del curso, la devolución de entradas de Telón ha pasado por todas las fases: petición, código, tests, documentación, pull request, CI y, al final, los repositorios heredados que nadie había contextualizado. Esta página recoge lo que salió mal cada vez que se usó el asistente sin criterio, y cómo llevarlo a tu equipo sin empezar por lo más difícil.
 

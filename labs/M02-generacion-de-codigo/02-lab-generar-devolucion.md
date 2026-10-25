@@ -2,7 +2,7 @@
 
 [← Página anterior](01-lab-reglas-del-proyecto.md) · [Siguiente página →](03-lab-explicar-y-refactorizar.md)
 
-Con las reglas del proyecto en el repositorio, le pides al asistente la devolución de entradas (DEV-412): base de datos, API, pasarela, correo y el componente del comprador. No la aceptas en bloque. Pides primero el plan, después cada parte por separado, y revisas cada diff antes de seguir.
+Con las reglas del proyecto en el repositorio, le pides al asistente la devolución de entradas (DEV-412): base de datos, API, pasarela, correo y el componente del comprador. No la aceptas en bloque. Pides primero el plan, después cada parte por separado, y revisas cada diff antes de pasar a la siguiente.
 
 ### Objetivo
 

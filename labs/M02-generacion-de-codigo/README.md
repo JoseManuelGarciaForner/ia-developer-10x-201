@@ -42,6 +42,7 @@ Al revisar un diff generado conviene mirar: imports que no existen, nombres que 
 
 ## Páginas
 
+<!-- gen:paginas -->
 | # | Página | Qué hay |
 |---|--------|---------|
 | 00 | [El contexto cambia el diff](00-contexto-cambia-el-diff.md) | Demostración: el mismo prompt de DEV-412 sin reglas y con reglas |
@@ -50,3 +51,4 @@ Al revisar un diff generado conviene mirar: imports que no existen, nombres que 
 | 03 | [Laboratorio: explicar y refactorizar](03-lab-explicar-y-refactorizar.md) | El cálculo de importes explicado, con tests de caracterización y refactorizado sin cambiar un céntimo |
 
 → Empieza por **[00 — El contexto cambia el diff](00-contexto-cambia-el-diff.md)**.
+<!-- /gen:paginas -->

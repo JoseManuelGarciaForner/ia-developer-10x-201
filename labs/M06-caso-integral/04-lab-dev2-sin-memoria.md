@@ -50,7 +50,7 @@ DEV-430: una entrada devuelta en Telón no debe entrar en la sala (control-acces
 liquidarse (liquidaciones). Implementa el cambio mínimo en los dos repositorios.
 ```
 
-Deja que termine, y anota en un fichero aparte (por ejemplo, `/tmp/sin-contexto.md`):
+Deja que termine y guarda en un fichero aparte (por ejemplo, `/tmp/sin-contexto.md`):
 - qué estado de entrada usa para «devuelta»;
 - qué ficheros de `liquidaciones` toca;
 - si ha comprobado algo contra Telón.
