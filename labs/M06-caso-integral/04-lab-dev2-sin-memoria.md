@@ -35,7 +35,15 @@ Dos intentos de la misma tarea en los clones de `dev2`: el primero sin contexto 
 
 ### 1 — Abre el chat de dev2 sin contexto
 
-**Acción:** abre el asistente en `workspace/m06/dev2` (otra ventana o `cd ../workspace/m06/dev2 && claude`), en un chat nuevo. Comprueba que no tiene el contexto: `ls */AGENTS.md` en esa carpeta no debe encontrar nada.
+**Acción:** abre el asistente en `workspace/m06/dev2`, en una conversación nueva:
+
+| Asistente | Cómo abrirlo en `workspace/m06/dev2` |
+|-----------|---------------------------------------|
+| VS Code o Codespaces + Copilot | En la terminal, desde `telon/`: `code ../workspace/m06/dev2`. Se abre otra ventana; en ella, <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> → **+** → modo **Agent** |
+| Cursor | Desde `telon/`: `cursor ../workspace/m06/dev2`. En la ventana nueva, <kbd>Ctrl</kbd>+<kbd>L</kbd> → **+** → modo **Agent** |
+| Claude Code | En una terminal nueva: `cd ../workspace/m06/dev2 && claude` |
+
+Después, en una terminal en esa carpeta (`cd ../workspace/m06/dev2` desde `telon/`), comprueba que no tiene el contexto: `ls */AGENTS.md` no debe encontrar nada.
 
 **Por qué:** el primer intento mide lo que hace el asistente con lo que un desarrollador nuevo encuentra al clonar: código y README que mienten.
 
@@ -43,7 +51,7 @@ Dos intentos de la misma tarea en los clones de `dev2`: el primero sin contexto 
 
 ### 2 — Primer intento: sin contexto
 
-**Acción:**
+**Acción:** ve al chat de `dev2`, pega esto y pulsa <kbd>Enter</kbd>. Acepta los permisos que pida para leer, modificar ficheros y ejecutar comandos.
 
 ```text
 DEV-430: una entrada devuelta en el proyecto Telón no debe entrar en la sala (control-acceso) ni
@@ -61,7 +69,7 @@ Deja que termine y guarda en un fichero aparte (por ejemplo, `/tmp/sin-contexto.
 
 ### 3 — Descarta el primer intento
 
-**Acción:** en `workspace/m06/dev2`: `for d in */; do git -C "$d" checkout -q . && git -C "$d" clean -qfd; done`
+**Acción:** en la terminal, en `workspace/m06/dev2`: `for d in */; do git -C "$d" checkout -q . && git -C "$d" clean -qfd; done`
 
 **Por qué:** el primer intento solo sirve para comparar. No debe mezclarse con el segundo.
 
@@ -69,7 +77,7 @@ Deja que termine y guarda en un fichero aparte (por ejemplo, `/tmp/sin-contexto.
 
 ### 4 — Trae el contexto del equipo
 
-**Acción:** `for d in */; do git -C "$d" pull -q; done`, y después `ls */AGENTS.md`
+**Acción:** en la terminal, en `workspace/m06/dev2`: `for d in */; do git -C "$d" pull -q; done`, y después `ls */AGENTS.md`
 
 **Por qué:** es lo único que separa a `dev2` de `dev1`: lo que quedó versionado. Ni chat, ni memoria, ni conversación.
 
@@ -77,7 +85,7 @@ Deja que termine y guarda en un fichero aparte (por ejemplo, `/tmp/sin-contexto.
 
 ### 5 — Segundo intento: chat nuevo, con contexto
 
-**Acción:** cierra el chat y abre otro nuevo en `workspace/m06/dev2`. Usa el mismo prompt del paso 2.
+**Acción:** cierra la conversación y abre una **nueva** en `workspace/m06/dev2` (**+**, o `/exit` y `claude` otra vez en Claude Code: así carga los `AGENTS.md` recién bajados). Pega el mismo prompt del paso 2 y pulsa <kbd>Enter</kbd>.
 
 **Por qué:** mismo asistente, mismo prompt, misma persona. Solo cambian los ficheros del repositorio.
 
@@ -85,7 +93,7 @@ Deja que termine y guarda en un fichero aparte (por ejemplo, `/tmp/sin-contexto.
 
 ### 6 — Revisa el diff
 
-**Acción:** en cada repositorio, `git diff`, y repasa:
+**Acción:** en la terminal, en cada repositorio de `dev2`, `git diff`, y repasa:
 - `control-acceso/lib/validar.js`: ¿rechaza todo lo que no sea `valid`, o solo `refunded`? Lo primero aguanta el próximo estado que añada el proyecto Telón.
 - `liquidaciones/exportar.sh`: ¿la consulta tiene en cuenta `t.status`?
 - ¿Ha respetado las convenciones de cada repositorio (callbacks y `var` en uno, Python en español en el otro)?
@@ -97,7 +105,7 @@ Deja que termine y guarda en un fichero aparte (por ejemplo, `/tmp/sin-contexto.
 
 ### 7 — Comprueba la puerta
 
-**Acción:** en `dev2/control-acceso`:
+**Acción:** en la terminal, en `workspace/m06/dev2/control-acceso`:
 
 ```bash
 npm install
@@ -111,7 +119,7 @@ TELON_DB="$DATABASE_URL" node bin/validar.js "$(cd ../../../../telon && npm run 
 
 ### 8 — Comprueba la liquidación con datos reales
 
-**Acción:** en `dev2/liquidaciones`:
+**Acción:** en la terminal, en `workspace/m06/dev2/liquidaciones`:
 
 ```bash
 TELON_DB="$DATABASE_URL" ./exportar.sh 2026-10-02
@@ -131,7 +139,7 @@ Sin el arreglo saldrían 3 entradas, 131,00 € de ventas y 121,18 € a pagar.
 
 ### 9 — Sube el cambio
 
-**Acción:** en `control-acceso` y en `liquidaciones` de `dev2`:
+**Acción:** en la terminal, en `control-acceso` y en `liquidaciones` de `dev2`:
 
 ```bash
 git add -A && git commit -m "DEV-430: las entradas devueltas no entran ni se liquidan" && git push
@@ -145,7 +153,7 @@ Si el cambio ha revelado algo que el contexto no decía, añádelo a su `AGENTS.
 
 ### 10 — Compara los dos intentos
 
-**Acción:** completa esta tabla en `dev2/contexto-equipo/DEV-430.md` y súbela:
+**Acción:** crea `contexto-equipo/DEV-430.md` en `dev2` con esta tabla, complétala con lo que guardaste en el paso 2 y lo que ves ahora, y súbela (`git add`, `git commit` y `git push` en `contexto-equipo`):
 
 | | Sin contexto | Con contexto |
 |---|---|---|
@@ -167,14 +175,26 @@ Pregunta en el chat de `dev2`: «Si el proyecto Telón añade mañana el estado 
 
 ## Reto
 
-### 1 — DESDE
+### 1 — Preparar sin decidir: rama y handoff con el asistente
 
-`tarifas/promotores/sala-faro.tarifa` dice que desde 2025 el anfiteatro paga el 6 %, y liquidaciones aplica el 5 %. Como `dev2`, prepara el cambio en una rama (`feat/tarifas-desde`) pero no lo fusiones. ¿Por qué no?
+`tarifas/promotores/sala-faro.tarifa` dice que desde 2025 el anfiteatro paga el 6 %, y liquidaciones aplica el 5 % porque ignora `DESDE`. Como `dev2`, escribe un prompt para que el asistente prepare el cambio en una rama (`feat/tarifas-desde`) y deje el handoff como dice `contexto-equipo/DINAMICA.md`, sin fusionar nada. ¿Por qué no se fusiona?
 
 <details>
 <summary>Ver solución</summary>
 
-El cambio en `leer_tarifa` es sencillo: entender `DESDE <fecha> <instrucción>` y aplicar la instrucción si el día que se liquida es posterior. Pero cambia lo que se paga a un promotor, y `tarifas/AGENTS.md` dice que eso requiere el visto bueno de comercial (además, habría que decidir si se recalculan las liquidaciones de 2025). La rama con su handoff en la descripción, según `DINAMICA.md`, es la forma de dejarlo preparado sin decidir por otros.
+Un prompt que funciona, en el chat de `dev2`:
+
+```text
+En liquidaciones, en una rama feat/tarifas-desde: haz que leer_tarifa entienda
+DESDE <fecha> <instrucción> y la aplique si el día que se liquida es posterior. Comprueba
+con python3 liquidar.py 2026-10-02 qué cambia. Deja el handoff como dice
+../contexto-equipo/DINAMICA.md en el mensaje del commit (hecho, pendiente, comprobado,
+dudas). No fusiones ni subas a main.
+```
+
+El cambio en `leer_tarifa` es sencillo, pero cambia lo que se paga a un promotor, y `tarifas/AGENTS.md` dice que eso necesita el visto bueno de comercial. Además, habría que decidir si se recalculan las liquidaciones de 2025.
+
+La rama con su handoff es la forma de dejarlo preparado sin decidir por otros. Que el asistente lea `DINAMICA.md` para el formato del handoff es lo que hace que cualquier persona del equipo lo encuentre igual.
 
 </details>
 

@@ -12,7 +12,7 @@ Durante el curso llevas una funcionalidad real de principio a fin en un proyecto
 
 ### El proyecto
 
-Tu equipo hereda **Telón**, un SaaS de venta de entradas para espectáculos que ya está en producción:
+Tu equipo hereda el proyecto **Telón**, un SaaS de venta de entradas para espectáculos que ya está en producción:
 
 - **Promotores** (salas, teatros) crean su cuenta, configuran sus dominios y diseñan las páginas de sus eventos en TSX, con el editor de VS Code integrado en el backoffice.
 - **Compradores** eligen butaca o pase, pagan y reciben sus entradas con QR por correo.
