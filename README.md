@@ -4,35 +4,67 @@
 
 ## Objetivo general
 
-Al finalizar el curso, el alumno lleva un evolutivo de la petición al pull request con un asistente de IA en cada fase: le da el contexto del proyecto, le pide cambios verificables y revisa lo que devuelve antes de que entre.
+Aprender a usar un asistente de IA (GitHub Copilot, Cursor o Claude Code) en el trabajo diario de un equipo de desarrollo **sin perder el control de lo que entra en el repositorio**.
+
+Durante el curso llevas una funcionalidad real de principio a fin en un proyecto que no has escrito: desde que llega la petición hasta que se fusiona el pull request. En cada fase usas el asistente para lo que mejor hace (leer código, proponer cambios, escribir tests y documentación, automatizar tareas) y practicas las dos cosas que deciden si el resultado sirve: darle el contexto que necesita y comprobar lo que devuelve.
 
 ## Enfoque
 
-Tu equipo hereda el proyecto **Telón**, un SaaS de venta de entradas para espectáculos que ya está en producción. Cada promotor crea su cuenta, configura sus dominios y diseña en TSX las páginas de sus eventos, con el editor de VS Code integrado en el backoffice. Para montarlas usa los componentes de la plataforma: selector de pases, selector de butacas, carrito, pago y QR. Detrás hay una API, colas, una pasarela de pago y el envío de correo por el proveedor que elija cada promotor.
+### El proyecto
 
-Llega una petición: que los compradores puedan devolver entradas. No vas a escribir ese evolutivo a mano, ni tampoco vas a aceptar lo primero que proponga el asistente. Cada módulo es una fase del mismo trabajo: entender la plataforma, generar y refactorizar, probar y depurar, documentar y automatizar, y llevarlo a un pull request revisado. El pedido `PED-2026-0107` de la Sala Faro recorre todo el curso, así que puedes comparar lo que devuelve el asistente con y sin contexto. El curso se cierra con repositorios heredados sin contexto y dos desarrolladores que tienen que trabajar sin depender de la memoria de nadie.
+Tu equipo hereda **Telón**, un SaaS de venta de entradas para espectáculos que ya está en producción:
 
-El asistente no hace diez veces más por escribir más rápido. Hace más cuando le das el contexto del proyecto, le pides el cambio con un criterio de hecho y le encargas también los tests, la documentación y las tareas repetitivas. Además, revisas lo que devuelve antes de que entre.
+- **Promotores** (salas, teatros) crean su cuenta, configuran sus dominios y diseñan las páginas de sus eventos en TSX, con el editor de VS Code integrado en el backoffice.
+- **Compradores** eligen butaca o pase, pagan y reciben sus entradas con QR por correo.
+- **Por detrás** hay una API, colas, una pasarela de pago y el envío de correo por el proveedor que elija cada promotor.
+
+Es una plataforma completa que arranca en tu equipo o en el navegador con un solo comando, y que tiene lo que tiene cualquier proyecto real: reglas de negocio que no están escritas, un README que no cuadra con el código y algún fallo escondido.
+
+### La petición
+
+Llega una petición sencilla de enunciar: **que los compradores puedan devolver entradas**. Para hacerla hay que tocar base de datos, API, pasarela, cola de correo y tienda, y respetar reglas que el asistente no puede adivinar. Cada módulo es una fase de ese mismo trabajo:
+
+| Módulo | Fase | Qué haces con el asistente |
+|--------|------|-----------------------------|
+| M01 | Entender | Recorrer la plataforma y descubrir lo que da por supuesto sin saberlo |
+| M02 | Construir | Escribir las reglas del proyecto, generar la devolución y refactorizar el cálculo de importes |
+| M03 | Probar | Tests desde las reglas de negocio, mocks y dos fallos que los tests en verde no veían |
+| M04 | Documentar | README, API y componentes comprobados contra el código, y un script para los datos de prueba |
+| M05 | Entregar | Pull request revisado, CI en GitHub Actions y una revisión de seguridad |
+| M06 | Escalar al equipo | Repositorios heredados sin contexto y dos desarrolladores que no comparten conversación |
+
+### La idea de fondo
+
+Un desarrollador «10x» con IA no es el que genera más código, sino el que obtiene cambios correctos a la primera y los comprueba rápido. En cada lab se practican tres hábitos:
+
+1. **Dar contexto**: las reglas del proyecto viven en el repositorio (`AGENTS.md`), no en el prompt de cada uno.
+2. **Pedir cambios comprobables**: con un criterio de hecho, un ejemplo y los tests que lo demuestran.
+3. **Revisar antes de aceptar**: cada diff se lee y se verifica ejecutándolo.
+
+El mismo pedido de ejemplo, `PED-2026-0107` de la Sala Faro, aparece en todo el curso, así que puedes comparar lo que devuelve el asistente con contexto y sin él.
 
 ## Dirigido a
 
-Desarrolladores que mantienen y evolucionan producto y quieren usar un asistente de IA en su trabajo diario sin perder el control de lo que entra en el repositorio. No es un curso de programación ni de una herramienta concreta.
+Desarrolladores que mantienen y hacen evolucionar un producto y quieren incorporar un asistente de IA a su trabajo diario, de forma que el equipo pueda confiar en lo que se genera. No es un curso de programación ni de una herramienta concreta: lo aprendido vale para cualquier asistente con modo agente.
 
 ## Conocimientos previos
 
-- Se da por sabido programar con soltura básica y trabajar con Git (ramas, commits, pull requests). El curso no los enseña.
-- Basta con haber usado alguna vez un asistente de IA, aunque sea solo el chat.
-- El stack del proyecto (TypeScript, React, colas) se lee con el asistente durante el curso; no hace falta conocerlo.
+- Programar con soltura básica y manejar Git (ramas, commits, pull requests). El curso no los enseña.
+- Haber usado alguna vez un asistente de IA, aunque sea solo el chat.
+- No hace falta conocer el stack del proyecto (TypeScript, React, colas): se lee con el asistente durante el curso.
 - No hace falta instalar nada si usas GitHub Codespaces: basta el navegador y una cuenta de GitHub.
 
 ## Objetivos específicos
 
-- Situar autocompletado, chat y agente, y detectar lo que el asistente da por supuesto sobre una plataforma que no conoce.
-- Generar con contexto la devolución, de la API al componente, y refactorizar el cálculo de importes sin cambiar el comportamiento.
-- Obtener tests, datos y mocks desde las reglas de negocio, y corregir un fallo a partir de la traza.
-- Documentar el README, la API y los componentes contra el código, y convertir una tarea repetitiva en un script.
-- Llevar el cambio a un pull request revisado, con reglas versionadas, un workflow que lo valida y sin filtrar datos sensibles.
-- Contextualizar repositorios heredados para que otro desarrollador haga un cambio solo con lo que queda en el repositorio.
+Al terminar el curso sabrás:
+
+- Distinguir autocompletado, chat y agente, y detectar lo que el asistente supone sobre un código que no conoce.
+- Escribir el contexto de un proyecto para que cualquier asistente lo aplique, y generar con él una funcionalidad completa, de la API al componente.
+- Refactorizar código heredado sin cambiar su comportamiento, con tests de caracterización como red.
+- Obtener tests, datos de prueba y mocks a partir de las reglas de negocio, y encontrar la causa de un fallo a partir de su traza.
+- Documentar un proyecto contra el código real y convertir una tarea repetitiva en un script.
+- Llevar un cambio a un pull request revisado, validado por CI y sin exponer datos sensibles.
+- Dejar contexto en repositorios heredados para que otra persona trabaje sobre ellos sin depender de tu conversación.
 
 ## Temario
 
