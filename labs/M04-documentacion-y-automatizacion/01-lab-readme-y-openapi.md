@@ -10,9 +10,19 @@ Un `README.md` en el que todo comando funciona y toda URL responde, y un `openap
 
 ### Punto de partida
 
-- El proyecto abierto en el Dev Container, carpeta `telon/`.
-- Estado: `make init-m04` (devolución implementada y probada, README heredado) y `make up-m04` en otra terminal.
-- Asistente en modo agente.
+- El repositorio del curso abierto en el Dev Container (local o Codespaces), con dos terminales en `telon/`.
+- Terminal 1: `CONFIRM=1 make init-m04`; responde `telon/ está en el punto de partida de m04.` La devolución está implementada y probada, y el README es el heredado.
+- Terminal 2: `make up-m04`, y déjala abierta.
+- Un asistente en modo agente:
+
+| Asistente | Cómo abrir una conversación nueva |
+|-----------|-----------------------------------|
+| VS Code o Codespaces + Copilot | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> → **+** → modo **Agent** bajo la caja de texto |
+| Cursor | <kbd>Ctrl</kbd>+<kbd>L</kbd> → **+** → modo **Agent** |
+| Claude Code | En una terminal nueva, dentro de `telon/`: `claude` |
+
+> [!NOTE]
+> El asistente tiene el código y `AGENTS.md`, que su herramienta carga al abrir cada conversación. `AGENTS.md` no dice nada del README: si no le pides que compruebe, lo da por bueno.
 
 ### En qué consiste
 
@@ -20,7 +30,7 @@ Auditoría del README, reescritura, generación del OpenAPI, validación con `@r
 
 ### 1 — Audita el README
 
-**Acción:** en un chat nuevo:
+**Acción:** ve al chat, abre una conversación nueva, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Revisa README.md afirmación por afirmación. Para cada comando, ejecútalo. Para cada URL, haz
@@ -30,7 +40,7 @@ Devuélveme una tabla: afirmación | cómo lo has comprobado | ¿cierta? No camb
 
 **Por qué:** la documentación se verifica igual que el código: ejecutándola. Pedir la tabla antes de reescribir te deja ver qué ha comprobado de verdad el asistente.
 
-**Resultado esperado:** al menos estas filas en rojo:
+**Resultado esperado:** el agente pide permiso para cada comando (`npm run seed`, varios `curl`, búsquedas). Acéptalos: solo leen o fallan sin efectos. Después devuelve la tabla, con al menos estas filas marcadas como falsas:
 
 | Afirmación | Comprobación |
 |------------|--------------|
@@ -41,7 +51,7 @@ Devuélveme una tabla: afirmación | cómo lo has comprobado | ¿cierta? No camb
 
 ### 2 — Comprueba tú dos filas
 
-**Acción:** ejecuta en una terminal:
+**Acción:** en la terminal 1:
 
 ```bash
 npm run seed
@@ -54,7 +64,7 @@ curl -s localhost:3000/api/health
 
 ### 3 — Reescribe el README
 
-**Acción:**
+**Acción:** en el mismo chat, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Reescribe README.md solo con lo comprobado. Incluye: qué es el proyecto, cómo se arranca (make
@@ -66,11 +76,11 @@ ejecutado.
 
 **Por qué:** cada línea del README nuevo tiene detrás una comprobación de la tabla. Lo que no se ha comprobado no entra.
 
-**Resultado esperado:** un README nuevo, sin `seed`, sin 8080 y sin SendGrid como proveedor único, con las tres tarjetas de prueba.
+**Resultado esperado:** el agente modifica `README.md`. Ábrelo (<kbd>Ctrl</kbd>+<kbd>P</kbd> → `README.md`, el de la raíz de `telon/`): sin `seed`, sin 8080 y sin SendGrid como proveedor único, con las tres tarjetas de prueba. Mira también qué ha añadido que no estaba en la tabla: es lo que suele inventar (un `npm run build`, un apartado de despliegue).
 
 ### 4 — Ejecuta el README en una terminal limpia
 
-**Acción:** abre una terminal nueva y ejecuta, copiándolos del README, todos los comandos que aparezcan.
+**Acción:** abre una terminal nueva (**+** del panel de terminal) y ejecuta, copiándolos del README, todos los comandos que aparezcan. No ejecutes los que arrancan la plataforma (`make up-…`, `npm run dev`): ya está arrancada en la terminal 2.
 
 **Por qué:** es la prueba que hará la próxima persona que llegue al equipo. Si un comando falla aquí, fallará allí.
 
@@ -78,7 +88,7 @@ ejecutado.
 
 ### 5 — Genera el OpenAPI desde el código
 
-**Acción:**
+**Acción:** ve al chat, abre una conversación nueva, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Crea openapi.yaml (OpenAPI 3.1) para GET /api/public/orders/{orderId} y POST
@@ -92,11 +102,11 @@ Sácalo del código, no de lo que sueles ver en APIs parecidas.
 
 **Por qué:** un contrato escrito a partir de la idea de la API inventa códigos y campos. Escrito desde los `HttpError` del código, cada respuesta documentada existe.
 
-**Resultado esperado:** `openapi.yaml` con las dos rutas y las respuestas 201, 400, 404, 409 y 502. El 409 incluye el mensaje del plazo de 48 h.
+**Resultado esperado:** `openapi.yaml` en la raíz de `telon/`, con las dos rutas y las respuestas 201, 400, 404, 409 y 502. El 409 incluye el mensaje del plazo de 48 h. Sin la última frase del prompt, lo habitual es que aparezcan respuestas que el código no devuelve, como `401` o `500` con un esquema de error genérico.
 
 ### 6 — Valida el esquema
 
-**Acción:** `npx -y @redocly/cli@2 lint openapi.yaml`
+**Acción:** en la terminal 1, `npx -y @redocly/cli@2 lint openapi.yaml`
 
 **Por qué:** un OpenAPI que no valida no lo pueden usar los generadores de clientes ni los portales de documentación. Además, el linter encuentra errores de YAML que a simple vista no se ven.
 
@@ -107,7 +117,7 @@ Sácalo del código, no de lo que sueles ver en APIs parecidas.
 
 ### 7 — Contrasta el contrato con una petición real
 
-**Acción:**
+**Acción:** en la terminal 1:
 
 ```bash
 npm run db:reset
@@ -124,7 +134,7 @@ Compara la respuesta, campo a campo, con el ejemplo de la respuesta 201 de `open
 
 ### 8 — Haz commit
 
-**Acción:** `git add README.md openapi.yaml && git commit -m "README comprobado y OpenAPI de devoluciones"`
+**Acción:** en la terminal 1, `git add README.md openapi.yaml && git commit -m "README comprobado y OpenAPI de devoluciones"`
 
 **Por qué:** la documentación va al repositorio como el código, y entra por la misma revisión en el M05.
 
@@ -142,14 +152,26 @@ Devuelve una entrada de un pedido que no existe (`PED-2026-9999`).
 
 ## Reto
 
-### 1 — El campo que nadie pidió
+### 1 — Que el asistente pruebe el contrato contra la API
 
-Pide al asistente que añada al OpenAPI la respuesta de `GET /api/public/orders/{orderId}` con todos los campos. Después compara con la respuesta real de `curl` para `PED-2026-0107`. ¿Sobra o falta algún campo?
+Un OpenAPI válido puede describir otra API. Escribe un prompt para que el asistente compruebe `openapi.yaml` contra la API arrancada: que haga las peticiones reales de cada respuesta documentada (201, 400, 404, 409) y compare, campo a campo, la respuesta con el esquema. Que te devuelva una tabla de diferencias y no cambie nada.
 
 <details>
 <summary>Ver solución</summary>
 
-La respuesta real incluye `event_id`, `event_title`, `venue`, `starts_at`, `paid_at`, `subtotal_cents` y `refunds`, además de las entradas (`getBuyerOrder` en `services/api/src/orders/service.ts`). Es habitual que el esquema generado se deje `refunds` o invente `currency`. En las entradas, `qr_token` es `null` si la entrada no es válida: el esquema debería decir `type: [string, 'null']`.
+Un prompt que funciona:
+
+```text
+Comprueba openapi.yaml contra la API que está corriendo en localhost:3000. Para cada ruta y
+cada código de respuesta documentado, construye una petición con curl que lo provoque
+(usa PED-2026-0107 y ana.compradora@ejemplo.test; ejecuta npm run db:reset antes si hace
+falta) y compara la respuesta real con el esquema: campos que sobran, que faltan, tipos y
+nulos. Devuélveme una tabla de diferencias. No cambies openapi.yaml.
+```
+
+Lo que suele salir en `GET /api/public/orders/{orderId}`: la respuesta real incluye `event_id`, `event_title`, `venue`, `starts_at`, `paid_at`, `subtotal_cents` y `refunds`, además de las entradas (`getBuyerOrder` en `services/api/src/orders/service.ts`). Es habitual que el esquema se deje `refunds` o invente `currency`. En las entradas, `qr_token` es `null` si la entrada no es válida, y el esquema debería decir `type: [string, 'null']`.
+
+La habilidad es que el asistente compruebe su propio trabajo contra la realidad, con un formato (la tabla) que te deja revisar el resultado sin repetir las peticiones.
 
 </details>
 

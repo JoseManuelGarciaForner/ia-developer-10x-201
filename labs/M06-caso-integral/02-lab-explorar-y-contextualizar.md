@@ -27,7 +27,16 @@ curl -s localhost:3000/api/public/orders/PED-2026-0107/refunds \
   -d '{"email":"ana.compradora@ejemplo.test","ticket_ids":["PED-2026-0107-1"]}'
 ```
 
-- El asistente abierto en `workspace/m06/dev1` (ver [Remotos y dos desarrolladores](01-remotos-y-dos-desarrolladores.md)).
+- El asistente abierto en `workspace/m06/dev1` (más detalle en [Remotos y dos desarrolladores](01-remotos-y-dos-desarrolladores.md)):
+
+| Asistente | Cómo abrirlo en `workspace/m06/dev1` |
+|-----------|---------------------------------------|
+| VS Code o Codespaces + Copilot | En la terminal, desde `telon/`: `code ../workspace/m06/dev1`. Se abre otra ventana; en ella, <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> → **+** → modo **Agent** |
+| Cursor | Desde `telon/`: `cursor ../workspace/m06/dev1`. En la ventana nueva, <kbd>Ctrl</kbd>+<kbd>L</kbd> → **+** → modo **Agent** |
+| Claude Code | En una terminal nueva: `cd ../workspace/m06/dev1 && claude` |
+
+> [!NOTE]
+> Los repositorios heredados no tienen ningún fichero de contexto para la IA. El asistente solo tiene su código, sus README (que mienten) y lo que su herramienta trae de serie. Tampoco ve el proyecto Telón: está en otra carpeta. Lo que diga del proyecto Telón, o lo comprueba ejecutando o lo supone.
 
 ### En qué consiste
 
@@ -35,7 +44,7 @@ Un repositorio cada vez. Primero el asistente cuenta qué hace; después lo comp
 
 ### 1 — Pregunta por `control-acceso`
 
-**Acción:** en un chat abierto en `dev1`:
+**Acción:** ve al chat abierto en `dev1`, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 En control-acceso: qué hace, cómo se ejecuta, de qué depende (incluido lo que esté fuera del
@@ -45,11 +54,11 @@ fichero y línea. No cambies nada.
 
 **Por qué:** un repositorio sin tests ni contexto se entiende antes preguntando, pero solo si cada respuesta viene con la línea que la respalda.
 
-**Resultado esperado:** el asistente encuentra que no usa la API sino la base de datos del proyecto Telón (`lib/db.js`), que no comprueba la firma del QR y que solo rechaza entradas `void`.
+**Resultado esperado:** el agente lee `README.md`, `package.json`, `bin/validar.js` y `lib/`. Lo habitual es que encuentre que no usa la API sino la base de datos del proyecto Telón (`lib/db.js`), que no comprueba la firma del QR y que solo rechaza entradas `void`. Si no menciona la firma, pregúntale: «¿Dónde se comprueba la firma del QR?». Con un README que dice que valida contra la API, algunos modelos lo dan por cierto sin buscarlo.
 
 ### 2 — Compruébalo en la puerta
 
-**Acción:**
+**Acción:** en una terminal, desde `telon/`:
 
 ```bash
 cd ../workspace/m06/dev1/control-acceso
@@ -68,8 +77,8 @@ TELON_DB="$DATABASE_URL" node bin/validar.js "PED-2026-0107-3.firma-inventada"
 ### 3 — Pregunta por `liquidaciones` y ejecútalo
 
 **Acción:**
-1. Pregunta lo mismo del paso 1 para `liquidaciones`.
-2. Ejecuta, desde `dev1/liquidaciones`: `python3 liquidar.py 2026-10-02`
+1. En el mismo chat, pega el prompt del paso 1 cambiando `control-acceso` por `liquidaciones`.
+2. En la terminal, desde `workspace/m06/dev1/liquidaciones`: `python3 liquidar.py 2026-10-02`
 
 **Por qué:** el README dice que usa la comisión del proyecto Telón. Si es verdad, la comisión de la Sala Faro debería ser la de los pedidos (7,5 % de todo).
 
@@ -84,7 +93,7 @@ Al 7,5 % sobre 179 € saldría 13,42 €. La diferencia está en que liquida co
 
 ### 4 — Comprueba un número a mano
 
-**Acción:** pide al asistente que desglose la comisión de `TN-FARO` entrada a entrada y repásalo con `datos/2026-10-02/entradas.csv` y `../tarifas/promotores/sala-faro.tarifa`.
+**Acción:** en el mismo chat, escribe «Desglosa la comisión de TN-FARO del 2026-10-02 entrada a entrada: precio, zona, porcentaje aplicado y de qué línea de la tarifa sale» y pulsa <kbd>Enter</kbd>. Repásalo y repásalo con `datos/2026-10-02/entradas.csv` y `../tarifas/promotores/sala-faro.tarifa`.
 
 **Por qué:** un desglose que cuadra con los datos te dice que el asistente ha entendido el parser. Uno que no cuadra te dice dónde está lo raro.
 
@@ -92,7 +101,7 @@ Al 7,5 % sobre 179 € saldría 13,42 €. La diferencia está en que liquida co
 
 ### 5 — Descubre la gramática de `tarifas`
 
-**Acción:**
+**Acción:** en el mismo chat, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Las tarifas de tarifas/promotores/*.tarifa usan un formato propio. Escribe su gramática
@@ -109,7 +118,7 @@ Compruébalo: `grep -n DESDE ../liquidaciones/liquidar.py` no devuelve nada.
 
 ### 6 — Revisa `widget-embebido`
 
-**Acción:** pregunta lo mismo del paso 1 y comprueba la URL con `grep -n "api/" widget.js`.
+**Acción:** en el mismo chat, pega el prompt del paso 1 cambiando `control-acceso` por `widget-embebido`. Después, en la terminal, desde `workspace/m06/dev1/widget-embebido`: `grep -n "api/" widget.js`.
 
 **Por qué:** el README habla de `apiKey` y de `/api/v0/widget`. Si un agente se lo cree, «arreglará» el widget para una API que no existe.
 
@@ -117,7 +126,7 @@ Compruébalo: `grep -n DESDE ../liquidaciones/liquidar.py` no devuelve nada.
 
 ### 7 — Escribe el `AGENTS.md` de cada repositorio
 
-**Acción:** para cada uno de los cuatro repositorios:
+**Acción:** en el mismo chat (así aprovecha todo lo comprobado), pega esto una vez por repositorio, cambiando `<repo>`:
 
 ```text
 Escribe AGENTS.md en <repo> con: qué es, cómo se ejecuta (comandos que hemos probado), cómo
@@ -133,7 +142,7 @@ Revísalo línea a línea y añade un `CLAUDE.md` con `@AGENTS.md` si usas Claud
 
 ### 8 — Sube el contexto
 
-**Acción:** en cada repositorio de `dev1`:
+**Acción:** en la terminal, en cada repositorio de `workspace/m06/dev1` (`cd` a cada uno):
 
 ```bash
 git add -A
@@ -153,14 +162,26 @@ Abre un chat nuevo en `dev1/liquidaciones` y pregunta: «¿Por qué la Sala Faro
 
 ## Reto
 
-### 1 — El tercer fallo de la puerta
+### 1 — Una auditoría de seguridad que se pueda comprobar
 
-Además de las entradas devueltas y la firma, `control-acceso` tiene un tercer problema de seguridad en `lib/validar.js`. Encuéntralo con el asistente y escríbelo en su `AGENTS.md`, sin arreglarlo.
+Además de las entradas devueltas y la firma, `control-acceso` tiene un tercer problema de seguridad. Escribe un prompt para que el asistente lo encuentre con una lista de comprobación concreta (no «revisa la seguridad»), con fichero, línea y una forma de demostrarlo sin cambiar código. Después escríbelo en su `AGENTS.md`, sin arreglarlo.
 
 <details>
 <summary>Ver solución</summary>
 
-Las dos consultas concatenan el id en el SQL (`"… WHERE id = '" + id + "'"`): inyección SQL desde el contenido del QR, que llega del lector sin comprobar la firma. Un QR con `x' OR '1'='1` haría que el `UPDATE` marcara todas las entradas como usadas. `lib/aforo.js` sí usa parámetros. Va en «Cómo funciona», como hecho comprobado, y el arreglo queda para otra petición.
+Un prompt que funciona:
+
+```text
+Audita control-acceso con esta lista, citando fichero y línea:
+1. ¿Se construye SQL concatenando texto que viene de fuera (el contenido del QR)?
+2. ¿Se valida la firma antes de usar el id?
+3. ¿Qué podría hacer un QR manipulado?
+Para cada hallazgo, explica el riesgo con un ejemplo, sin ejecutarlo contra la base de datos.
+```
+
+Lo que tiene que salir: las dos consultas de `lib/validar.js` concatenan el id en el SQL (`"… WHERE id = '" + id + "'"`). Es inyección SQL desde el contenido del QR, que llega del lector sin comprobar la firma: un QR con `x' OR '1'='1` haría que el `UPDATE` marcara todas las entradas como usadas. `lib/aforo.js` sí usa parámetros.
+
+Va en «Cómo funciona» del `AGENTS.md`, como hecho comprobado, y el arreglo queda para otra petición. La lista concreta es lo que hace que el asistente mire el SQL en lugar de dar consejos generales de seguridad.
 
 </details>
 

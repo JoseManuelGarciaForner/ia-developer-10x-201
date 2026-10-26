@@ -10,9 +10,19 @@ Tests con mocks del cliente de la pasarela, de la regla «no se devuelve dos vec
 
 ### Punto de partida
 
-- El proyecto abierto en el Dev Container, carpeta `telon/`.
-- Estado: `make init-m03`. No hace falta tener la plataforma arrancada: estos tests no usan servicios.
+- El repositorio del curso abierto en el Dev Container (local o Codespaces). El explorador muestra la carpeta `telon/`.
+- Una terminal en `telon/`. Escribe `CONFIRM=1 make init-m03`; responde `telon/ está en el punto de partida de m03.` No hace falta arrancar la plataforma: estos tests no usan servicios.
 - Ficheros que vas a probar: `services/api/src/orders/payments-client.ts`, `services/api/src/refunds/service.ts` y `services/notifier/src/jobs.ts`.
+- Un asistente en modo agente:
+
+| Asistente | Cómo abrir una conversación nueva |
+|-----------|-----------------------------------|
+| VS Code o Codespaces + Copilot | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> → **+** → modo **Agent** bajo la caja de texto |
+| Cursor | <kbd>Ctrl</kbd>+<kbd>L</kbd> → **+** → modo **Agent** |
+| Claude Code | En una terminal nueva, dentro de `telon/`: `claude` |
+
+> [!NOTE]
+> El asistente tiene el código y `AGENTS.md`, que su herramienta carga al abrir cada conversación. Sobre cómo hacer mocks no hay nada escrito en el proyecto: lo que proponga sale de lo que sabe de Vitest en general, y por eso hay que revisarlo.
 
 ### En qué consiste
 
@@ -20,7 +30,7 @@ Tres tests con mocks, cada uno en su frontera: `fetch` para la pasarela, los mó
 
 ### 1 — Mock de la pasarela con `fetch`
 
-**Acción:**
+**Acción:** ve al chat, abre una conversación nueva, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Crea services/api/test/payments-client.test.ts. Simula la pasarela sustituyendo fetch con
@@ -32,11 +42,13 @@ vi.stubGlobal (no mockees payments-client, que es lo que se prueba). Casos:
 
 **Por qué:** el mock va en la frontera (`fetch`), no en la función que pruebas. Si mockeas `payments-client` para probar `payments-client`, el test no prueba nada.
 
-**Resultado esperado:** tres tests con `vi.stubGlobal('fetch', …)` y `vi.unstubAllGlobals()` en `afterEach`. Pasan: `npm test -w @telon/api`.
+**Resultado esperado:** el agente crea `services/api/test/payments-client.test.ts` con tres tests que usan `vi.stubGlobal('fetch', …)` y `vi.unstubAllGlobals()` en `afterEach`, y los ejecuta. Si no los ejecuta, hazlo tú en la terminal: `npm test -w @telon/api`. Pasan.
+
+Si el modelo usa `vi.mock('../src/orders/payments-client.js')` en lugar de sustituir `fetch`, el test no prueba nada: pídele que lo rehaga sin ese mock. Es un error frecuente, porque «mockear el cliente HTTP» es lo más común en los ejemplos.
 
 ### 2 — Mock de la base de datos para una regla
 
-**Acción:**
+**Acción:** en el mismo chat, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Crea services/api/test/refund-service.test.ts para requestRefund con vi.mock de
@@ -55,7 +67,7 @@ de la pasarela ni a enqueueEmail. Simula pool.query devolviendo filas según el 
 
 ### 3 — Revisa qué se ha simulado
 
-**Acción:** en los dos ficheros nuevos, cuenta cuántos `vi.mock` y `vi.fn` hay y para qué sirve cada uno.
+**Acción:** abre los dos ficheros nuevos (<kbd>Ctrl</kbd>+<kbd>P</kbd>) y cuenta cuántos `vi.mock` y `vi.fn` hay y para qué sirve cada uno.
 
 **Por qué:** un asistente tiende a mockearlo todo «por si acaso». Cada mock que sobra es código del test que nadie mantiene y que puede ocultar un cambio real.
 
@@ -63,7 +75,7 @@ de la pasarela ni a enqueueEmail. Simula pool.query devolviendo filas según el 
 
 ### 4 — Mock del notifier y su proveedor
 
-**Acción:**
+**Acción:** en el mismo chat, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Crea services/notifier/test/refund-email.test.ts para sendRefundConfirmed con vi.mock de
@@ -78,7 +90,7 @@ butacas F-12 y F-13) envía un correo a ana.compradora@ejemplo.test con el impor
 
 ### 5 — Simula el reintento de la cola
 
-**Acción:**
+**Acción:** en el mismo chat, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Añade un test: el primer INSERT INTO email_log falla (como si la base de datos rechazara
@@ -89,17 +101,19 @@ reintentarse sin efectos duplicados"), el proveedor debe haber enviado UN correo
 
 **Por qué:** BullMQ reintenta un trabajo fallido hasta 3 veces (`attempts: 3` en `services/api/src/queue.ts`). Este test reproduce lo que hace la cola sin levantar Redis.
 
-**Resultado esperado:** el test falla:
+**Resultado esperado:** el agente añade el test, lo ejecuta y falla:
 
 ```text
 AssertionError: expected 2 to be 1
 ```
 
+Lo habitual es que, al verlo en rojo, el agente proponga cambiar `jobs.ts` para arreglarlo. No le dejes en este lab: rechaza el cambio. El arreglo, con su diagnóstico, es el lab 04.
+
 El notifier envía y después registra. Si el registro falla, el reintento envía otra vez.
 
 ### 6 — Ejecuta todo y haz commit
 
-**Acción:**
+**Acción:** en la terminal:
 1. `npm test`
 2. `git add services && git commit -m "Tests con mocks de pasarela, servicio de devolución y correo"`
 
@@ -119,14 +133,25 @@ Para la plataforma (<kbd>Ctrl</kbd>+<kbd>C</kbd> en `make up-m03`) y ejecuta `np
 
 ## Reto
 
-### 1 — El mock que no hacía falta
+### 1 — Que el asistente justifique cada mock
 
-Uno de los tres mocks del test de servicio se puede quitar sin que el test deje de comprobar la regla. ¿Cuál, y qué pierdes si lo quitas?
+Escribe un prompt para que el asistente revise `services/api/test/refund-service.test.ts` y justifique cada `vi.mock`: qué pasaría si se quitara (¿el test sigue pasando?, ¿qué deja de comprobar?, ¿abre alguna conexión real?). Que lo compruebe quitando cada mock de uno en uno y ejecutando el test, y que lo deje todo como estaba.
 
 <details>
 <summary>Ver solución</summary>
 
-Ninguno es gratis. Sin el mock de `queue.js`, el import de `queue.ts` crea una conexión a Redis al encolar; como la regla corta antes de encolar, el test seguiría pasando, pero quedaría una conexión colgada si alguien cambia el orden. Sin el de `payments-client.js` pasaría lo mismo con `fetch`. Lo que perderías es la comprobación «no se llama a la pasarela», que es la mitad de la regla. Quitar mocks está bien cuando la dependencia es pura; aquí no lo es.
+Un prompt que funciona:
+
+```text
+Revisa services/api/test/refund-service.test.ts. Para cada vi.mock: quítalo, ejecuta
+npm test -w @telon/api -- refund-service, dime si pasa, si queda colgado y qué comprobación
+de la regla se pierde, y vuelve a ponerlo antes de probar el siguiente. Termina con una
+tabla: mock, ¿necesario?, por qué. Al acabar, el fichero tiene que quedar igual que al empezar.
+```
+
+Lo que suele salir: ninguno de los tres sobra. Sin el mock de `queue.js`, el import de `queue.ts` puede abrir una conexión a Redis y el test queda colgado. Sin el de `payments-client.js`, se pierde la comprobación «no se llama a la pasarela», que es la mitad de la regla. Sin el de `db.js`, el test intenta conectar con PostgreSQL. Quitar un mock está bien cuando la dependencia es lógica pura, como `pricing.ts`; aquí ninguna lo es.
+
+Después, `git diff services/api/test/refund-service.test.ts` no debe mostrar nada. Si muestra algo, el agente no restauró algún mock.
 
 </details>
 

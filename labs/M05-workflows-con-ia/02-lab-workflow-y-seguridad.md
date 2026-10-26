@@ -10,9 +10,19 @@ Un workflow que ejecuta lint, typecheck y tests del proyecto en cada push, en ve
 
 ### Punto de partida
 
-- Tu fork abierto en el Dev Container, carpeta `telon/`.
-- Estado: `make init-m05`. Si hiciste el [lab anterior](01-lab-pull-request-revisado.md), sigue en tu rama `feat/dev-412-devoluciones` con el PR abierto. Si no, crea la rama y el PR con los pasos 1, 2 y 5 de ese lab.
-- `make up-m05` arrancado en otra terminal.
+- Tu fork abierto en el Dev Container (local o Codespaces), con dos terminales en `telon/`.
+- Si hiciste el [lab anterior](01-lab-pull-request-revisado.md), sigue en tu rama `feat/dev-412-devoluciones` con el PR abierto. Si no, en la terminal 1: `CONFIRM=1 make init-m05` y después los pasos 1, 2 y 5 de ese lab (rama, push y PR).
+- Terminal 2: `make up-m05`, y déjala abierta.
+- Un asistente en modo agente:
+
+| Asistente | Cómo abrir una conversación nueva |
+|-----------|-----------------------------------|
+| VS Code o Codespaces + Copilot | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> → **+** → modo **Agent** bajo la caja de texto |
+| Cursor | <kbd>Ctrl</kbd>+<kbd>L</kbd> → **+** → modo **Agent** |
+| Claude Code | En una terminal nueva, dentro de `telon/`: `claude` |
+
+> [!NOTE]
+> El asistente tiene el código y `AGENTS.md`, que su herramienta carga al abrir cada conversación. Su «raíz» es `telon/`: no ve el resto del repositorio salvo que se lo pidas, y no sabe dónde busca GitHub los workflows de este repositorio. Es lo que se ve en el paso 1.
 
 ### En qué consiste
 
@@ -20,7 +30,7 @@ Workflow, Actions activado en el fork, revisión de seguridad con tres comprobac
 
 ### 1 — Pide el workflow
 
-**Acción:** en un chat nuevo:
+**Acción:** ve al chat, abre una conversación nueva, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Crea un workflow de GitHub Actions que en cada push y pull request ejecute, con Node 22:
@@ -29,13 +39,13 @@ npm ci, npm run lint, npm run typecheck y npm test, en el proyecto Telón.
 
 **Por qué:** el prompt es deliberadamente corto, como el que escribe casi todo el mundo. Fíjate en dónde pone el fichero.
 
-**Resultado esperado:** casi seguro, `telon/.github/workflows/ci.yml`, porque el asistente está abierto en `telon/` y esa es la raíz que ve.
+**Resultado esperado:** casi seguro, `telon/.github/workflows/ci.yml` (en el explorador, dentro de `.github/workflows` de `telon/`), porque el asistente está abierto en `telon/` y esa es la raíz que ve. El nombre del fichero puede variar (`ci.yml`, `test.yml`); en el paso 2, usa el que haya creado.
 
 ### 2 — Lleva el workflow a donde GitHub lo busca
 
 **Acción:**
-1. Mueve el fichero a la raíz del repositorio: `mkdir -p ../.github/workflows && git mv .github/workflows/ci.yml ../.github/workflows/telon.yml` (si no estaba versionado, usa `mv`).
-2. Pide al asistente que lo adapte:
+1. En la terminal 1, mueve el fichero a la raíz del repositorio: `mkdir -p ../.github/workflows && git mv .github/workflows/ci.yml ../.github/workflows/telon.yml` (si no estaba versionado, usa `mv`).
+2. En el mismo chat, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 El workflow está ahora en ../.github/workflows/telon.yml (raíz del repositorio; telon/ es una
@@ -50,7 +60,7 @@ o en el propio workflow.
 
 ### 3 — Activa Actions en tu fork
 
-**Acción:** en GitHub, en tu fork, abre la pestaña **Actions** y pulsa **I understand my workflows, go ahead and enable them**.
+**Acción:** en el navegador, en tu fork (`github.com/<tu-usuario>/ia-developer-10x-201`), abre la pestaña **Actions** y pulsa **I understand my workflows, go ahead and enable them**.
 
 **Por qué:** GitHub desactiva los workflows en los forks hasta que su dueño los activa, para que un fork no ejecute código ajeno con tus minutos.
 
@@ -58,7 +68,7 @@ o en el propio workflow.
 
 ### 4 — Sube el workflow y mira el PR
 
-**Acción:**
+**Acción:** en la terminal 1:
 
 ```bash
 git add ../.github/workflows/telon.yml
@@ -77,7 +87,7 @@ Abre el PR en GitHub.
 
 ### 5 — Revisa la seguridad del PR
 
-**Acción:** en un chat nuevo:
+**Acción:** ve al chat, abre una conversación nueva, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 Revisa la seguridad del proyecto con esta lista, citando fichero y línea:
@@ -89,14 +99,14 @@ No cambies nada.
 
 **Por qué:** la seguridad no se revisa «en general». Con una lista concreta, el asistente busca en los sitios correctos y tú puedes comprobar cada respuesta.
 
-**Resultado esperado:** al menos estos hallazgos:
+**Resultado esperado:** el agente busca en `routes/`, en los `package.json` y en `packages/page-runtime`, y devuelve los hallazgos con fichero y línea. Al menos estos:
 1. `GET /api/admin/email` (`services/api/src/routes/admin.ts`) devuelve `email_config` entero, con el `apiKey` del proveedor del promotor en claro.
 2. Ninguna dependencia inventada. Si te propone una, compruébala con `npm view <paquete> version`.
 3. El TSX del promotor se ejecuta en el navegador con `new Function` (`packages/page-runtime/src/compile.ts`). Limitar los imports no lo convierte en un sandbox: la página tiene acceso a `window` y a `fetch` en el dominio de la tienda.
 
 ### 6 — Comprueba la fuga de la API key
 
-**Acción:** `curl -s localhost:3000/api/admin/email -H 'authorization: Bearer lumen-dev-token'`
+**Acción:** en la terminal 1, `curl -s localhost:3000/api/admin/email -H 'authorization: Bearer lumen-dev-token'`. Después, en el backoffice (pestaña **Ports** → **Backoffice (5174)** en Codespaces), pulsa **Salir**, entra con el token `lumen-dev-token` y abre **Email**.
 
 **Por qué:** el Teatro Lumen usa SendGrid. Su API key no debería salir nunca de la base de datos una vez guardada: cualquiera con acceso al backoffice, o un fallo de XSS, la tendría.
 
@@ -109,7 +119,7 @@ No cambies nada.
 
 ### 7 — Enmascara las credenciales
 
-**Acción:**
+**Acción:** en el mismo chat, pega esto y pulsa <kbd>Enter</kbd>:
 
 ```text
 En services/api/src/routes/admin.ts, GET /api/admin/email no debe devolver secretos: enmascara
@@ -124,7 +134,7 @@ Fastify inject y la base de datos mockeada. Diff mínimo.
 
 ### 8 — Limita lo que el agente ejecuta sin preguntar
 
-**Acción:** configura tu asistente para que ejecute sin preguntar solo comandos de lectura y comprobación, y pida confirmación para el resto:
+**Acción:** configura tu asistente para que ejecute sin preguntar solo comandos de lectura y comprobación, y pida confirmación para el resto. En Claude Code, crea `telon/.claude/settings.json` (en el explorador, **New File…** → `.claude/settings.json`) con el contenido de abajo y guarda; en Cursor y Copilot, busca la opción en sus ajustes:
 
 | Asistente | Dónde |
 |-----------|-------|
@@ -145,11 +155,11 @@ Para Claude Code:
 
 **Por qué:** un agente que hace `git push` o lee `.env` sin preguntar es un riesgo, aunque no tenga mala intención: basta una instrucción escondida en un fichero que lee. Las comprobaciones, en cambio, puede ejecutarlas sin que tengas que aprobar cada una.
 
-**Resultado esperado:** al pedirle «ejecuta los tests» lo hace sin preguntar. Al pedirle «sube los cambios», pide permiso o se niega.
+**Resultado esperado:** abre una conversación nueva (en Claude Code, sal con `/exit` y vuelve a entrar con `claude` para que lea la configuración). Escribe `Ejecuta los tests`: lo hace sin preguntar. Escribe `Sube los cambios`: pide permiso o se niega, citando la regla.
 
 ### 9 — Haz commit y súbelo
 
-**Acción:**
+**Acción:** en la terminal 1:
 
 ```bash
 git add -A
@@ -173,19 +183,32 @@ Repite el `curl` del paso 6.
 
 ## Reto
 
-### 1 — El código del promotor
+### 1 — Una decisión de arquitectura con el asistente
 
-El hallazgo 3 del paso 5 no se arregla con un diff pequeño. Pregunta al asistente qué opciones hay para aislar el TSX de los promotores y qué cuesta cada una. Decide cuál propondrías al equipo.
+El hallazgo 3 del paso 5 (el TSX del promotor se ejecuta con `new Function` en la tienda) no se arregla con un diff pequeño. Escribe un prompt para que el asistente te prepare la decisión: opciones, qué cuesta cada una en este proyecto (ficheros afectados, qué deja de funcionar) y una recomendación. Que lo deje en `docs/decisiones/aislar-paginas.md` y no cambie código.
 
 <details>
 <summary>Ver solución</summary>
 
-Las opciones habituales son tres:
-- servir la página del promotor en un **origen distinto** (`*.paginas.telon.test`) dentro de un iframe con `sandbox`, de modo que no comparta cookies ni `localStorage` con la tienda ni con el backoffice;
+Un prompt que funciona:
+
+```text
+El TSX de los promotores se ejecuta con new Function en la tienda
+(packages/page-runtime/src/compile.ts) y tiene acceso a window y a fetch. Prepara una
+decisión de arquitectura en docs/decisiones/aislar-paginas.md: contexto, tres opciones para
+aislarlo, y para cada una qué ficheros del proyecto cambian, qué deja de funcionar y el riesgo
+que queda. Termina con una recomendación y lo que habría que decidir antes. No cambies código.
+```
+
+Las opciones habituales:
+
+- servir la página del promotor en un **origen distinto** (`*.paginas.telon.test`) dentro de un iframe con `sandbox`, para que no comparta cookies ni `localStorage` con la tienda ni con el backoffice;
 - compilar en el servidor y añadir una **Content Security Policy** estricta;
 - ejecutar el código en un **Web Worker o un realm aislado**, que no tiene DOM y complica los componentes.
 
-La primera es la más común en plataformas así. Implica cambiar cómo se comunican la página y los componentes troncales (postMessage, como el editor), así que no es un cambio para este PR: es una decisión de arquitectura que va en su propia petición.
+La primera es la más común en plataformas así. Implica que la página y los componentes troncales se comuniquen por `postMessage`, como ya hace el editor. Es una decisión para su propia petición, no para este PR.
+
+Pedir «qué ficheros del proyecto cambian» obliga a que la respuesta hable de este código y no de seguridad web en general.
 
 </details>
 
