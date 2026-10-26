@@ -47,7 +47,7 @@ let c = (p * ev.commission_bps) / 10000;
 c = Math.round(c);
 ```
 
-La comisión se calcula **por entrada**, como un porcentaje del precio de esa entrada (`commission_bps`; 750 equivale al 7,5 % de la Sala Faro), y se **redondea por entrada**. Con dos butacas de 35,50 € son 266 + 266 = **532 céntimos**. Si se calculara sobre el total, 7100 × 7,5 % = 532,5, saldrían **533**. Ese céntimo es lo que se busca en cada paso.
+La comisión se calcula **por entrada**, como un porcentaje del precio de esa entrada (`commission_bps`; 750 equivale al 7,5 % de la Sala Faro), y se **redondea por entrada**. El ejemplo que se usa en todo el curso es el pedido `PED-2026-0107` de Ana, que incluye las butacas **F-12 y F-13** (fila F, asientos 12 y 13) de 35,50 € cada una. Por entrada, 3550 × 7,5 % = 266,25, que se redondea a 266; las dos suman 266 + 266 = **532 céntimos**. Si se calculara sobre el total, 7100 × 7,5 % = 532,5, saldrían **533**. Ese céntimo es lo que se busca en cada paso.
 
 Cuando la tengas localizada, cierra la pestaña con <kbd>Ctrl</kbd>+<kbd>W</kbd>.
 
@@ -91,7 +91,7 @@ export function commissionToReverse(prices_cents: number[], ev: EventPricing): n
 
 No la aceptes. Pulsa <kbd>Alt</kbd>+<kbd>]</kbd> para ver otras sugerencias: casi todas calculan sobre el total.
 
-**Por qué pasa:** el autocompletado no busca en el proyecto cómo se calcula la comisión. Ve el fichero abierto, unas pocas líneas alrededor del cursor y las pestañas abiertas, que ahora son ninguna. Con eso completa lo más probable en cualquier código parecido. Con F-12 y F-13 esa función devuelve 533, no 532. Es el mismo fallo que aparece en la devolución del M03.
+**Por qué pasa:** el autocompletado no busca en el proyecto cómo se calcula la comisión. Ve el fichero abierto, unas pocas líneas alrededor del cursor y las pestañas abiertas, que ahora son ninguna. Con eso completa lo más probable en cualquier código parecido. Si se le pasan las dos butacas de Ana, F-12 y F-13 (`[3550, 3550]`), esa función devuelve 533, no 532. Es el mismo fallo que aparece en la devolución del M03.
 
 **1.4 Repite con `pricing.ts` abierto.**
 **Qué haces:**
