@@ -18,7 +18,7 @@ Una batería de tests de la devolución basada en las reglas de `AGENTS.md`, con
 |-----------|-----------------------------------|
 | VS Code o Codespaces + Copilot | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> → **+** → modo **Agent** bajo la caja de texto |
 | Cursor | <kbd>Ctrl</kbd>+<kbd>L</kbd> → **+** → modo **Agent** |
-| Claude Code | En una terminal nueva, dentro de `telon/`: `claude` |
+| Claude Code | En una terminal nueva: `claude` |
 
 > [!NOTE]
 > En este estado el proyecto tiene `AGENTS.md` con las reglas de negocio, y cada herramienta lo carga al abrir una conversación. El asistente tiene el código, esas reglas y nada más.

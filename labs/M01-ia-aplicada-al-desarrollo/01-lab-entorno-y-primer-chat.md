@@ -53,7 +53,7 @@ Elige una de las dos rutas.
 
 ### 3 — Arranca el proyecto
 
-**Acción:** en la terminal, dentro de `telon/`:
+**Acción:** en la terminal:
 
 ```bash
 make up-m01
@@ -175,7 +175,7 @@ Lo que cambia según el modelo es el puerto de la API. Si el asistente leyó pri
 
 ### 11 — Ejecuta los tests
 
-**Acción:** en una terminal dentro de `telon/`: `npm test`
+**Acción:** en la terminal: `npm test`
 
 **Por qué:** antes de tocar nada, sabes que el punto de partida está en verde. Si algo falla después, lo has roto tú (o el asistente).
 

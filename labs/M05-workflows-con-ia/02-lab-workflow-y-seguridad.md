@@ -19,7 +19,7 @@ Un workflow que ejecuta lint, typecheck y tests del proyecto en cada push, en ve
 |-----------|-----------------------------------|
 | VS Code o Codespaces + Copilot | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> → **+** → modo **Agent** bajo la caja de texto |
 | Cursor | <kbd>Ctrl</kbd>+<kbd>L</kbd> → **+** → modo **Agent** |
-| Claude Code | En una terminal nueva, dentro de `telon/`: `claude` |
+| Claude Code | En una terminal nueva: `claude` |
 
 > [!NOTE]
 > El asistente tiene el código y `AGENTS.md`, que su herramienta carga al abrir cada conversación. Su «raíz» es `telon/`: no ve el resto del repositorio salvo que se lo pidas, y no sabe dónde busca GitHub los workflows de este repositorio. Es lo que se ve en el paso 1.

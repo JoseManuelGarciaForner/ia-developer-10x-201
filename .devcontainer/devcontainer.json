@@ -3,7 +3,7 @@
   "dockerComposeFile": ["../infra/compose.yaml", "compose.devcontainer.yaml"],
   "service": "workspace",
   "runServices": ["postgres", "redis", "mailpit", "workspace"],
-  "workspaceFolder": "/workspaces/developer-10x/telon",
+  "workspaceFolder": "/workspaces/developer-10x",
   "shutdownAction": "stopCompose",
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {},

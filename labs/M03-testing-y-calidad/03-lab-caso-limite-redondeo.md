@@ -20,7 +20,7 @@ Cuando un comprador del proyecto Telón devuelve dos butacas de 35,50 €, la pl
 |-----------|-----------------------------------|
 | VS Code o Codespaces + Copilot | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> → **+** → modo **Agent** bajo la caja de texto |
 | Cursor | <kbd>Ctrl</kbd>+<kbd>L</kbd> → **+** → modo **Agent** |
-| Claude Code | En una terminal nueva, dentro de `telon/`: `claude` |
+| Claude Code | En una terminal nueva: `claude` |
 
 > [!NOTE]
 > El asistente tiene el código y `AGENTS.md`, que su herramienta carga al abrir cada conversación. La regla está escrita, y aun así el código no la cumple: el asistente no lo sabe hasta que un test se lo enseña.

@@ -18,7 +18,7 @@ Todavía no hay nada que ayude al asistente: ni reglas del proyecto, ni `AGENTS.
 |------|-------------------------------------------|------------|-----------------|
 | 1 · Autocompletado | Las sugerencias en gris del editor | Cursor Tab, las sugerencias en gris del editor | No tiene autocompletado: el paso 1 se hace con Copilot |
 | 2 · Chat | Vista de chat (<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd>), modo **Ask** | Chat (<kbd>Ctrl</kbd>+<kbd>L</kbd>), modo **Ask** | No tiene un chat que no lea el repositorio: el paso 2 se hace con Copilot o Cursor |
-| 3 · Agente | Vista de chat, modo **Agent** | Chat, modo **Agent** | `claude` en la terminal, dentro de `telon/` |
+| 3 · Agente | Vista de chat, modo **Agent** | Chat, modo **Agent** | `claude` en la terminal |
 
 ### Preparación
 
@@ -140,7 +140,7 @@ En el proyecto, ¿cómo se calcula la comisión de plataforma de una entrada?
 ### Paso 3 — El agente busca la respuesta, ejecuta y propone cambios
 
 **3.1 Abre el agente.**
-**Dónde:** en Copilot o Cursor, conversación nueva (**+**) con el selector de modo en **Agent**. En Claude Code, escribe `claude` en la terminal, dentro de `telon/`.
+**Dónde:** en Copilot o Cursor, conversación nueva (**+**) con el selector de modo en **Agent**. En Claude Code, escribe `claude` en la terminal.
 **Resultado esperado:** una conversación vacía en modo agente.
 
 **3.2 Pídele la explicación y la prueba.**

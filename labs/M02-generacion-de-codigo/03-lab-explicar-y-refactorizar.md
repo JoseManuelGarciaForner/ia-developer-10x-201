@@ -18,7 +18,7 @@
 |-----------|-----------------------------------|
 | VS Code o Codespaces + Copilot | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> → **+** → modo **Agent** bajo la caja de texto |
 | Cursor | <kbd>Ctrl</kbd>+<kbd>L</kbd> → **+** → modo **Agent** |
-| Claude Code | En una terminal nueva, dentro de `telon/`: `claude` |
+| Claude Code | En una terminal nueva: `claude` |
 
 > [!NOTE]
 > Este lab no necesita `AGENTS.md`: todo lo que hace falta está en `pricing.ts` y en sus tests. El asistente trabaja con el código y con lo que su herramienta trae de serie. Si tienes tu `AGENTS.md` del lab 01, déjalo; no cambia los resultados.

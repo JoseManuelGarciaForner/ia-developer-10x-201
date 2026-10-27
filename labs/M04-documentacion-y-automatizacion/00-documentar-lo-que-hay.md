@@ -7,7 +7,7 @@ Un asistente escribe documentación que se lee bien en segundos. El riesgo es qu
 ## Punto de partida
 
 - El repositorio del curso abierto en el Dev Container (VS Code local o Codespaces), con **dos** terminales abiertas en `telon/`. Para la segunda, pulsa el **+** del panel de terminal.
-- Un asistente en modo agente. En Copilot o Cursor, la vista de chat con el selector de modo en **Agent**. En Claude Code, `claude` en la terminal, dentro de `telon/`.
+- Un asistente en modo agente. En Copilot o Cursor, la vista de chat con el selector de modo en **Agent**. En Claude Code, `claude` en la terminal.
 - Lo que es cierto hoy, comprobado en el código y ejecutando:
   - la API escucha en el puerto 3000 (`curl localhost:3000/api/health` responde `{"ok":true}`);
   - no existe `npm run seed`: los datos se cargan al arrancar la API y con `npm run db:reset`;

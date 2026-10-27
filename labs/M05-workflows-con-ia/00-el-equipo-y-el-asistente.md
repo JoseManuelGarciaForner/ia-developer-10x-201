@@ -7,7 +7,7 @@ Hasta aquí, el asistente ha trabajado para una sola persona. En un equipo, el t
 ## Punto de partida
 
 - El repositorio del curso abierto en el Dev Container (VS Code local o Codespaces), con una terminal abierta en `telon/`.
-- Un asistente en modo agente. En Copilot o Cursor, la vista de chat con el selector de modo en **Agent**. En Claude Code, `claude` en la terminal, dentro de `telon/`.
+- Un asistente en modo agente. En Copilot o Cursor, la vista de chat con el selector de modo en **Agent**. En Claude Code, `claude` en la terminal.
 - La demostración trabaja solo en local, en una rama que se borra al final. No sube nada al fork.
 
 ### Preparación

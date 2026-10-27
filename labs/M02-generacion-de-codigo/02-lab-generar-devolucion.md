@@ -29,7 +29,7 @@ cp -r ../.labs/m03-inicio/.cursor ../.labs/m03-inicio/.github .
 |-----------|-----------------------------------|
 | VS Code o Codespaces + Copilot | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> → **+** → modo **Agent** bajo la caja de texto |
 | Cursor | <kbd>Ctrl</kbd>+<kbd>L</kbd> → **+** → modo **Agent** |
-| Claude Code | En una terminal nueva, dentro de `telon/`: `claude` |
+| Claude Code | En una terminal nueva: `claude` |
 
 > [!NOTE]
 > En este lab el asistente tiene el código y las reglas de `AGENTS.md`, que su herramienta carga al abrir cada conversación. No tiene nada más: ni tests de la devolución, ni ejemplos de cómo se hizo en otro sitio. Lo que no esté en esos dos sitios lo decidirá él.

@@ -19,7 +19,7 @@ Un pull request abierto en tu fork, de `feat/dev-412-devoluciones` a `main`, con
 |-----------|-----------------------------------|
 | VS Code o Codespaces + Copilot | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> → **+** → modo **Agent** bajo la caja de texto |
 | Cursor | <kbd>Ctrl</kbd>+<kbd>L</kbd> → **+** → modo **Agent** |
-| Claude Code | En una terminal nueva, dentro de `telon/`: `claude` |
+| Claude Code | En una terminal nueva: `claude` |
 
 > [!NOTE]
 > El asistente tiene el código y `AGENTS.md`, que su herramienta carga al abrir cada conversación. No ve GitHub: el PR, sus comentarios y su estado solo los conoce si se los pegas o si ejecuta `gh` en la terminal.

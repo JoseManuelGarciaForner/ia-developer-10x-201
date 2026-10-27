@@ -20,7 +20,7 @@ Cada vez que alguien del equipo prueba devoluciones en el proyecto Telón, repit
 |-----------|-----------------------------------|
 | VS Code o Codespaces + Copilot | <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>I</kbd> → **+** → modo **Agent** bajo la caja de texto |
 | Cursor | <kbd>Ctrl</kbd>+<kbd>L</kbd> → **+** → modo **Agent** |
-| Claude Code | En una terminal nueva, dentro de `telon/`: `claude` |
+| Claude Code | En una terminal nueva: `claude` |
 
 > [!NOTE]
 > El asistente tiene el código y `AGENTS.md`, que su herramienta carga al abrir cada conversación. No sabe que los pedidos pagados tienen que existir también en la pasarela emulada: no está escrito en ninguna parte, y por eso el prompt del paso 1 lo dice.

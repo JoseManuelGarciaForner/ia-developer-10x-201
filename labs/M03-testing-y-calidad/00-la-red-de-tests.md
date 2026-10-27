@@ -7,7 +7,7 @@ Pedirle tests al asistente es fácil y rápido, y casi siempre salen en verde. L
 ## Punto de partida
 
 - El repositorio del curso abierto en el Dev Container (VS Code local o Codespaces), con **dos** terminales abiertas en `telon/`. Para la segunda, pulsa el **+** del panel de terminal.
-- Un asistente en modo agente. En Copilot o Cursor, la vista de chat con el selector de modo en **Agent**. En Claude Code, `claude` en la terminal, dentro de `telon/`.
+- Un asistente en modo agente. En Copilot o Cursor, la vista de chat con el selector de modo en **Agent**. En Claude Code, `claude` en la terminal.
 - El caso que se usa para comparar: Ana devuelve las butacas F-12 y F-13 del pedido `PED-2026-0107`, de 35,50 € cada una, con una comisión del 7,5 % (`commission_bps: 750`).
 - El valor correcto, calculado a mano con la regla de `AGENTS.md` («la comisión revertida es la suma de la de cada entrada, redondeada por entrada»): 3550 × 7,5 % = 266,25, que se redondea a 266 por butaca, **532 céntimos** en total. Calculada sobre el total, 7100 × 7,5 % = 532,5, saldrían **533**.
 
